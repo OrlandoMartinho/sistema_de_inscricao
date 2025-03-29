@@ -17,6 +17,11 @@
 body {
   line-height: 1.6;
   color: var(--dark);
+
+}
+
+html{
+  overflow-x: hidden;
 }
 
 .container {
