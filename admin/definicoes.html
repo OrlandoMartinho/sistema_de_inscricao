@@ -6,9 +6,7 @@
     <title>Definições - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../../css/global.css">
     <link rel="stylesheet" href="../css/definicoes.css">
-    <link rel="stylesheet" href="../../css/usuarios/table.css">
-    <link rel="stylesheet" href="../../css/usuarios/modal-inscricao.css">
-    <link rel="stylesheet" href="../../css/notificacao.css">
+    <link rel="stylesheet" href="../css/definicoes-modal.css">
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,12 +20,12 @@
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
-                    <li ><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
-                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a> </li> 
-                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a> </li> 
-                    <li > <i data-lucide="calendar-days"></i>  <a href="calendarios.html">Calendário</a> </li>
-                    <li class="active"><i data-lucide="settings"></i><a href="">Configurações</a>  </li>
-                    <li class="logout"> <i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a> </li>
+                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a></li> 
+                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li class="active"><i data-lucide="settings"></i><a href="">Configurações</a></li>
+                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a></li>
                 </ul>
             </nav>
         </aside>
@@ -47,31 +45,391 @@
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
             </header>
-          <!-- Barra de Pesquisa -->
-          <div class="search-bar">
-            <input type="text" placeholder="Pesquisar">
-            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar pesquisa</button>
-        </div>
-       <hr>
-       <section class="settings-section">
-        <div class="item-section" onclick="openModalInscricao()">
-             <h3>Informações de conta</h3>
-             <p>Altere os dados básicos do usuario</p>
-        </div>
-        <hr>
-        <div class="item-section" onclick="openModalSeguranca()" id="abrir-modal">
-             <h3>Segurança</h3>
-             <p>Opções relacionadas à segurança e acesso da conta</p>
-        </div>
-     </section>
+          
+            <!-- Barra de Pesquisa -->
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar">
+                <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar pesquisa</button>
+            </div>
+            
+            <hr>
+            
+            <section class="settings-section">
+                <div class="item-section" onclick="openModalSeguranca()" id="abrir-modal">
+                    <h3>Segurança</h3>
+                    <p>Opções relacionadas à segurança e acesso da conta</p>
+                </div>
+                
+                <div class="item-section" onclick="openModalPerfil()">
+                    <h3>Perfil do Usuário</h3>
+                    <p>Editar informações pessoais e foto de perfil</p>
+                </div>
+                
+                <div class="item-section" onclick="openModalNotificacoes()">
+                    <h3>Preferências de Notificação</h3>
+                    <p>Configurar alertas e notificações do sistema</p>
+                </div>
+                
+                <div class="item-section" onclick="openModalSistema()">
+                    <h3>Configurações do Sistema</h3>
+                    <p>Personalizar aparência e comportamento do sistema</p>
+                </div>
+                
+                <div class="item-section" onclick="openModalBackup()">
+                    <h3>Backup e Restauração</h3>
+                    <p>Gerenciar cópias de segurança dos dados</p>
+                </div>
+            </section>
         </main>
     </div>
 
+    <!-- Modal de Segurança -->
+    <div id="modal-seguranca" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configurações de Segurança</h2>
+                <span class="close" onclick="closeModalSeguranca()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-seguranca">
+                    <div class="form-group">
+                        <label for="senha-atual">Senha Atual</label>
+                        <input type="password" id="senha-atual" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nova-senha">Nova Senha</label>
+                        <input type="password" id="nova-senha" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmar-senha">Confirmar Nova Senha</label>
+                        <input type="password" id="confirmar-senha" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="autenticacao">
+                            <input type="checkbox" id="autenticacao"> Autenticação em Dois Fatores
+                        </label>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModalSeguranca()">Cancelar</button>
+                        <button type="submit" class="btn-confirm">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-  
-    
+    <!-- Modal de Perfil -->
+    <div id="modal-perfil" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Perfil</h2>
+                <span class="close" onclick="closeModalPerfil()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-perfil">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" value="Asidaini Pinto" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" value="asidaini@instituto.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" value="+244 923 456 789">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="foto-perfil">Foto de Perfil</label>
+                        <input type="file" id="foto-perfil" accept="image/*">
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModalPerfil()">Cancelar</button>
+                        <button type="submit" class="btn-confirm">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Notificações -->
+    <div id="modal-notificacoes" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Preferências de Notificação</h2>
+                <span class="close" onclick="closeModalNotificacoes()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-notificacoes">
+                    <div class="form-group">
+                        <h3>Tipos de Notificação</h3>
+                        <label>
+                            <input type="checkbox" checked> Novas Inscrições
+                        </label>
+                        <label>
+                            <input type="checkbox" checked> Aprovações/Rejeições
+                        </label>
+                        <label>
+                            <input type="checkbox" checked> Atualizações do Sistema
+                        </label>
+                        <label>
+                            <input type="checkbox"> Promoções e Ofertas
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <h3>Métodos de Recebimento</h3>
+                        <label>
+                            <input type="checkbox" checked> Notificações no Sistema
+                        </label>
+                        <label>
+                            <input type="checkbox"> E-mail
+                        </label>
+                        <label>
+                            <input type="checkbox"> SMS
+                        </label>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModalNotificacoes()">Cancelar</button>
+                        <button type="submit" class="btn-confirm">Salvar Preferências</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configurações do Sistema -->
+    <div id="modal-sistema" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configurações do Sistema</h2>
+                <span class="close" onclick="closeModalSistema()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-sistema">
+                    <div class="form-group">
+                        <label for="tema">Tema do Sistema</label>
+                        <select id="tema">
+                            <option value="claro">Claro</option>
+                            <option value="escuro">Escuro</option>
+                            <option value="auto">Automático (segue sistema)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="idioma">Idioma</label>
+                        <select id="idioma">
+                            <option value="pt">Português</option>
+                            <option value="en">Inglês</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pagina-inicial">Página Inicial</label>
+                        <select id="pagina-inicial">
+                            <option value="dashboard">Painel de Controle</option>
+                            <option value="inscricoes">Inscrições</option>
+                            <option value="cursos">Cursos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" checked> Mostrar tutorial ao iniciar
+                        </label>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModalSistema()">Cancelar</button>
+                        <button type="submit" class="btn-confirm">Aplicar Configurações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Backup -->
+    <div id="modal-backup" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Backup e Restauração</h2>
+                <span class="close" onclick="closeModalBackup()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="backup-options">
+                    <h3>Criar Backup</h3>
+                    <p>Gere um arquivo de backup com todos os dados do sistema.</p>
+                    <button class="btn-confirm" onclick="criarBackup()">Criar Backup Agora</button>
+                    
+                    <hr>
+                    
+                    <h3>Restaurar Backup</h3>
+                    <p>Selecione um arquivo de backup para restaurar os dados.</p>
+                    <input type="file" id="arquivo-backup" accept=".backup,.json">
+                    <button class="btn-confirm" onclick="restaurarBackup()">Restaurar Backup</button>
+                    
+                    <div class="backup-info">
+                        <h4>Últimos Backups</h4>
+                        <ul id="lista-backups">
+                            <li>backup_20231115.backup - 15/11/2023 14:30</li>
+                            <li>backup_20231101.backup - 01/11/2023 09:15</li>
+                            <li>backup_20231015.backup - 15/10/2023 16:45</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModalBackup()">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Notificações (Sino) -->
+    <div id="modal-notifications" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Notificações</h2>
+                <span class="close" onclick="closeModalNotifications()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="notification-list">
+                    <div class="notification-item unread">
+                        <div class="notification-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="notification-content">
+                            <p><strong>Nova inscrição aprovada</strong></p>
+                            <p>João Silva foi aprovado no curso de Informática Básica</p>
+                            <small>Há 2 horas</small>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="notification-content">
+                            <p><strong>Inscrição pendente</strong></p>
+                            <p>5 novas inscrições aguardando análise</p>
+                            <small>Hoje, 09:30</small>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="notification-content">
+                            <p><strong>Atualização do sistema</strong></p>
+                            <p>Nova versão 2.1 disponível</p>
+                            <small>Ontem, 16:45</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-confirm" onclick="marcarTodasComoLidas()">Marcar todas como lidas</button>
+                    <button type="button" class="btn-cancel" onclick="closeModalNotifications()">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Inicializar ícones Lucide
         lucide.createIcons();
+        
+        // Funções para abrir modais
+        function openModalSeguranca() {
+            document.getElementById('modal-seguranca').style.display = 'block';
+        }
+        
+        function openModalPerfil() {
+            document.getElementById('modal-perfil').style.display = 'block';
+        }
+        
+        function openModalNotificacoes() {
+            document.getElementById('modal-notificacoes').style.display = 'block';
+        }
+        
+        function openModalSistema() {
+            document.getElementById('modal-sistema').style.display = 'block';
+        }
+        
+        function openModalBackup() {
+            document.getElementById('modal-backup').style.display = 'block';
+        }
+        
+        function openModalNotifications() {
+            document.getElementById('modal-notifications').style.display = 'block';
+        }
+        
+        // Funções para fechar modais
+        function closeModalSeguranca() {
+            document.getElementById('modal-seguranca').style.display = 'none';
+        }
+        
+        function closeModalPerfil() {
+            document.getElementById('modal-perfil').style.display = 'none';
+        }
+        
+        function closeModalNotificacoes() {
+            document.getElementById('modal-notificacoes').style.display = 'none';
+        }
+        
+        function closeModalSistema() {
+            document.getElementById('modal-sistema').style.display = 'none';
+        }
+        
+        function closeModalBackup() {
+            document.getElementById('modal-backup').style.display = 'none';
+        }
+        
+        function closeModalNotifications() {
+            document.getElementById('modal-notifications').style.display = 'none';
+        }
+        
+        // Fechar modais ao clicar fora do conteúdo
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+        
+        // Funções de exemplo para backup
+        function criarBackup() {
+            alert('Backup criado com sucesso!');
+            // Aqui iria a lógica real de criação de backup
+        }
+        
+        function restaurarBackup() {
+            const arquivo = document.getElementById('arquivo-backup').files[0];
+            if (arquivo) {
+                alert(`Backup ${arquivo.name} será restaurado. Confirma?`);
+                // Aqui iria a lógica real de restauração
+            } else {
+                alert('Selecione um arquivo de backup primeiro.');
+            }
+        }
+        
+        function marcarTodasComoLidas() {
+            const notificacoes = document.querySelectorAll('.notification-item.unread');
+            notificacoes.forEach(not => not.classList.remove('unread'));
+            alert('Todas as notificações marcadas como lidas.');
+        }
     </script>
 </body>
 </html>
