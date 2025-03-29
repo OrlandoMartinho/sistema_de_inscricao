@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendarios - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../css/calendarios.css">
+    <link rel="stylesheet" href="../css/modal-calendar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li ><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a> </li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a> </li> 
+                    <li class="active"> <i data-lucide="calendar-days"></i>  <a href="#">Calendário</a> </li>
+                    <li><i data-lucide="settings"></i><a href="definicoes.html">Configurações</a>  </li>
+                    <li class="logout"> <i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a> </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1>Calendarios</h1>
+                </div>
+                <div class="container-notification">
+                    <div id="notificacao-modal-container"></div>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+          <!-- Barra de Pesquisa -->
+          <div class="search-bar">
+            <input type="text" placeholder="Pesquisar">
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar pesquisa</button>
+        </div>
+       <hr>
+       <section class="datas-publicadas">
+        <div class="header">
+            <h2>Datas publicadas</h2>
+            <button class="btn-publicar" onclick="openModalPublicarEvento()">Publicar Evento</button>
+        </div>
+        <div class="eventos-grid">
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Inscrição</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Centro de Treinamento de Aviação, São Paulo</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Matrículas</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Escola 30 de Setembro</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Teste de admissão</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Escola 30 de Setembro</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Actividade Aleatória</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Escola 30 de Setembro</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Inscrição</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Centro de Treinamento de Aviação, São Paulo</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Matrículas</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Escola 30 de Setembro</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Teste de admissão</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Escola 30 de Setembro</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+            <div class="evento-card">
+                <div class="card-actions">
+                    <i class="fa-solid fa-pen-to-square" onclick="openModalEditarEvento()"></i>
+                    <i class="fa-solid fa-trash" onclick="openModalExcluirEvento()"></i>
+                </div>
+                <h3 class="evento-titulo">Actividade Aleatória</h3>
+                <p><strong>Data:</strong> 15 de Agosto de 2024</p>
+                <p><strong>Local:</strong> Escola 30 de Setembro</p>
+                <p><strong>Inscrições Até:</strong> 1 de Agosto de 2024</p>
+            </div>
+        </div>
+    </section>
+        
+        </main>
+    </div>
+
+    <!-- Modal de Inscrição -->
+    <div id="inscricao-modal-container"></div>
+
+    <!-- Modal Publicar Evento -->
+    <dialog id="modal-publicar-evento" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModalPublicarEvento()">&times;</button>
+            <h2>Publicar Novo Evento</h2>
+            <form id="form-publicar-evento">
+                <div class="form-group">
+                    <label for="evento-titulo">Título do Evento</label>
+                    <input type="text" id="evento-titulo" name="evento-titulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="evento-data">Data do Evento</label>
+                    <input type="date" id="evento-data" name="evento-data" required>
+                </div>
+                <div class="form-group">
+                    <label for="evento-local">Local</label>
+                    <input type="text" id="evento-local" name="evento-local" required>
+                </div>
+                <div class="form-group">
+                    <label for="evento-inscricoes-ate">Inscrições Até</label>
+                    <input type="date" id="evento-inscricoes-ate" name="evento-inscricoes-ate">
+                </div>
+                <div class="form-group">
+                    <label for="evento-descricao">Descrição</label>
+                    <textarea id="evento-descricao" name="evento-descricao" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancelar" onclick="closeModalPublicarEvento()">Cancelar</button>
+                    <button type="submit" class="btn-confirmar">Publicar Evento</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Modal Editar Evento -->
+    <dialog id="modal-editar-evento" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModalEditarEvento()">&times;</button>
+            <h2>Editar Evento</h2>
+            <form id="form-editar-evento">
+                <div class="form-group">
+                    <label for="editar-titulo">Título do Evento</label>
+                    <input type="text" id="editar-titulo" name="editar-titulo" value="Inscrição" required>
+                </div>
+                <div class="form-group">
+                    <label for="editar-data">Data do Evento</label>
+                    <input type="date" id="editar-data" name="editar-data" value="2024-08-15" required>
+                </div>
+                <div class="form-group">
+                    <label for="editar-local">Local</label>
+                    <input type="text" id="editar-local" name="editar-local" value="Centro de Treinamento de Aviação, São Paulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="editar-inscricoes-ate">Inscrições Até</label>
+                    <input type="date" id="editar-inscricoes-ate" name="editar-inscricoes-ate" value="2024-08-01">
+                </div>
+                <div class="form-group">
+                    <label for="editar-descricao">Descrição</label>
+                    <textarea id="editar-descricao" name="editar-descricao" rows="4">Descrição do evento de inscrição</textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancelar" onclick="closeModalEditarEvento()">Cancelar</button>
+                    <button type="submit" class="btn-confirmar">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Modal Excluir Evento -->
+    <dialog id="modal-excluir-evento" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModalExcluirEvento()">&times;</button>
+            <h2>Confirmar Exclusão</h2>
+            <p>Tem certeza que deseja excluir o evento <strong>"Inscrição"</strong>?</p>
+            <p>Esta ação não pode ser desfeita.</p>
+            <div class="form-actions">
+                <button type="button" class="btn-cancelar" onclick="closeModalExcluirEvento()">Cancelar</button>
+                <button type="button" class="btn-excluir" onclick="confirmarExclusaoEvento()">Excluir Evento</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Modal Notificações -->
+    <dialog id="modal-notificacoes" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModalNotifications()">&times;</button>
+            <h2>Notificações</h2>
+            <div class="notificacoes-list">
+                <div class="notificacao-item">
+                    <div class="notificacao-icon">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div class="notificacao-conteudo">
+                        <p>Novo evento adicionado: "Teste de Admissão"</p>
+                        <span class="notificacao-data">15 min atrás</span>
+                    </div>
+                </div>
+                <div class="notificacao-item">
+                    <div class="notificacao-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="notificacao-conteudo">
+                        <p>5 novas inscrições recebidas</p>
+                        <span class="notificacao-data">1 hora atrás</span>
+                    </div>
+                </div>
+                <div class="notificacao-item">
+                    <div class="notificacao-icon">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="notificacao-conteudo">
+                        <p>Evento "Matrículas" está próximo da data limite</p>
+                        <span class="notificacao-data">3 horas atrás</span>
+                    </div>
+                </div>
+            </div>
+            <div class="notificacoes-actions">
+                <button class="btn-limpar">Limpar Todas</button>
+                <button class="btn-fechar" onclick="closeModalNotifications()">Fechar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        lucide.createIcons();
+
+        // Funções para manipular os modais
+        function openModalPublicarEvento() {
+            document.getElementById('modal-publicar-evento').showModal();
+        }
+
+        function closeModalPublicarEvento() {
+            document.getElementById('modal-publicar-evento').close();
+        }
+
+        function openModalEditarEvento() {
+            document.getElementById('modal-editar-evento').showModal();
+        }
+
+        function closeModalEditarEvento() {
+            document.getElementById('modal-editar-evento').close();
+        }
+
+        function openModalExcluirEvento() {
+            document.getElementById('modal-excluir-evento').showModal();
+        }
+
+        function closeModalExcluirEvento() {
+            document.getElementById('modal-excluir-evento').close();
+        }
+
+        function confirmarExclusaoEvento() {
+            // Lógica para excluir o evento
+            alert('Evento excluído com sucesso!');
+            closeModalExcluirEvento();
+        }
+
+        function openModalNotifications() {
+            document.getElementById('modal-notificacoes').showModal();
+        }
+
+        function closeModalNotifications() {
+            document.getElementById('modal-notificacoes').close();
+        }
+
+        // Fechar modais ao clicar fora do conteúdo
+        document.querySelectorAll('dialog').forEach(dialog => {
+            dialog.addEventListener('click', (e) => {
+                const dialogDimensions = dialog.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    dialog.close();
+                }
+            });
+        });
+
+        // Formulários
+        document.getElementById('form-publicar-evento').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Evento publicado com sucesso!');
+            closeModalPublicarEvento();
+        });
+
+        document.getElementById('form-editar-evento').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Evento atualizado com sucesso!');
+            closeModalEditarEvento();
+        });
+    </script>
+</body>
+</html>

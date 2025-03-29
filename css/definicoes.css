@@ -1,0 +1,180 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html {
+  overflow: hidden;
+}
+
+
+
+.notificacao{
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background:  #007bff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinhar os itens no topo */
+  gap: 20px; /* Espaço entre os itens */
+}
+.title-side-bar{
+  font-size: 1rem;
+  margin-top: -2rem;
+}
+
+.sidebar img{
+  width: 100px;
+  display: flex;
+  margin: 0 auto;
+}
+
+.title-header h1{
+  font-size: 1.5rem;
+  
+  margin-top: 1rem;
+
+}
+
+.title-header p{
+  font-size: 1rem;
+  color: #afafaf;
+  margin-top: 1rem;
+}
+
+.sidebar h2 {
+  text-align: center;
+  color: #ffffff;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.3rem;
+}
+
+.sidebar li {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  gap: 10px; /* Espaço entre o ícone e o texto */
+  font-size: 16px;
+}
+
+.sidebar li i {
+  font-size: 20px; /* Ajusta o tamanho do ícone */
+  width: 20px; /* Garante que todos os ícones tenham largura fixa */
+}
+
+.sidebar .active {
+  background: #ffffff;
+  color:  #007bff;
+  border-radius: 5px;
+}
+
+.logout {
+  
+  margin-top: 15rem;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.search-bar {
+  display: flex;
+  margin: 20px 0;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filter-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+
+.apply-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.item-section{
+  padding: 20px;
+  cursor: pointer;
+}
+
+.item-section:hover{
+  width: 100%;
+  background-color: #f4f4f4;
+}
+
+.item-section h3{
+  font-size: 1rem;
+}
+
+.item-section p {
+  margin-top: .5rem;
+  font-size: .8rem;
+  color: #2e2e2e;
+}
+
+
+
+

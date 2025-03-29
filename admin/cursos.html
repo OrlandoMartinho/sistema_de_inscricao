@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../css/cursos.css">
+    <link rel="stylesheet" href="../../css/usuarios/table.css">
+    <link rel="stylesheet" href="../../css/usuarios/modal-curso.css">
+    <link rel="stylesheet" href="../../css/notificacao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li class="active"><i data-lucide="book-text"></i> <a href="">Cursos</a></li> 
+                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li><i data-lucide="settings"></i><a href="admin-definicoes.html">Configurações</a></li>
+                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html">Sair do sistema</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1>Cursos</h1>
+                </div>
+                <div class="container-notification">
+                    <div id="notificacao-modal-container"></div>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-curso-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+            
+            <!-- Barra de Ações -->
+            <div class="action-bar">
+                <button class="btn-add" onclick="openModalCurso()">
+                    <i data-lucide="plus-circle"></i> Adicionar Curso
+                </button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Pesquisar curso...">
+                    <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar</button>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <!-- Lista de Cursos -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome do Curso</th>
+                            <th>Área</th>
+                            <th>Duração</th>
+                            <th>Vagas</th>
+                            <th>Inscrições</th>
+                            <th>Estado</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Electricidade Industrial</td>
+                            <td>Engenharia</td>
+                            <td>6 meses</td>
+                            <td>25</td>
+                            <td>18</td>
+                            <td><span class="status active">Ativo</span></td>
+                            <td>
+                                <button class="btn-edit" onclick="openModalEditCurso(1)"><i data-lucide="edit"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(1)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Informática Básica</td>
+                            <td>Tecnologia</td>
+                            <td>3 meses</td>
+                            <td>30</td>
+                            <td>42</td>
+                            <td><span class="status active">Ativo</span></td>
+                            <td>
+                                <button class="btn-edit" onclick="openModalEditCurso(2)"><i data-lucide="edit"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(2)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Mecânica Automóvel</td>
+                            <td>Mecânica</td>
+                            <td>9 meses</td>
+                            <td>20</td>
+                            <td>15</td>
+                            <td><span class="status inactive">Inativo</span></td>
+                            <td>
+                                <button class="btn-edit" onclick="openModalEditCurso(3)"><i data-lucide="edit"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(3)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Gestão de Pequenos Negócios</td>
+                            <td>Administração</td>
+                            <td>4 meses</td>
+                            <td>35</td>
+                            <td>28</td>
+                            <td><span class="status active">Ativo</span></td>
+                            <td>
+                                <button class="btn-edit" onclick="openModalEditCurso(4)"><i data-lucide="edit"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(4)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginação -->
+            <div class="pagination">
+                <button class="btn-pagination"><i data-lucide="chevron-left"></i></button>
+                <button class="btn-pagination active">1</button>
+                <button class="btn-pagination">2</button>
+                <button class="btn-pagination">3</button>
+                <button class="btn-pagination"><i data-lucide="chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Adicionar Curso -->
+    <div id="curso-modal-container" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('curso-modal-container')">&times;</span>
+            <h2>Adicionar Novo Curso</h2>
+            <form id="curso-form">
+                <div class="form-group">
+                    <label for="curso-nome">Nome do Curso</label>
+                    <input type="text" id="curso-nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="curso-area">Área</label>
+                    <select id="curso-area" required>
+                        <option value="">Selecione uma área</option>
+                        <option value="Engenharia">Engenharia</option>
+                        <option value="Tecnologia">Tecnologia</option>
+                        <option value="Mecânica">Mecânica</option>
+                        <option value="Administração">Administração</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="curso-duracao">Duração</label>
+                    <input type="text" id="curso-duracao" placeholder="Ex: 6 meses" required>
+                </div>
+                <div class="form-group">
+                    <label for="curso-vagas">Vagas</label>
+                    <input type="number" id="curso-vagas" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="curso-descricao">Descrição</label>
+                    <textarea id="curso-descricao" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="curso-estado">Estado</label>
+                    <select id="curso-estado" required>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('curso-modal-container')">Cancelar</button>
+                    <button type="submit" class="btn-confirm">Salvar Curso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Editar Curso -->
+    <div id="edit-curso-modal-container" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('edit-curso-modal-container')">&times;</span>
+            <h2>Editar Curso</h2>
+            <form id="edit-curso-form">
+                <input type="hidden" id="edit-curso-id">
+                <div class="form-group">
+                    <label for="edit-curso-nome">Nome do Curso</label>
+                    <input type="text" id="edit-curso-nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-curso-area">Área</label>
+                    <select id="edit-curso-area" required>
+                        <option value="">Selecione uma área</option>
+                        <option value="Engenharia">Engenharia</option>
+                        <option value="Tecnologia">Tecnologia</option>
+                        <option value="Mecânica">Mecânica</option>
+                        <option value="Administração">Administração</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-curso-duracao">Duração</label>
+                    <input type="text" id="edit-curso-duracao" placeholder="Ex: 6 meses" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-curso-vagas">Vagas</label>
+                    <input type="number" id="edit-curso-vagas" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-curso-descricao">Descrição</label>
+                    <textarea id="edit-curso-descricao" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-curso-estado">Estado</label>
+                    <select id="edit-curso-estado" required>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('edit-curso-modal-container')">Cancelar</button>
+                    <button type="submit" class="btn-confirm">Atualizar Curso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Eliminação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
+            <h3>Confirmar ação</h3>
+            <p>Tem certeza que deseja excluir este curso?</p>
+            <p id="curso-delete-name" style="font-weight: bold; margin: 10px 0;"></p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('confirm-modal')">Cancelar</button>
+                <button class="btn-confirm" onclick="deleteCurso()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // Variável para armazenar o ID do curso a ser eliminado
+        let cursoToDelete = null;
+        
+        // Função para abrir modal de adicionar curso
+        function openModalCurso() {
+            document.getElementById('curso-modal-container').style.display = 'block';
+        }
+        
+        // Função para abrir modal de editar curso
+        function openModalEditCurso(id) {
+            // Aqui você buscaria os dados do curso com o ID fornecido
+            // Vou simular dados para demonstração
+            const cursos = {
+                1: {
+                    nome: "Electricidade Industrial",
+                    area: "Engenharia",
+                    duracao: "6 meses",
+                    vagas: 25,
+                    descricao: "Curso de electricidade industrial com foco em instalações elétricas.",
+                    estado: "Ativo"
+                },
+                2: {
+                    nome: "Informática Básica",
+                    area: "Tecnologia",
+                    duracao: "3 meses",
+                    vagas: 30,
+                    descricao: "Curso introdutório de informática para iniciantes.",
+                    estado: "Ativo"
+                },
+                3: {
+                    nome: "Mecânica Automóvel",
+                    area: "Mecânica",
+                    duracao: "9 meses",
+                    vagas: 20,
+                    descricao: "Curso completo de mecânica de automóveis.",
+                    estado: "Inativo"
+                },
+                4: {
+                    nome: "Gestão de Pequenos Negócios",
+                    area: "Administração",
+                    duracao: "4 meses",
+                    vagas: 35,
+                    descricao: "Curso de gestão para pequenos empreendedores.",
+                    estado: "Ativo"
+                }
+            };
+            
+            const curso = cursos[id];
+            
+            if (curso) {
+                document.getElementById('edit-curso-id').value = id;
+                document.getElementById('edit-curso-nome').value = curso.nome;
+                document.getElementById('edit-curso-area').value = curso.area;
+                document.getElementById('edit-curso-duracao').value = curso.duracao;
+                document.getElementById('edit-curso-vagas').value = curso.vagas;
+                document.getElementById('edit-curso-descricao').value = curso.descricao;
+                document.getElementById('edit-curso-estado').value = curso.estado;
+                
+                document.getElementById('edit-curso-modal-container').style.display = 'block';
+            }
+        }
+        
+        // Função para abrir modal de eliminar curso
+        function openDeleteModal(id) {
+            // Aqui você buscaria o nome do curso com o ID fornecido
+            // Vou simular dados para demonstração
+            const cursos = {
+                1: "Electricidade Industrial",
+                2: "Informática Básica",
+                3: "Mecânica Automóvel",
+                4: "Gestão de Pequenos Negócios"
+            };
+            
+            cursoToDelete = id;
+            document.getElementById('curso-delete-name').textContent = cursos[id];
+            document.getElementById('confirm-modal').style.display = 'block';
+        }
+        
+        // Função para eliminar curso
+        function deleteCurso() {
+            if (cursoToDelete) {
+                // Aqui você faria a chamada AJAX para eliminar o curso
+                console.log(`Curso com ID ${cursoToDelete} eliminado`);
+                // Mostrar mensagem de sucesso
+                alert(`Curso "${document.getElementById('curso-delete-name').textContent}" eliminado com sucesso!`);
+                
+                closeModal('confirm-modal');
+                // Recarregar a lista de cursos ou remover a linha da tabela
+            }
+        }
+        
+        // Função genérica para fechar modais
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Fechar modais ao clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Manipulação dos formulários
+        document.getElementById('curso-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Lógica para adicionar novo curso
+            console.log("Novo curso adicionado");
+            alert("Curso adicionado com sucesso!");
+            closeModal('curso-modal-container');
+            // Limpar formulário
+            this.reset();
+        });
+        
+        document.getElementById('edit-curso-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Lógica para atualizar curso
+            const id = document.getElementById('edit-curso-id').value;
+            console.log(`Curso com ID ${id} atualizado`);
+            alert("Curso atualizado com sucesso!");
+            closeModal('edit-curso-modal-container');
+        });
+    </script>
+</body>
+</html>

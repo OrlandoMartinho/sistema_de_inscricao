@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrições - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../css/inscricoes.css">
+    <link rel="stylesheet" href="../../css/usuarios/table.css">
+    <link rel="stylesheet" href="../../css/usuarios/modal-inscricao.css">
+    <link rel="stylesheet" href="../../css/notificacao.css">
+    <link rel="stylesheet" href="../../css/avaliadores/table.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilos adicionais para os modais */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 60%;
+            max-width: 700px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-cancel {
+            background-color: #f1f1f1;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn-confirm {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .document-list {
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .status-select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li class="active"><i data-lucide="file-text"></i> <a href="">Inscrições</a> </li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a> </li> 
+                    <li> <i data-lucide="calendar-days"></i>  <a href="calendarios.html">Calendário</a> </li>
+                    <li><i data-lucide="settings"></i><a href="admin-definicoes.html">Configurações</a>  </li>
+                    <li class="logout"> <i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a> </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1>Inscrições</h1>
+                </div>
+                <div class="container-notification">
+                    <div id="notificacao-modal-container"></div>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+            
+            <!-- Barra de Pesquisa -->
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar">
+                <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar pesquisa</button>
+            </div>
+            
+            <hr>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nome completo</th>
+                            <th>Curso</th>
+                            <th>Requisitos</th>
+                            <th>Data de inscrição</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Fulano da Silva</td>
+                            <td>Electricidade</td>
+                            <td>Certificado, BI, Foto 1, Foto 2</td>
+                            <td>12/12/2022</td>
+                            <td><span class="status pending">Pendente</span></td>
+                            <td><button class="btn-view" onclick="openViewModal(1)">Visualizar</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Sicrano da Silva</td>
+                            <td>Informática</td>
+                            <td>Certificado, BI, Foto 1, Foto 2</td>
+                            <td>12/12/2022</td>
+                            <td><span class="status accepted">Aceite</span></td>
+                            <td><button class="btn-view" onclick="openViewModal(2)">Visualizar</button></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Alberto Moisés</td>
+                            <td>Electricidade</td>
+                            <td>Certificado, BI, Foto 1, Foto 2</td>
+                            <td>12/12/2022</td>
+                            <td><span class="status rejected">Rejeitado</span></td>
+                            <td><button class="btn-view" onclick="openViewModal(3)">Visualizar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Visualização de Inscrição -->
+    <div id="view-inscricao-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('view-inscricao-modal')">&times;</span>
+            <h2>Detalhes da Inscrição</h2>
+            
+            <div class="form-group">
+                <label>Nome Completo:</label>
+                <p id="view-nome">Fulano da Silva</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Curso:</label>
+                <p id="view-curso">Electricidade Industrial</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Data de Inscrição:</label>
+                <p id="view-data">12/12/2022</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Estado:</label>
+                <p id="view-estado"><span class="status pending">Pendente</span></p>
+            </div>
+            
+            <div class="form-group">
+                <label>Documentos:</label>
+                <div class="document-list" id="view-documentos">
+                    <!-- Documentos serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Observações:</label>
+                <textarea id="view-observacoes" rows="3" readonly></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('view-inscricao-modal')">Fechar</button>
+                <button class="btn-confirm" onclick="openEditModal(currentInscricaoId)">Editar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição de Inscrição -->
+    <div id="edit-inscricao-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('edit-inscricao-modal')">&times;</span>
+            <h2>Editar Inscrição</h2>
+            
+            <form id="edit-inscricao-form">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-group">
+                    <label for="edit-nome">Nome Completo:</label>
+                    <input type="text" id="edit-nome" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-curso">Curso:</label>
+                    <input type="text" id="edit-curso" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-data">Data de Inscrição:</label>
+                    <input type="text" id="edit-data" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-estado">Estado:</label>
+                    <select id="edit-estado" class="status-select">
+                        <option value="Pendente">Pendente</option>
+                        <option value="Aceite">Aceite</option>
+                        <option value="Rejeitado">Rejeitado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Documentos:</label>
+                    <div class="document-list" id="edit-documentos">
+                        <!-- Documentos serão inseridos aqui via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-observacoes">Observações:</label>
+                    <textarea id="edit-observacoes" rows="3"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('edit-inscricao-modal')">Cancelar</button>
+                    <button type="submit" class="btn-confirm">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
+            <h3>Confirmar ação</h3>
+            <p id="confirm-message">Tem certeza que deseja atualizar o status desta inscrição?</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('confirm-modal')">Cancelar</button>
+                <button class="btn-confirm" onclick="confirmAction()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // Variáveis globais
+        let currentInscricaoId = null;
+        let currentAction = null;
+        
+        // Dados simulados
+        const inscricoesData = {
+            1: {
+                nome: "Fulano da Silva",
+                curso: "Electricidade Industrial",
+                data: "12/12/2022",
+                estado: "Pendente",
+                documentos: [
+                    { nome: "Certificado de Habilitações", tipo: "PDF", tamanho: "2.4 MB" },
+                    { nome: "Bilhete de Identidade", tipo: "JPG", tamanho: "1.2 MB" },
+                    { nome: "Fotografia Tipo Passe", tipo: "JPG", tamanho: "0.8 MB" }
+                ],
+                observacoes: "Aguardando análise dos documentos."
+            },
+            2: {
+                nome: "Sicrano da Silva",
+                curso: "Informática Básica",
+                data: "12/12/2022",
+                estado: "Aceite",
+                documentos: [
+                    { nome: "Certificado de Habilitações", tipo: "PDF", tamanho: "2.1 MB" },
+                    { nome: "Bilhete de Identidade", tipo: "JPG", tamanho: "1.5 MB" },
+                    { nome: "Fotografia Tipo Passe", tipo: "JPG", tamanho: "0.9 MB" }
+                ],
+                observacoes: "Documentação completa e válida. Inscrição aceite."
+            },
+            3: {
+                nome: "Alberto Moisés",
+                curso: "Electricidade Industrial",
+                data: "12/12/2022",
+                estado: "Rejeitado",
+                documentos: [
+                    { nome: "Certificado de Habilitações", tipo: "PDF", tamanho: "1.8 MB" },
+                    { nome: "Bilhete de Identidade", tipo: "JPG", tamanho: "1.3 MB" }
+                ],
+                observacoes: "Falta fotografia tipo passe. Inscrição rejeitada."
+            }
+        };
+        
+        // Função para abrir modal de visualização
+        function openViewModal(id) {
+            currentInscricaoId = id;
+            const inscricao = inscricoesData[id];
+            
+            if (inscricao) {
+                document.getElementById('view-nome').textContent = inscricao.nome;
+                document.getElementById('view-curso').textContent = inscricao.curso;
+                document.getElementById('view-data').textContent = inscricao.data;
+                
+                // Atualizar estado com a classe CSS correta
+                const estadoElement = document.getElementById('view-estado');
+                estadoElement.innerHTML = `<span class="status ${inscricao.estado.toLowerCase()}">${inscricao.estado}</span>`;
+                
+                // Preencher documentos
+                const documentosContainer = document.getElementById('view-documentos');
+                documentosContainer.innerHTML = '';
+                
+                inscricao.documentos.forEach(doc => {
+                    const docElement = document.createElement('div');
+                    docElement.className = 'document-item';
+                    docElement.innerHTML = `
+                        <span>${doc.nome} (${doc.tipo}, ${doc.tamanho})</span>
+                        <a href="#" class="download-link">Download</a>
+                    `;
+                    documentosContainer.appendChild(docElement);
+                });
+                
+                document.getElementById('view-observacoes').value = inscricao.observacoes;
+                
+                document.getElementById('view-inscricao-modal').style.display = 'block';
+            }
+        }
+        
+        // Função para abrir modal de edição
+        function openEditModal(id) {
+            closeModal('view-inscricao-modal');
+            currentInscricaoId = id;
+            const inscricao = inscricoesData[id];
+            
+            if (inscricao) {
+                document.getElementById('edit-id').value = id;
+                document.getElementById('edit-nome').value = inscricao.nome;
+                document.getElementById('edit-curso').value = inscricao.curso;
+                document.getElementById('edit-data').value = inscricao.data;
+                document.getElementById('edit-estado').value = inscricao.estado;
+                
+                // Preencher documentos
+                const documentosContainer = document.getElementById('edit-documentos');
+                documentosContainer.innerHTML = '';
+                
+                inscricao.documentos.forEach(doc => {
+                    const docElement = document.createElement('div');
+                    docElement.className = 'document-item';
+                    docElement.innerHTML = `
+                        <span>${doc.nome} (${doc.tipo}, ${doc.tamanho})</span>
+                        <a href="#" class="download-link">Download</a>
+                    `;
+                    documentosContainer.appendChild(docElement);
+                });
+                
+                document.getElementById('edit-observacoes').value = inscricao.observacoes;
+                
+                document.getElementById('edit-inscricao-modal').style.display = 'block';
+            }
+        }
+        
+        // Função para fechar modais
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Função para confirmar ação
+        function confirmAction() {
+            if (currentAction === 'save') {
+                // Simular salvamento das alterações
+                const estado = document.getElementById('edit-estado').value;
+                const observacoes = document.getElementById('edit-observacoes').value;
+                
+                // Atualizar dados simulados
+                inscricoesData[currentInscricaoId].estado = estado;
+                inscricoesData[currentInscricaoId].observacoes = observacoes;
+                
+                alert("Inscrição atualizada com sucesso!");
+                closeModal('confirm-modal');
+                closeModal('edit-inscricao-modal');
+                
+                // Aqui você atualizaria a tabela ou recarregaria os dados
+            }
+        }
+        
+        // Event listener para o formulário de edição
+        document.getElementById('edit-inscricao-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Configurar mensagem de confirmação
+            document.getElementById('confirm-message').textContent = 
+                "Tem certeza que deseja atualizar o status desta inscrição?";
+            currentAction = 'save';
+            
+            // Abrir modal de confirmação
+            document.getElementById('confirm-modal').style.display = 'block';
+        });
+        
+        // Fechar modais ao clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

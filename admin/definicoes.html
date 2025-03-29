@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definições - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../css/definicoes.css">
+    <link rel="stylesheet" href="../../css/usuarios/table.css">
+    <link rel="stylesheet" href="../../css/usuarios/modal-inscricao.css">
+    <link rel="stylesheet" href="../../css/notificacao.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li ><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a> </li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a> </li> 
+                    <li > <i data-lucide="calendar-days"></i>  <a href="calendarios.html">Calendário</a> </li>
+                    <li class="active"><i data-lucide="settings"></i><a href="">Configurações</a>  </li>
+                    <li class="logout"> <i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a> </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1>Definições</h1>
+                </div>
+                <div class="container-notification">
+                    <div id="notificacao-modal-container"></div>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+          <!-- Barra de Pesquisa -->
+          <div class="search-bar">
+            <input type="text" placeholder="Pesquisar">
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar pesquisa</button>
+        </div>
+       <hr>
+       <section class="settings-section">
+        <div class="item-section" onclick="openModalInscricao()">
+             <h3>Informações de conta</h3>
+             <p>Altere os dados básicos do usuario</p>
+        </div>
+        <hr>
+        <div class="item-section" onclick="openModalSeguranca()" id="abrir-modal">
+             <h3>Segurança</h3>
+             <p>Opções relacionadas à segurança e acesso da conta</p>
+        </div>
+     </section>
+        </main>
+    </div>
+
+
+  
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

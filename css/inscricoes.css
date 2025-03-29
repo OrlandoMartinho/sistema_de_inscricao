@@ -1,0 +1,243 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html {
+  overflow: hidden;
+}
+
+.notificacao{
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background:  #007bff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinhar os itens no topo */
+  gap: 20px; /* Espaço entre os itens */
+}
+.title-side-bar{
+  font-size: 1rem;
+  margin-top: -2rem;
+}
+
+.sidebar img{
+  width: 100px;
+  display: flex;
+  margin: 0 auto;
+}
+
+.title-header h1{
+  font-size: 1.5rem;
+  
+  margin-top: 1rem;
+
+}
+
+.title-header p{
+  font-size: 1rem;
+  color: #afafaf;
+  margin-top: 1rem;
+}
+
+.sidebar h2 {
+  text-align: center;
+  color: #ffffff;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.3rem;
+}
+
+.sidebar li {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  gap: 10px; /* Espaço entre o ícone e o texto */
+  font-size: 16px;
+}
+
+.sidebar li i {
+  font-size: 20px; /* Ajusta o tamanho do ícone */
+  width: 20px; /* Garante que todos os ícones tenham largura fixa */
+}
+
+.sidebar .active {
+  background: #ffffff;
+  color:  #007bff;
+  border-radius: 5px;
+}
+
+.logout {
+  
+  margin-top: 15rem;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background: white;
+  overflow-y: auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+
+/* Estilos gerais */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+
+h2 {
+  margin: 20px 0;
+}
+
+/* Barra de pesquisa */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.search-bar select,
+.search-bar input,
+.search-bar button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-bar {
+  display: flex;
+  margin: 20px 0;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 76vw;
+}
+
+.filter-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+
+.apply-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.pending {
+  background-color: #f0f0f0;
+  color: #333;
+  width: 100%;
+
+}
+
+.accepted {
+  background-color: #4CAF50;
+  color: white;
+  
+  width: 100%;
+}
+
+.rejected {
+  background-color: #F44336;
+  color: white;
+  width: 100%;
+}
+
+.btn-view {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-view:hover {
+  background-color: #0056b3;
+}

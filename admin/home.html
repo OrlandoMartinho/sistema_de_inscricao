@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/graficos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png "alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li class="active"><i data-lucide="circle-gauge"></i> Análise</li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a> </li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a> </li> 
+                    <li> <i data-lucide="calendar-days"></i>  <a href="calendarios.html">Calendário</a> </li>
+                    <li><i data-lucide="settings"></i><a href="admin-definicoes.html">Configurações</a>  </li>
+                    <li class="logout"> <i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a> </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1>Estatísticas</h1>
+                </div>
+                <div class="container-notification">
+                    <div id="notificacao-modal-container"></div>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+            
+            <div class="search-bar">
+                <select id="yearSelect">
+                    <option value="2023">2023</option>
+                    <option value="2024" selected>2024</option>
+                    <option value="2025">2025</option>
+                </select>
+                
+                <select id="monthSelect">
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+                
+                <input type="text" placeholder="Pesquisar">
+                <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar pesquisa</button>
+            </div>
+            <hr>
+            
+            <section>
+                <div class="dashboard-container">
+                    <div class="chart-box">
+                        <canvas id="inscricoesChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="usuariosChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="totalInscricoesChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="distribuicaoUsuariosChart1"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="distribuicaoUsuariosChart2"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="distribuicaoUsuariosChart3"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/graficos.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
