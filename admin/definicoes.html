@@ -257,42 +257,7 @@
         </div>
     </div>
 
-    <!-- Modal de Backup -->
-    <div id="modal-backup" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Backup e Restauração</h2>
-                <span class="close" onclick="closeModalBackup()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="backup-options">
-                    <h3>Criar Backup</h3>
-                    <p>Gere um arquivo de backup com todos os dados do sistema.</p>
-                    <button class="btn-confirm" onclick="criarBackup()">Criar Backup Agora</button>
-                    
-                    <hr>
-                    
-                    <h3>Restaurar Backup</h3>
-                    <p>Selecione um arquivo de backup para restaurar os dados.</p>
-                    <input type="file" id="arquivo-backup" accept=".backup,.json">
-                    <button class="btn-confirm" onclick="restaurarBackup()">Restaurar Backup</button>
-                    
-                    <div class="backup-info">
-                        <h4>Últimos Backups</h4>
-                        <ul id="lista-backups">
-                            <li>backup_20231115.backup - 15/11/2023 14:30</li>
-                            <li>backup_20231101.backup - 01/11/2023 09:15</li>
-                            <li>backup_20231015.backup - 15/10/2023 16:45</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModalBackup()">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+ 
 
     <!-- Modal de Notificações (Sino) -->
     <div id="modal-notifications" class="modal">
