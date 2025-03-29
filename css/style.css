@@ -411,6 +411,10 @@ footer {
   text-align: center;
 }
 
+tbody{
+  overflow-x: auto;
+}
+
 .modal {
   display: none;
   position: fixed;
