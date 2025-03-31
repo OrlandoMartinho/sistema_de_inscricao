@@ -1,14 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
 
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-}
 
 .notificacao {
   cursor: pointer;
@@ -34,9 +24,7 @@ html, body {
 
 
 
-.logout {
-  margin-top: 2rem;
-}
+
 
 .content {
   flex: 1;
