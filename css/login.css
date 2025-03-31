@@ -9,12 +9,12 @@
   --color-background: #EFF3F9;
   --color-white: #fff;
   --text-color: #263238;
-  --color-secondary: #0065D4;
+  --color-secondary: #3890C0;
+  --color-secondary-dark: #004a9b;
 }
 
 html {
   font-size:55%;
-  
 }
 
 body {
@@ -30,6 +30,12 @@ p {
   width: 100%;
   display: flex;
   flex-direction: column;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .img-login {
@@ -41,11 +47,28 @@ p {
   align-items: center;
   background: var(--color-background);
   order: 2;
+  animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .img-login img {
   width: 100%;
   max-width: 500px;
+  transition: transform 0.3s ease;
+}
+
+.img-login img:hover {
+  transform: scale(1.02);
 }
 
 .img-login p {
@@ -58,6 +81,18 @@ p {
   width: 100%;
   padding: 2rem;
   order: 1;
+  animation: slideRight 0.8s ease-out;
+}
+
+@keyframes slideRight {
+  from { 
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .logo {
@@ -65,12 +100,29 @@ p {
   padding-top: 2rem;
   margin: 0 auto;
   max-width: 150px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .form-content h1 {
   color: var(--color-secondary);
   font-weight: 100;
   font-size: 2.4rem;
+  animation: textPop 0.5s ease-out 0.3s both;
+}
+
+@keyframes textPop {
+  from { 
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to { 
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .form-content {
@@ -80,6 +132,7 @@ p {
 .form-content p {
   margin: 1rem 0;
   font-size: 1.2rem;
+  animation: fadeIn 0.8s ease-out 0.4s both;
 }
 
 .form input {
@@ -91,11 +144,23 @@ p {
   outline: none;
   border: 2px solid var(--color-secondary);
   font-size: 1.6rem;
+  transition: all 0.3s ease;
+}
+
+.form input:focus {
+  border-color: var(--color-secondary-dark);
+  box-shadow: 0 0 0 3px rgba(0, 101, 212, 0.2);
+  transform: scale(1.005);
 }
 
 a {
   color: var(--color-secondary);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-secondary-dark);
 }
 
 .btn-form button {
@@ -108,6 +173,52 @@ a {
   background: var(--color-secondary);
   color: var(--color-white);
   font-size: 1.6rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-form button:hover {
+  background: var(--color-secondary-dark);
+  transform: translateY(-2px);
+}
+
+.btn-form button:active {
+  transform: translateY(1px);
+}
+
+.btn-form button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 101, 212, 0.4);
+}
+
+.btn-form button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.btn-form button:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
 }
 
 .btn-form {
@@ -116,16 +227,33 @@ a {
 
 .cadastrar {
   text-align: center;
-
   font-size: 1.4rem;
- 
- 
+  animation: fadeIn 0.8s ease-out 0.5s both;
 }
 
-.cadastrar a{
+.cadastrar a {
   margin-top: 5vh;
   text-decoration: underline;
-  color: #0065D4;
+  color: #3890C0;
+  position: relative;
+}
+
+.cadastrar a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--color-secondary-dark);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.cadastrar a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 /* Tablet and Desktop Styles */
@@ -139,6 +267,7 @@ a {
     height: 100vh;
     padding: 0 2rem;
     order: 1;
+    animation: slideRight 0.8s ease-out;
   }
   
   .img-login p {
@@ -152,6 +281,18 @@ a {
     flex-direction: column;
     justify-content: center;
     order: 2;
+    animation: slideLeft 0.8s ease-out;
+  }
+  
+  @keyframes slideLeft {
+    from { 
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    to { 
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
   
   .logo {
@@ -176,14 +317,6 @@ a {
   }
 }
 
-@media (min-width: 768px) {
- 
-}
-
-@media screen {
-  
-}
-
 /* Small Mobile Adjustments */
 @media (max-width: 480px) {
   .form-content h1 {
@@ -193,7 +326,8 @@ a {
   .img-login p {
     font-size: 1.2rem;
   }
-  .img-login img{
+  
+  .img-login img {
     display: none;
   }
   
