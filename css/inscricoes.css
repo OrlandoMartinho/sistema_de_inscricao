@@ -20,28 +20,6 @@ html, body {
   min-height: 100vh;
 }
 
-.sidebar {
-  width: 100%;
-  background: #007bff;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 20px;
-  overflow-y: auto;
-  max-height: 60vh;
-}
-
-.title-side-bar {
-  font-size: 1rem;
-  margin-top: -2rem;
-}
-
-.sidebar img {
-  width: 100px;
-  display: flex;
-  margin: 0 auto;
-}
 
 .title-header h1 {
   font-size: 1.5rem;
@@ -54,42 +32,6 @@ html, body {
   margin-top: 1rem;
 }
 
-.sidebar h2 {
-  text-align: center;
-  color: #ffffff;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 1.3rem;
-}
-
-.sidebar li {
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: #ffffff;
-  gap: 10px;
-  font-size: 16px;
-  transition: background-color 0.2s;
-}
-
-.sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.sidebar li i {
-  font-size: 20px;
-  width: 20px;
-}
-
-.sidebar .active {
-  background: #ffffff;
-  color: #007bff;
-  border-radius: 5px;
-}
 
 .logout {
   margin-top: auto;

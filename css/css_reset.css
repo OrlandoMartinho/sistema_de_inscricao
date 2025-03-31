@@ -1,0 +1,17 @@
+a,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: inherit;
+ 
+  
+}
+
+a {
+    all: unset; 
+    display: inline-block;
+    cursor: pointer; 
+    text-decoration: none; 
+    color: inherit; 
+}
