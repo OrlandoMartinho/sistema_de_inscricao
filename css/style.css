@@ -1,4 +1,4 @@
-
+@import url('./css_reset.css');
 :root {
   --primary: #3890C0;
   --secondary: #9fceee;
@@ -7,22 +7,7 @@
   --dark: #2c3e50;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
-body {
-  line-height: 1.6;
-  color: var(--dark);
-
-}
-
-html{
-  overflow-x: hidden;
-}
 
 .container {
   max-width: 1200px;
@@ -59,6 +44,14 @@ nav {
 .logo span {
   color: var(--secondary);
 
+}
+
+.cadastrar{
+  text-align:center
+}
+.cadastrar a{
+  text-decoration: underline;
+  color: #2980b9;
 }
 
 .menu {

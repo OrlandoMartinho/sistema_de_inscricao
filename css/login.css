@@ -116,12 +116,16 @@ a {
 
 .cadastrar {
   text-align: center;
-  margin-top: 2rem;
+
   font-size: 1.4rem;
+ 
+ 
 }
 
-.cadastrar a {
+.cadastrar a{
+  margin-top: 5vh;
   text-decoration: underline;
+  color: #0065D4;
 }
 
 /* Tablet and Desktop Styles */

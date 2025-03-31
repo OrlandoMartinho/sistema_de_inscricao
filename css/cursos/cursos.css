@@ -174,7 +174,7 @@ th {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 5% auto;
   padding: 20px;
   border-radius: 8px;
   width: 90%;
@@ -182,12 +182,7 @@ th {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
+
 
 .btn-cancel, .btn-confirm {
   padding: 8px 16px;
