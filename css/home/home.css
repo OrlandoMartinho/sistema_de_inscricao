@@ -62,45 +62,6 @@
 
 /* Media Queries para telas maiores */
 @media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-  }
-  
-  .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    max-height: none;
-  }
-  
-  .logout {
-    margin-top: 15rem;
-  }
-  
-  header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .search-bar {
-    flex-direction: row;
-    align-items: center;
-    width: auto;
-  }
-  
-  .search-bar input,
-  .search-bar select {
-    width: auto;
-    min-width: 200px;
-  }
-  
-  .filter-btn,
-  .apply-btn {
-    width: auto;
-    padding: 10px 20px;
-  }
   
   .dashboard-container {
     grid-template-columns: repeat(2, 1fr);
@@ -108,10 +69,7 @@
 }
 
 @media (min-width: 1024px) {
-  .sidebar {
-    width: 280px;
-  }
-  
+
   .dashboard-container {
     grid-template-columns: repeat(3, 1fr);
   }

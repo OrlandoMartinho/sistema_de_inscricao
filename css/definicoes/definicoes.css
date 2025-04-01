@@ -33,50 +33,11 @@
 
 /* Media Queries para telas maiores */
 @media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-  }
-  
-  .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    max-height: none;
-  }
-  
-  .logout {
-    margin-top: 15rem;
-  }
-  
-  header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .search-bar {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .search-bar input {
-    width: auto;
-    flex: 1;
-  }
-  
-  .filter-btn,
-  .apply-btn {
-    width: auto;
-    margin-left: 10px;
-  }
+
 }
 
 @media (min-width: 1024px) {
-  .sidebar {
-    width: 280px;
-  }
-  
+
   .item-section {
     padding: 25px;
   }

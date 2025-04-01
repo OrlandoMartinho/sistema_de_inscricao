@@ -1,0 +1,339 @@
+
+@import url('../side_bar.css');
+
+/* Container da Tabela - Responsivo */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    -webkit-overflow-scrolling: touch; /* Suave rolagem em dispositivos móveis */
+}
+
+/* Estilos Base da Tabela */
+table {
+    width: 100%;
+    min-width: 600px; /* Largura mínima para manter a legibilidade */
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+table th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    white-space: nowrap; /* Impede quebra de linha nos cabeçalhos */
+}
+
+table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+/* Linhas Alternadas para Melhor Legibilidade */
+table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+table tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Status na Tabela - Adaptável */
+.status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: capitalize;
+    min-width: 100px; /* Largura mínima para consistência */
+    text-align: center;
+}
+
+.status.pending, .status.não-respondido {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status.responded, .status.respondido {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.archived, .status.arquivado {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* Botões de Ação - Adaptáveis */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap; /* Permite quebra de linha em telas pequenas */
+}
+
+.btn-view, .btn-reply, .btn-delete {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    min-width: 32px; /* Tamanho mínimo para toque */
+}
+
+.btn-view {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-reply {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-view:hover, .btn-reply:hover, .btn-delete:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Ícones nos Botões */
+.btn-view i, .btn-reply i, .btn-delete i {
+    font-size: 16px;
+}
+
+/* MODAIS (mantido igual) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    backdrop-filter: blur(2px);
+}
+/* Status na tabela */
+
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: modalopen 0.3s;
+    position: relative;
+}
+
+@keyframes modalopen {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.modal h2, .modal h3 {
+    color: #343a40;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Formulários nos modais */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group p {
+    margin: 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #007bff;
+}
+
+.message-content {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+textarea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Ações do modal */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-cancel, .btn-confirm {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-confirm {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-confirm:hover {
+    background-color: #218838;
+}
+
+/* RESPONSIVIDADE AVANÇADA */
+@media (max-width: 992px) {
+    table {
+        font-size: 13px;
+    }
+    
+    table th, table td {
+        padding: 10px 12px;
+    }
+    
+    .status {
+        min-width: 80px;
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        border-radius: 0;
+        box-shadow: none;
+        margin-top: 15px;
+    }
+    
+    table {
+        min-width: 100%; /* Ocupa toda a largura disponível */
+    }
+    
+    table th, table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    .action-buttons {
+        gap: 5px;
+    }
+    
+    .btn-view, .btn-reply, .btn-delete {
+        padding: 5px;
+        min-width: 28px;
+    }
+    
+    /* Esconde colunas menos importantes em telas muito pequenas */
+    @media (max-width: 480px) {
+        table td:nth-child(1), /* ID */
+        table th:nth-child(1) {
+            display: none;
+        }
+        
+        .status {
+            min-width: 70px;
+        }
+    }
+}
+
+/* Melhoria para dispositivos móveis - rolagem tátil */
+@media (hover: none) {
+    .table-container {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .btn-view, .btn-reply, .btn-delete {
+        padding: 8px; /* Área de toque maior */
+    }
+}

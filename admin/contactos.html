@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactos - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../css/contatos/contactos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a></li> 
+                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li class="active"><i data-lucide="mail"></i><a href="contactos.html">Contactos</a></li>
+                    <li><i data-lucide="settings"></i><a href="definicoes.html">Configurações</a></li>
+                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html">Sair do sistema</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1><i data-lucide="mail" style="margin-right: 10px;"></i> Mensagens de Contacto</h1>
+                </div>
+                <div class="container-notification">
+                    <div id="notificacao-modal-container"></div>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" data-lucide="bell" class="notificacao" id="notificacao-contacto-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+            
+            <!-- Barra de Ações -->
+            <div class="action-bar">
+                <div class="search-bar">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Pesquisar mensagens...">
+                    <button class="filter-btn"><i data-lucide="filter"></i> Filtrar</button>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <!-- Lista de Contactos -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Remetente</th>
+                            <th>Email</th>
+                            <th>Assunto</th>
+                            <th>Data</th>
+                            <th>Estado</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>João Carlos</td>
+                            <td>joao@email.com</td>
+                            <td>Dúvida sobre inscrição</td>
+                            <td>12/12/2022</td>
+                            <td><span class="status pending">Não respondido</span></td>
+                            <td>
+                                <button class="btn-view" onclick="openViewModal(1)"><i data-lucide="eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(1)"><i data-lucide="reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(1)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Maria Fernandes</td>
+                            <td>maria@email.com</td>
+                            <td>Informação sobre cursos</td>
+                            <td>10/12/2022</td>
+                            <td><span class="status responded">Respondido</span></td>
+                            <td>
+                                <button class="btn-view" onclick="openViewModal(2)"><i data-lucide="eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(2)"><i data-lucide="reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(2)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Pedro Santos</td>
+                            <td>pedro@email.com</td>
+                            <td>Problema com login</td>
+                            <td>05/12/2022</td>
+                            <td><span class="status archived">Arquivado</span></td>
+                            <td>
+                                <button class="btn-view" onclick="openViewModal(3)"><i data-lucide="eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(3)"><i data-lucide="reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(3)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Ana Silva</td>
+                            <td>ana@email.com</td>
+                            <td>Reclamação sobre atendimento</td>
+                            <td>01/12/2022</td>
+                            <td><span class="status responded">Respondido</span></td>
+                            <td>
+                                <button class="btn-view" onclick="openViewModal(4)"><i data-lucide="eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(4)"><i data-lucide="reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(4)"><i data-lucide="trash-2"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+        </main>
+    </div>
+
+    <!-- Modal de Visualização de Mensagem -->
+    <div id="view-contacto-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('view-contacto-modal')">&times;</span>
+            <h2><i data-lucide="mail" style="margin-right: 10px;"></i>Detalhes da Mensagem</h2>
+            
+            <div class="form-group">
+                <label><i data-lucide="user" style="margin-right: 5px;"></i>Remetente:</label>
+                <p id="view-remetente">João Carlos</p>
+            </div>
+            
+            <div class="form-group">
+                <label><i data-lucide="at-sign" style="margin-right: 5px;"></i>Email:</label>
+                <p id="view-email">joao@email.com</p>
+            </div>
+            
+            <div class="form-group">
+                <label><i data-lucide="message-square" style="margin-right: 5px;"></i>Assunto:</label>
+                <p id="view-assunto">Dúvida sobre inscrição</p>
+            </div>
+            
+            <div class="form-group">
+                <label><i data-lucide="calendar" style="margin-right: 5px;"></i>Data:</label>
+                <p id="view-data">12/12/2022</p>
+            </div>
+            
+            <div class="form-group">
+                <label><i data-lucide="alert-circle" style="margin-right: 5px;"></i>Estado:</label>
+                <p id="view-estado"><span class="status pending">Não respondido</span></p>
+            </div>
+            
+            <div class="form-group">
+                <label><i data-lucide="file-text" style="margin-right: 5px;"></i>Mensagem:</label>
+                <div class="message-content" id="view-mensagem">
+                    <!-- Mensagem será inserida aqui via JavaScript -->
+                </div>
+            </div>
+            
+            <div class="form-group" id="view-resposta-container" style="display: none;">
+                <label><i data-lucide="corner-up-left" style="margin-right: 5px;"></i>Resposta:</label>
+                <div class="message-content" id="view-resposta">
+                    <!-- Resposta será inserida aqui via JavaScript -->
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('view-contacto-modal')"><i data-lucide="x"></i> Fechar</button>
+                <button class="btn-confirm" onclick="openReplyModal(currentContactoId)"><i data-lucide="reply"></i> Responder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Resposta -->
+    <div id="reply-contacto-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reply-contacto-modal')">&times;</span>
+            <h2><i data-lucide="reply" style="margin-right: 10px;"></i>Responder Mensagem</h2>
+            
+            <form id="reply-contacto-form">
+                <input type="hidden" id="reply-id">
+                
+                <div class="form-group">
+                    <label><i data-lucide="at-sign" style="margin-right: 5px;"></i>Para:</label>
+                    <p id="reply-email">joao@email.com</p>
+                </div>
+                
+                <div class="form-group">
+                    <label><i data-lucide="message-square" style="margin-right: 5px;"></i>Assunto:</label>
+                    <p id="reply-assunto">RE: Dúvida sobre inscrição</p>
+                </div>
+                
+                <div class="form-group">
+                    <label><i data-lucide="file-text" style="margin-right: 5px;"></i>Mensagem Original:</label>
+                    <div class="message-content" id="reply-mensagem-original">
+                        <!-- Mensagem original será inserida aqui via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reply-resposta"><i data-lucide="edit" style="margin-right: 5px;"></i>Sua Resposta:</label>
+                    <textarea id="reply-resposta" rows="6" placeholder="Escreva sua resposta aqui..."></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('reply-contacto-modal')"><i data-lucide="x"></i> Cancelar</button>
+                    <button type="submit" class="btn-confirm"><i data-lucide="send"></i> Enviar Resposta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Eliminação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
+            <h3><i data-lucide="alert-triangle" style="margin-right: 10px;"></i>Confirmar Eliminação</h3>
+            <p id="delete-message">Tem certeza que deseja eliminar esta mensagem de contacto?</p>
+            <p id="contacto-delete-name" style="font-weight: bold; margin: 10px 0;"></p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('confirm-modal')"><i data-lucide="x"></i> Cancelar</button>
+                <button class="btn-confirm" onclick="deleteContacto()"><i data-lucide="trash-2"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // Variáveis globais
+        let currentContactoId = null;
+        let contactoToDelete = null;
+        
+        // Dados simulados
+        const contactosData = {
+            1: {
+                remetente: "João Carlos",
+                email: "joao@email.com",
+                assunto: "Dúvida sobre inscrição",
+                data: "12/12/2022",
+                estado: "Não respondido",
+                mensagem: "Bom dia, gostaria de saber se ainda estão abertas as inscrições para o curso de Electricidade Industrial e quais os documentos necessários para me inscrever. Aguardo resposta, obrigado.",
+                resposta: ""
+            },
+            2: {
+                remetente: "Maria Fernandes",
+                email: "maria@email.com",
+                assunto: "Informação sobre cursos",
+                data: "10/12/2022",
+                estado: "Respondido",
+                mensagem: "Olá, gostaria de obter mais informações sobre os cursos disponíveis para o próximo semestre, especialmente na área de informática. Quais são os horários disponíveis?",
+                resposta: "Prezada Maria,\n\nAgradecemos o seu contacto. Os cursos de informática para o próximo semestre são: Informática Básica (segundas e quartas, 18h-20h), Programação Web (terças e quintas, 19h-21h) e Redes de Computadores (sábados, 9h-13h).\n\nAs inscrições estarão abertas até dia 20/12.\n\nAtenciosamente,\nEquipa 30 de Setembro"
+            },
+            3: {
+                remetente: "Pedro Santos",
+                email: "pedro@email.com",
+                assunto: "Problema com login",
+                data: "05/12/2022",
+                estado: "Arquivado",
+                mensagem: "Boa tarde, estou com dificuldades para aceder ao sistema de inscrição. Quando tento fazer login, recebo uma mensagem de erro. Já tentei recuperar a senha mas não recebi nenhum email. O que devo fazer?",
+                resposta: "Caro Pedro,\n\nVerificamos o seu problema e parece que o seu email não estava confirmado no sistema. Já regularizamos a situação e você deve receber um email com instruções para criar uma nova senha dentro das próximas horas.\n\nCaso não receba, por favor entre em contacto novamente.\n\nSaudações,\nSuporte Técnico"
+            },
+            4: {
+                remetente: "Ana Silva",
+                email: "ana@email.com",
+                assunto: "Reclamação sobre atendimento",
+                data: "01/12/2022",
+                estado: "Respondido",
+                mensagem: "Bom dia, venho por meio desta mensagem expressar minha insatisfação com o atendimento recebido no dia 30/11. Fui mal atendida pelo funcionário da recepção quando fui entregar meus documentos.",
+                resposta: "Prezada Ana,\n\nLamentamos muito pela experiência desagradável. Já encaminhamos sua reclamação para o setor responsável e tomaremos as providências necessárias para que situações como esta não se repitam.\n\nAgradecemos seu feedback e pedimos desculpas pelo ocorrido.\n\nAtenciosamente,\nCoordenação"
+            }
+        };
+        
+        // Função para abrir modal de visualização
+        function openViewModal(id) {
+            currentContactoId = id;
+            const contacto = contactosData[id];
+            
+            if (contacto) {
+                document.getElementById('view-remetente').textContent = contacto.remetente;
+                document.getElementById('view-email').textContent = contacto.email;
+                document.getElementById('view-assunto').textContent = contacto.assunto;
+                document.getElementById('view-data').textContent = contacto.data;
+                
+                // Atualizar estado com a classe CSS correta
+                const estadoElement = document.getElementById('view-estado');
+                estadoElement.innerHTML = `<span class="status ${contacto.estado.toLowerCase().replace(' ', '-')}">${contacto.estado}</span>`;
+                
+                // Preencher mensagem
+                document.getElementById('view-mensagem').textContent = contacto.mensagem;
+                
+                // Mostrar resposta se existir
+                const respostaContainer = document.getElementById('view-resposta-container');
+                const respostaElement = document.getElementById('view-resposta');
+                
+                if (contacto.resposta) {
+                    respostaContainer.style.display = 'block';
+                    respostaElement.textContent = contacto.resposta;
+                } else {
+                    respostaContainer.style.display = 'none';
+                }
+                
+                document.getElementById('view-contacto-modal').style.display = 'block';
+                lucide.createIcons(); // Atualizar ícones no modal
+            }
+        }
+        
+        // Função para abrir modal de resposta
+        function openReplyModal(id) {
+            closeModal('view-contacto-modal');
+            currentContactoId = id;
+            const contacto = contactosData[id];
+            
+            if (contacto) {
+                document.getElementById('reply-id').value = id;
+                document.getElementById('reply-email').textContent = contacto.email;
+                document.getElementById('reply-assunto').textContent = `RE: ${contacto.assunto}`;
+                document.getElementById('reply-mensagem-original').textContent = contacto.mensagem;
+                document.getElementById('reply-resposta').value = contacto.resposta || '';
+                
+                document.getElementById('reply-contacto-modal').style.display = 'block';
+                lucide.createIcons(); // Atualizar ícones no modal
+            }
+        }
+        
+        // Função para abrir modal de eliminação
+        function openDeleteModal(id) {
+            contactoToDelete = id;
+            const contacto = contactosData[id];
+            document.getElementById('contacto-delete-name').textContent = `${contacto.remetente} - ${contacto.assunto}`;
+            document.getElementById('confirm-modal').style.display = 'block';
+            lucide.createIcons(); // Atualizar ícones no modal
+        }
+        
+        // Função para eliminar contacto
+        function deleteContacto() {
+            if (contactoToDelete) {
+                // Aqui você faria a chamada AJAX para eliminar o contacto
+                console.log(`Contacto com ID ${contactoToDelete} eliminado`);
+                // Mostrar mensagem de sucesso
+                alert(`Mensagem de "${contactosData[contactoToDelete].remetente}" eliminada com sucesso!`);
+                
+                closeModal('confirm-modal');
+                // Recarregar a lista de contactos ou remover a linha da tabela
+            }
+        }
+        
+        // Função genérica para fechar modais
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Fechar modais ao clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Manipulação do formulário de resposta
+        document.getElementById('reply-contacto-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('reply-id').value;
+            const resposta = document.getElementById('reply-resposta').value;
+            
+            // Atualizar dados simulados
+            contactosData[id].resposta = resposta;
+            contactosData[id].estado = "Respondido";
+            
+            alert("Resposta enviada com sucesso!");
+            closeModal('reply-contacto-modal');
+            
+            // Aqui você atualizaria a tabela ou recarregaria os dados
+        });
+    </script>
+</body>
+</html>

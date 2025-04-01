@@ -1,5 +1,4 @@
-@import url('../css_reset.css');
-@import url('../content.css');
+
 @import url('../side_bar.css');
 @import url('./modal-cursos.css');
 table {
@@ -277,58 +276,9 @@ th {
 
 /* Media Queries para responsividade */
 @media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-    height: 100vh;
-  }
   
-  .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    max-height: none;
-  }
-  
-  .content {
-    height: 100vh;
-    overflow-y: auto;
-  }
-  
-  .logout {
-    margin-top: -15rem;
-  }
-  
-  header {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .search-bar {
-    flex-direction: row;
-    width: auto;
-  }
-  
-  .search-bar input {
-    width: 50vw;
-  }
-  
-  .filter-btn,
-  .apply-btn,
-  .btn-publicar,
-  .btn-add {
-    width: auto;
-  }
 
- 
-  
   .action-bar {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -352,10 +302,7 @@ th {
     grid-template-columns: repeat(3, 1fr);
   }
   
-  .search-bar input {
-    width: 60vw;
-  }
-  
+ 
   .card-actions {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
@@ -378,9 +325,4 @@ th {
     background-color: #f1f1f1;
   }
 
-  
-  
-  .sidebar {
-    width: 280px;
-  }
 }
