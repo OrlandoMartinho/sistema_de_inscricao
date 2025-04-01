@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria - Sistema de Inscrição</title>
+    <link rel="stylesheet" href="../css/galeria/galeria.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
+            <h2 class="title-side-bar">30 de Setembro</h2>
+            <nav>
+                <ul>
+                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
+                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a></li> 
+                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li><i data-lucide="mail"></i><a href="contactos.html">Contactos</a></li>
+                    <li class="active"><i data-lucide="image"></i><a href="galeria.html">Galeria</a></li>
+                    <li><i data-lucide="settings"></i><a href="definicoes.html">Configurações</a></li>
+                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html">Sair do sistema</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            <header>
+                <div class="title-header">
+                    <h1> Galeria de Fotos</h1>
+                    <p>Gerencie as fotos do instituto</p>
+                </div>
+                <div class="user-info">
+                    <i onclick="openModalNotifications()" data-lucide="bell" class="notificacao" id="notificacao-galeria-abrirModal"></i>
+                    <i data-lucide="user"></i>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
+                </div>
+            </header>
+            
+            <!-- Barra de Ações -->
+            <div class="action-bar">
+                <button class="btn-add" onclick="openModalUpload()">
+                    <i data-lucide="upload"></i> Adicionar Fotos
+                </button>
+                <div class="search-bar">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Pesquisar fotos...">
+                </div>
+            </div>
+            
+            <hr>
+            
+            <!-- Galeria de Fotos -->
+            <div class="gallery-container" id="gallery">
+                <div class="gallery-item">
+                    <img src="../assets/gallery/evento1.jpg" alt="Evento Institucional">
+                    <div class="gallery-actions">
+                        <button class="btn-view" onclick="viewImage(this)"><i data-lucide="eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(1)"><i data-lucide="trash-2"></i></button>
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-title">Evento de Abertura</span>
+                        <span class="gallery-date">15/03/2023</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="../assets/gallery/curso1.jpg" alt="Aula Prática">
+                    <div class="gallery-actions">
+                        <button class="btn-view" onclick="viewImage(this)"><i data-lucide="eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(2)"><i data-lucide="trash-2"></i></button>
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-title">Aula de Electricidade</span>
+                        <span class="gallery-date">22/04/2023</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="../assets/gallery/formatura.jpg" alt="Formatura">
+                    <div class="gallery-actions">
+                        <button class="btn-view" onclick="viewImage(this)"><i data-lucide="eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(3)"><i data-lucide="trash-2"></i></button>
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-title">Formatura 2023</span>
+                        <span class="gallery-date">10/12/2023</span>
+                    </div>
+                </div>
+                
+                <!-- Mais itens da galeria -->
+            </div>
+            
+         
+        </main>
+    </div>
+
+    <!-- Modal de Upload -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('upload-modal')">&times;</span>
+            <h2><i data-lucide="upload" style="margin-right: 10px;"></i>Adicionar Fotos</h2>
+            
+            <form id="upload-form">
+                <div class="form-group">
+                    <label><i data-lucide="image" style="margin-right: 5px;"></i>Selecione as fotos</label>
+                    <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                    <div class="upload-area" id="upload-area">
+                        <i data-lucide="upload-cloud" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <p>Arraste e solte as fotos aqui ou clique para selecionar</p>
+                        <button type="button" class="btn-select" onclick="document.getElementById('file-input').click()">
+                            <i data-lucide="folder"></i> Selecionar Fotos
+                        </button>
+                    </div>
+                    <div id="file-list" class="file-list"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="photo-title"><i data-lucide="type" style="margin-right: 5px;"></i>Título</label>
+                    <input type="text" id="photo-title" placeholder="Título para as fotos">
+                </div>
+                
+                <div class="form-group">
+                    <label for="photo-date"><i data-lucide="calendar" style="margin-right: 5px;"></i>Data</label>
+                    <input type="date" id="photo-date">
+                </div>
+                
+                <div class="form-group">
+                    <label for="photo-description"><i data-lucide="align-left" style="margin-right: 5px;"></i>Descrição</label>
+                    <textarea id="photo-description" rows="3" placeholder="Descrição opcional"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal('upload-modal')"><i data-lucide="x"></i> Cancelar</button>
+                    <button type="submit" class="btn-confirm"><i data-lucide="upload"></i> Enviar Fotos</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Eliminação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
+            <h3><i data-lucide="alert-triangle" style="margin-right: 10px;"></i>Confirmar Eliminação</h3>
+            <p>Tem certeza que deseja eliminar esta foto?</p>
+            <p id="photo-delete-name" style="font-weight: bold; margin: 10px 0;"></p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('confirm-modal')"><i data-lucide="x"></i> Cancelar</button>
+                <button class="btn-confirm" onclick="deletePhoto()"><i data-lucide="trash-2"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizador de Imagens -->
+    <div id="image-viewer" style="display: none;">
+        <img id="viewed-image" src="" alt="">
+        <div class="viewer-actions">
+            <button onclick="closeImageViewer()"><i data-lucide="x"></i></button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
+    <script>
+        // Inicializar ícones Lucide
+        lucide.createIcons();
+        
+        // Variáveis globais
+        let photoToDelete = null;
+        let viewer = null;
+        
+        // Inicializar o visualizador de imagens
+        function initGalleryViewer() {
+            const gallery = document.getElementById('gallery');
+            viewer = new Viewer(gallery, {
+                navbar: false,
+                title: false,
+                toolbar: {
+                    zoomIn: true,
+                    zoomOut: true,
+                    oneToOne: true,
+                    reset: true,
+                    prev: true,
+                    play: false,
+                    next: true,
+                    rotateLeft: true,
+                    rotateRight: true,
+                    flipHorizontal: true,
+                    flipVertical: true,
+                },
+            });
+        }
+        
+        // Função para visualizar imagem individual
+        function viewImage(element) {
+            const imgSrc = element.closest('.gallery-item').querySelector('img').src;
+            const imgTitle = element.closest('.gallery-item').querySelector('.gallery-title').textContent;
+            
+            document.getElementById('viewed-image').src = imgSrc;
+            document.getElementById('viewed-image').alt = imgTitle;
+            document.getElementById('image-viewer').style.display = 'flex';
+        }
+        
+        // Fechar visualizador de imagem
+        function closeImageViewer() {
+            document.getElementById('image-viewer').style.display = 'none';
+        }
+        
+        // Abrir modal de upload
+        function openModalUpload() {
+            document.getElementById('upload-modal').style.display = 'block';
+        }
+        
+        // Abrir modal de eliminação
+        function openDeleteModal(id, title) {
+            photoToDelete = id;
+            document.getElementById('photo-delete-name').textContent = title || "Foto selecionada";
+            document.getElementById('confirm-modal').style.display = 'block';
+        }
+        
+        // Eliminar foto
+        function deletePhoto() {
+            if (photoToDelete) {
+                // Aqui você faria a chamada AJAX para eliminar a foto
+                console.log(`Foto com ID ${photoToDelete} eliminada`);
+                alert("Foto eliminada com sucesso!");
+                closeModal('confirm-modal');
+                // Recarregar a galeria ou remover o item
+            }
+        }
+        
+        // Fechar modais
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Manipulação do upload de arquivos
+        document.getElementById('upload-area').addEventListener('click', function() {
+            document.getElementById('file-input').click();
+        });
+        
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = '';
+            
+            if (this.files.length > 0) {
+                for (let i = 0; i < this.files.length; i++) {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <i data-lucide="image"></i>
+                        <span>${this.files[i].name}</span>
+                        <span>${(this.files[i].size / 1024).toFixed(2)} KB</span>
+                    `;
+                    fileList.appendChild(fileItem);
+                }
+                lucide.createIcons();
+            }
+        });
+        
+        // Drag and drop
+        const uploadArea = document.getElementById('upload-area');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const fileInput = document.getElementById('file-input');
+            fileInput.files = e.dataTransfer.files;
+            
+            // Dispara o evento change manualmente
+            const event = new Event('change');
+            fileInput.dispatchEvent(event);
+        });
+        
+        // Envio do formulário
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('photo-title').value;
+            const date = document.getElementById('photo-date').value;
+            const description = document.getElementById('photo-description').value;
+            const files = document.getElementById('file-input').files;
+            
+            if (files.length === 0) {
+                alert("Por favor, selecione pelo menos uma foto!");
+                return;
+            }
+            
+            // Aqui você faria o upload das fotos via AJAX
+            console.log("Enviando fotos:", {
+                title,
+                date,
+                description,
+                files: files.length
+            });
+            
+            alert("Fotos enviadas com sucesso!");
+            closeModal('upload-modal');
+            this.reset();
+            document.getElementById('file-list').innerHTML = '';
+        });
+        
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            initGalleryViewer();
+        });
+    </script>
+</body>
+</html>
