@@ -2,118 +2,196 @@
     let currentInscricaoId = null;
     const { jsPDF } = window.jspdf;
 
-    // Função para mostrar opções de exportação
-    function showExportOptions() {
-        // Cria o modal de opções
-        const modalHTML = `
-        <div id="export-options-modal" class="modal" style="display: block;justify-content: center;
-    align-items: center;">
-            <div class="modal-content" style="max-width: 400px;">
-                <span class="close" onclick="closeModal('export-options-modal')">&times;</span>
-                <h3>Exportar para PDF</h3>
-                <p>Deseja exportar todos os registros ou apenas os filtrados?</p>
-                
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button onclick="exportToPDF(true)" style="padding: 10px; background: #16a085; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                        <i class="fas fa-database"></i> Todos
-                    </button>
-                    <button onclick="exportToPDF(false)" style="padding: 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                        <i class="fas fa-filter"></i> Filtrados
-                    </button>
-                    <button onclick="closeModal('export-options-modal')" style="padding: 10px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                        <i class="fas fa-times"></i> Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>`;
-        
-        // Adiciona ao body
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-    }
+   
 
-    // Função modificada para exportar para PDF
-    function exportToPDF(exportAll = true) {
-        // Fecha o modal se estiver aberto
-        const exportModal = document.getElementById('export-options-modal');
-        if (exportModal) exportModal.remove();
-        
-        const doc = new jsPDF();
-        const table = document.getElementById('inscricoes-table');
-        const title = "Relatório de Inscrições";
-        const date = new Date().toLocaleDateString();
-        
-        // Adiciona título e data
-        doc.setFontSize(18);
-        doc.text(title, 14, 15);
-        doc.setFontSize(11);
-        doc.text(`Data: ${date}`, 14, 22);
-        doc.text(`Tipo: ${exportAll ? 'Todos registros' : 'Registros filtrados'}`, 14, 29);
-        
-        // Extrai dados da tabela
-        const data = [];
-        const headers = [];
-        
-        // Pega cabeçalhos (ignorando as duas últimas colunas de ações)
-        table.querySelectorAll('thead th').forEach((th, index) => {
-            if (index < table.querySelectorAll('thead th').length - 2) {
-                headers.push(th.textContent);
-            }
-        });
-        
-        // Pega linhas de dados (todos ou apenas os filtrados)
-        const rows = exportAll 
-            ? table.querySelectorAll('tbody tr') 
-            : table.querySelectorAll('tbody tr:not([style*="display: none"])');
-        
-        // Verifica se há dados para exportar
-        if (rows.length === 0) {
-            alert(exportAll ? 'Não há registros para exportar.' : 'Não há registros visíveis após o filtro.');
-            return;
-        }
-        
-        // Processa as linhas
-        rows.forEach(tr => {
-            const row = [];
-            tr.querySelectorAll('td').forEach((td, index) => {
-                if (index < tr.querySelectorAll('td').length - 2) {
-                    // Remove HTML dos status
-                    const text = index === 5 ? td.textContent.trim() : td.textContent;
-                    row.push(text);
-                }
-            });
-            data.push(row);
-        });
-        
-        // Adiciona tabela ao PDF
-        doc.autoTable({
-            head: [headers],
-            body: data,
-            startY: 40,
-            styles: {
-                fontSize: 8,
-                cellPadding: 2
-            },
-            headStyles: {
-                fillColor: [22, 160, 133],
-                textColor: 255,
-                fontStyle: 'bold'
-            },
-            didDrawPage: function(data) {
-                // Adiciona número da página
-                doc.setFontSize(10);
-                doc.text(`Página ${doc.internal.getNumberOfPages()}`, 
-                    data.settings.margin.left, 
-                    doc.internal.pageSize.height - 10);
-            }
-        });
-        
-        // Salva o PDF
-        const exportType = exportAll ? 'completo' : 'filtrado';
-        doc.save(`inscricoes_${exportType}_${new Date().toISOString().slice(0,10)}.pdf`);
-    }
 
-    // Modifica o evento do botão Exportar PDF para mostrar as opções
-    document.querySelector('.export-btn').addEventListener('click', showExportOptions);
+   // Função para abrir o modal de exportação
+function openExportModal() {
+  document.getElementById('export-pdf-modal').style.display = 'block';
+}
+
+function exportToPDF(type) {
+  try {
+      // Verifica se jsPDF está disponível
+      if (!window.jspdf) {
+          throw new Error("A biblioteca jsPDF não foi carregada corretamente");
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4"
+      });
+
+      // Fechar o modal
+      closeModal('export-pdf-modal');
+
+      // Obter os dados da tabela
+      const headers = [];
+      const tableData = [];
+      
+      // Obter cabeçalhos (ignorando colunas de ação e decisão)
+      document.querySelectorAll('#inscricoes-table thead th').forEach((th, index) => {
+          if (index < 6) { // Pega apenas as primeiras 6 colunas
+              headers.push({
+                  title: th.textContent.trim(),
+                  dataKey: index.toString()
+              });
+          }
+      });
+
+      // Obter dados conforme o tipo selecionado
+      const rows = type === 'all' 
+          ? document.querySelectorAll('#inscricoes-table tbody tr') 
+          : getFilteredRows();
+
+      // Processar as linhas
+      rows.forEach(row => {
+          const rowData = {};
+          const cells = row.querySelectorAll('td');
+          
+          cells.forEach((cell, index) => {
+              if (index < 6) { // Pega apenas as primeiras 6 colunas
+                  const value = index === 5 
+                      ? cell.querySelector('span').textContent.trim()
+                      : cell.textContent.trim();
+                  rowData[index.toString()] = value;
+              }
+          });
+          
+          tableData.push(rowData);
+      });
+
+      // Configurações de página
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 15;
+
+      // Adicionar logo (com fallback caso a imagem não carregue)
+      try {
+          const logoUrl = '../assets/logo-branco.png';
+          const logoWidth = 40;
+          const logoHeight = 20;
+          const logoX = (pageWidth - logoWidth) / 2;
+          
+          doc.addImage(logoUrl, 'PNG', logoX, 10, logoWidth, logoHeight);
+      } catch (e) {
+          console.warn("Não foi possível carregar a logo:", e);
+      }
+
+      // Título centralizado
+      doc.setFontSize(16);
+      doc.setTextColor(40, 40, 40);
+      doc.text('Relatório de Inscrições', pageWidth / 2, 30, { align: 'center' });
+
+      // Informações do relatório
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      
+      const infoLines = [
+          `Tipo: ${type === 'all' ? 'Todos os registros' : 'Dados filtrados'}`,
+          `Data de exportação: ${new Date().toLocaleDateString('pt-PT')}`,
+          `Total de registros: ${tableData.length}`
+      ];
+      
+      infoLines.forEach((line, i) => {
+          doc.text(line, pageWidth / 2, 40 + (i * 5), { align: 'center' });
+      });
+
+      // Configurações da tabela
+      const tableConfig = {
+          startY: 55,
+          margin: { left: margin, right: margin },
+          head: [headers.map(h => h.title)],
+          body: tableData.map(row => headers.map(h => row[h.dataKey])),
+          theme: 'grid',
+          headStyles: {
+              fillColor: [41, 128, 185],
+              textColor: 255,
+              fontStyle: 'bold',
+              halign: 'center'
+          },
+          bodyStyles: {
+              halign: 'left',
+              valign: 'middle'
+          },
+          alternateRowStyles: {
+              fillColor: [240, 240, 240]
+          },
+          styles: {
+              fontSize: 9,
+              cellPadding: 3,
+              overflow: 'linebreak',
+              textColor: [40, 40, 40]
+          },
+          columnStyles: {
+              0: { cellWidth: 15, halign: 'center' }, // ID
+              1: { cellWidth: 30, halign: 'left' },   // Nome
+              2: { cellWidth: 25, halign: 'left' },    // Curso
+              3: { cellWidth: 40, halign: 'left' },    // Requisitos
+              4: { cellWidth: 20, halign: 'center' },  // Data
+              5: { cellWidth: 15, halign: 'center' }   // Status
+          }
+      };
+
+      // Gerar a tabela principal
+      doc.autoTable(tableConfig);
+
+      // Adicionar área de assinatura
+      const finalY = doc.lastAutoTable.finalY + 15;
+      doc.setFontSize(12);
+      doc.text('Assinatura do Responsável:', pageWidth / 2, finalY, { align: 'center' });
+      
+      // Linha para assinatura
+      doc.setDrawColor(150, 150, 150);
+      const lineLength = 60;
+      doc.line((pageWidth - lineLength) / 2, finalY + 5, (pageWidth + lineLength) / 2, finalY + 5);
+
+      // Rodapé
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text('Instituto 30 de Setembro - Sistema de Gestão de Inscrições', pageWidth / 2, doc.internal.pageSize.height - 15, { align: 'center' });
+      doc.text(`Gerado em: ${new Date().toLocaleString('pt-PT')}`, pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
+
+      // Salvar o PDF
+      doc.save(`Inscricoes_${type === 'all' ? 'completas' : 'filtradas'}_${new Date().toLocaleDateString('pt-PT').replace(/\//g, '-')}.pdf`);
+
+  } catch (error) {
+      console.error("Erro ao gerar PDF:", error);
+      alert("Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.");
+  }
+}
+
+// Função auxiliar para obter linhas filtradas
+function getFilteredRows() {
+  const searchTerm = document.getElementById('search-input').value.toLowerCase();
+  const statusFilter = document.getElementById('status-filter').value;
+  const dateFilter = document.getElementById('date-filter').value;
+  
+  let rows = document.querySelectorAll('#inscricoes-table tbody tr');
+  let filteredRows = [];
+  
+  rows.forEach(row => {
+      const nome = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+      const curso = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      const status = row.querySelector('td:nth-child(6) span').textContent;
+      const dataInscricao = row.getAttribute('data-inscricao');
+      
+      let matchesSearch = searchTerm === '' || 
+                        nome.includes(searchTerm) || 
+                        curso.includes(searchTerm);
+      
+      let matchesStatus = statusFilter === '' || status === statusFilter;
+      
+      let matchesDate = dateFilter === '' || dataInscricao === dateFilter;
+      
+      if (matchesSearch && matchesStatus && matchesDate) {
+          filteredRows.push(row);
+      }
+  });
+  
+  return filteredRows;
+}
 
     // Funções para abrir/fechar modais (mantidas)
     function openViewModal(id) {
@@ -148,15 +226,20 @@
     }
 
     function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = 'none';
-            // Remove o modal de exportação se existir
-            if (modalId === 'export-options-modal') {
-                modal.remove();
-            }
-        }
-    }
+      const modal = document.getElementById(modalId);
+      if (modal && modal.style.display !== 'none') {
+          modal.style.display = 'none';
+  
+          if (modalId === 'export-options-modal') {
+              setTimeout(() => {
+                  if (document.getElementById(modalId)) {
+                      document.getElementById(modalId).remove();
+                  }
+              }, 100); // Pequeno delay para evitar remoções múltiplas
+          }
+      }
+  }
+  
 
     // Funções para aprovar/rejeitar inscrições
     function approveInscricao(id) {

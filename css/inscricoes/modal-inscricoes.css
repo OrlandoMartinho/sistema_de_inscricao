@@ -18,6 +18,44 @@
     align-items: center;
 }
 
+/* Estilos para o modal de exportação */
+.export-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.btn-export-all, .btn-export-filtered {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-export-all {
+    background-color: #4a6fa5;
+    color: white;
+}
+
+.btn-export-filtered {
+    background-color: #5cb85c;
+    color: white;
+}
+
+.btn-export-all:hover {
+    background-color: #3a5a8a;
+}
+
+.btn-export-filtered:hover {
+    background-color: #4cae4c;
+}
 .modal-content {
     background-color: #fff;
     border-radius: 8px;

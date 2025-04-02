@@ -6,7 +6,7 @@
     <title>Inscrições - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/inscricoes/inscricoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Adicionando biblioteca jsPDF para exportar PDF -->
+   <!-- Na seção head ou antes do fechamento do body -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
@@ -57,7 +57,7 @@
                 </select>
                 <input type="date" id="date-filter">
                 <button class="filter-btn" onclick="applyFilters()"><i class="fa-solid fa-filter"></i> Filtrar</button>
-                <button class="export-btn" onclick="showExportOptions()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+                <button class="export-btn" onclick="openExportModal()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
             </div>
             
             <hr>
@@ -187,16 +187,29 @@
         </div>
     </div>
 
-    <!-- Modal de Edição de Inscrição (mantido igual) -->
-    <div id="edit-inscricao-modal" class="modal">
-        <!-- ... conteúdo mantido igual ... -->
+    
+<!-- Modal de Exportação PDF -->
+<div id="export-pdf-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('export-pdf-modal')">&times;</span>
+        <h2>Exportar para PDF</h2>
+        
+        <p>Selecione o que deseja exportar:</p>
+        
+        <div class="export-options">
+            <button class="btn-export-all" onclick="exportToPDF('all')">
+                <i class="fas fa-database"></i> Exportar todos os dados
+            </button>
+            <button class="btn-export-filtered" onclick="exportToPDF('filtered')">
+                <i class="fas fa-filter"></i> Exportar dados filtrados
+            </button>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('export-pdf-modal')">Cancelar</button>
+        </div>
     </div>
-
-    <!-- Modal de Confirmação (mantido igual) -->
-    <div id="confirm-modal" class="modal">
-        <!-- ... conteúdo mantido igual ... -->
-    </div>
-
+</div>
 
 </body>
 <script src="../js/inscricoes/inscricoes.js"></script>
