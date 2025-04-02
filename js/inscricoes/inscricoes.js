@@ -9,7 +9,6 @@
 function openExportModal() {
   document.getElementById('export-pdf-modal').style.display = 'block';
 }
-
 function exportToPDF(type) {
   try {
       // Verifica se jsPDF está disponível
@@ -34,10 +33,7 @@ function exportToPDF(type) {
       // Obter cabeçalhos (ignorando colunas de ação e decisão)
       document.querySelectorAll('#inscricoes-table thead th').forEach((th, index) => {
           if (index < 6) { // Pega apenas as primeiras 6 colunas
-              headers.push({
-                  title: th.textContent.trim(),
-                  dataKey: index.toString()
-              });
+              headers.push(th.textContent.trim());
           }
       });
 
@@ -48,15 +44,15 @@ function exportToPDF(type) {
 
       // Processar as linhas
       rows.forEach(row => {
-          const rowData = {};
+          const rowData = [];
           const cells = row.querySelectorAll('td');
           
           cells.forEach((cell, index) => {
               if (index < 6) { // Pega apenas as primeiras 6 colunas
-                  const value = index === 5 
+                  rowData.push(index === 5 
                       ? cell.querySelector('span').textContent.trim()
-                      : cell.textContent.trim();
-                  rowData[index.toString()] = value;
+                      : cell.textContent.trim()
+                  );
               }
           });
           
@@ -66,12 +62,13 @@ function exportToPDF(type) {
       // Configurações de página
       const pageWidth = doc.internal.pageSize.getWidth();
       const margin = 15;
+      const marginTop = 20;// Margem lateral reduzida
 
       // Adicionar logo (com fallback caso a imagem não carregue)
       try {
-          const logoUrl = '../assets/logo-branco.png';
+          const logoUrl = '../assets/logo.png';
           const logoWidth = 40;
-          const logoHeight = 20;
+          const logoHeight = 40;
           const logoX = (pageWidth - logoWidth) / 2;
           
           doc.addImage(logoUrl, 'PNG', logoX, 10, logoWidth, logoHeight);
@@ -82,7 +79,7 @@ function exportToPDF(type) {
       // Título centralizado
       doc.setFontSize(16);
       doc.setTextColor(40, 40, 40);
-      doc.text('Relatório de Inscrições', pageWidth / 2, 30, { align: 'center' });
+      doc.text('Relatório de Inscrições', pageWidth / 2, 60, { align: 'center' });
 
       // Informações do relatório
       doc.setFontSize(10);
@@ -95,46 +92,61 @@ function exportToPDF(type) {
       ];
       
       infoLines.forEach((line, i) => {
-          doc.text(line, pageWidth / 2, 40 + (i * 5), { align: 'center' });
-      });
+        doc.text(line, margin, 70 + (i * 5)); // Alinha à esquerda na margem
+    });
 
-      // Configurações da tabela
+      // Configurações da tabela - AGORA OCUPANDO LARGURA TOTAL
       const tableConfig = {
-          startY: 55,
-          margin: { left: margin, right: margin },
-          head: [headers.map(h => h.title)],
-          body: tableData.map(row => headers.map(h => row[h.dataKey])),
+          startY:100,
+          margin: { left: margin,top:marginTop ,right: margin }, // Margens laterais iguais
+          head: [headers],
+          body: tableData,
           theme: 'grid',
+          tableWidth: 'auto', // Ocupa toda largura disponível
           headStyles: {
               fillColor: [41, 128, 185],
               textColor: 255,
               fontStyle: 'bold',
-              halign: 'center'
+              halign: 'center',
+              cellPadding: 4
           },
           bodyStyles: {
               halign: 'left',
-              valign: 'middle'
+              valign: 'middle',
+              cellPadding: 3
           },
           alternateRowStyles: {
               fillColor: [240, 240, 240]
           },
           styles: {
               fontSize: 9,
-              cellPadding: 3,
               overflow: 'linebreak',
-              textColor: [40, 40, 40]
+              textColor: [40, 40, 40],
+              cellWidth: 'wrap' // Ajusta automaticamente
           },
           columnStyles: {
-              0: { cellWidth: 15, halign: 'center' }, // ID
-              1: { cellWidth: 30, halign: 'left' },   // Nome
-              2: { cellWidth: 25, halign: 'left' },    // Curso
-              3: { cellWidth: 40, halign: 'left' },    // Requisitos
-              4: { cellWidth: 20, halign: 'center' },  // Data
-              5: { cellWidth: 15, halign: 'center' }   // Status
+              0: { cellWidth: 'auto', halign: 'center' }, // ID
+              1: { cellWidth: 'auto', halign: 'left' },   // Nome
+              2: { cellWidth: 'auto', halign: 'left' },  // Curso
+              3: { cellWidth: 'auto', halign: 'left' },   // Requisitos
+              4: { cellWidth: 'auto', halign: 'center' }, // Data
+              5: { cellWidth: 'auto', halign: 'center' }  // Status
+          },
+          didDrawPage: function(data) {
+              // Adiciona número da página
+              const pageCount = doc.internal.getNumberOfPages();
+              doc.setFontSize(8);
+              doc.setTextColor(100);
+              doc.text(
+                  `Página ${data.pageNumber} de ${pageCount}`,
+                  pageWidth / 2,
+                  doc.internal.pageSize.height - 5,
+                  { align: 'center' }
+              );
           }
       };
 
-      // Gerar a tabela principal
+      // Gerar a tabela principal (centralizada e ocupando largura total)
       doc.autoTable(tableConfig);
 
       // Adicionar área de assinatura
@@ -150,8 +162,10 @@ function exportToPDF(type) {
       // Rodapé
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
-      doc.text('Instituto 30 de Setembro - Sistema de Gestão de Inscrições', pageWidth / 2, doc.internal.pageSize.height - 15, { align: 'center' });
-      doc.text(`Gerado em: ${new Date().toLocaleString('pt-PT')}`, pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
+      doc.text('Instituto 30 de Setembro - Sistema de Gestão de Inscrições', 
+              pageWidth / 2, doc.internal.pageSize.height - 15, { align: 'center' });
+      doc.text(`Gerado em: ${new Date().toLocaleString('pt-PT')}`, 
+              pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
 
       // Salvar o PDF
       doc.save(`Inscricoes_${type === 'all' ? 'completas' : 'filtradas'}_${new Date().toLocaleDateString('pt-PT').replace(/\//g, '-')}.pdf`);
@@ -161,7 +175,6 @@ function exportToPDF(type) {
       alert("Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.");
   }
 }
-
 // Função auxiliar para obter linhas filtradas
 function getFilteredRows() {
   const searchTerm = document.getElementById('search-input').value.toLowerCase();
