@@ -1,0 +1,132 @@
+/* Container da tabela */
+.table-container {
+  width: 100%;
+  margin: 20px 0;
+  background: white;
+ 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+/* Estilos da tabela */
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+/* Cabeçalho da tabela */
+.table-container thead {
+  background-color: #459FCF;
+  color: white;
+}
+
+.table-container th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Corpo da tabela */
+.table-container tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.table-container tbody tr:hover {
+  background-color: #f5f9fc;
+}
+
+.table-container td {
+  padding: 12px 15px;
+  color: #555;
+  vertical-align: middle;
+}
+
+/* Status */
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  min-width: 80px;
+}
+
+.status.pending {
+  background-color: #FFF3CD;
+  color: #856404;
+}
+
+.status.accepted {
+  background-color: #D4EDDA;
+  color: #155724;
+}
+
+.status.rejected {
+  background-color: #F8D7DA;
+  color: #721C24;
+}
+
+/* Botão de visualização */
+.btn-view {
+  background-color: #459FCF;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-view:hover {
+  background-color: #2c7cab;
+  transform: translateY(-1px);
+}
+
+.btn-view:active {
+  transform: translateY(0);
+}
+
+/* Barra de rolagem personalizada */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+  
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #459FCF;
+  border-radius: 4px;
+}
+
+
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #56abd8;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .table-container {
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-view {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}

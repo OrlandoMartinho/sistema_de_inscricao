@@ -178,6 +178,69 @@
     background: rgba(255, 255, 255, 0.3);
 }
 
+/* Estilos para o botão Adicionar Fotos */
+.btn-add {
+    background-color: #459FCF; /* Verde - pode ajustar para a cor do seu tema */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-add i {
+    font-size: 16px;
+}
+
+/* Efeito hover */
+.btn-add:hover {
+    background-color: #78c7f1; /* Verde mais escuro */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+/* Efeito quando clicado */
+.btn-add:active {
+    background-color: #3d8b40;
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+/* Foco para acessibilidade */
+.btn-add:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4);
+}
+
+/* Versão alternativa se quiser um estilo diferente */
+/*
+.btn-add {
+    background-color: #2196F3;
+    color: white;
+    border: 2px solid #2196F3;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-add:hover {
+    background-color: #0b7dda;
+    border-color: #0b7dda;
+}
+*/
+
 /* Responsividade */
 @media (max-width: 768px) {
     .gallery-container {

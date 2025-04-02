@@ -42,7 +42,7 @@ body {
 
 .sidebar {
     width: 100%;
-    background: #007bff;
+    background: #459FCF;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -90,13 +90,13 @@ body {
   
   .sidebar .active {
     background: #ffffff;
-    color: #007bff;
+    color: #459FCF;
     border-radius: 5px;
   }
   
   .sidebar .active:hover {
     background: #ffffff;
-    color: #007bff;
+    color: #459FCF;
     border-radius: 5px;
   }
   
@@ -196,7 +196,7 @@ body {
   }
   
   .filter-btn {
-    background: #007bff;
+    background: #459FCF;
     color: white;
     border: none;
     padding: 10px;
@@ -206,7 +206,7 @@ body {
   }
   
   .apply-btn {
-    background: #007bff;
+    background: #459FCF;
     color: white;
     border: none;
     padding: 10px;

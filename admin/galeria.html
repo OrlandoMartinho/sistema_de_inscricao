@@ -36,8 +36,8 @@
                     <p>Gerencie as fotos do instituto</p>
                 </div>
                 <div class="user-info">
-                    <i onclick="openModalNotifications()" data-lucide="bell" class="notificacao" id="notificacao-galeria-abrirModal"></i>
-                    <i data-lucide="user"></i>
+                    <i onclick="openModalNotifications()" class="fas fa-bell notificacao" id="notificacao-galeria-abrirModal"></i>
+                    <i class="fas fa-user"></i>
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
             </header>
@@ -45,10 +45,10 @@
             <!-- Barra de Ações -->
             <div class="action-bar">
                 <button class="btn-add" onclick="openModalUpload()">
-                    <i data-lucide="upload"></i> Adicionar Fotos
+                    <i class="fas fa-upload"></i> Adicionar Fotos
                 </button>
                 <div class="search-bar">
-                    <i data-lucide="search"></i>
+                    <i class="fas fa-search"></i>
                     <input type="text" placeholder="Pesquisar fotos...">
                 </div>
             </div>
@@ -60,8 +60,8 @@
                 <div class="gallery-item">
                     <img src="../assets/gallery/evento1.jpg" alt="Evento Institucional">
                     <div class="gallery-actions">
-                        <button class="btn-view" onclick="viewImage(this)"><i data-lucide="eye"></i></button>
-                        <button class="btn-delete" onclick="openDeleteModal(1)"><i data-lucide="trash-2"></i></button>
+                        <button class="btn-view" onclick="viewImage(this)"><i class="fas fa-eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(1)"><i class="fas fa-trash-alt"></i></button>
                     </div>
                     <div class="gallery-info">
                         <span class="gallery-title">Evento de Abertura</span>
@@ -72,8 +72,8 @@
                 <div class="gallery-item">
                     <img src="../assets/gallery/curso1.jpg" alt="Aula Prática">
                     <div class="gallery-actions">
-                        <button class="btn-view" onclick="viewImage(this)"><i data-lucide="eye"></i></button>
-                        <button class="btn-delete" onclick="openDeleteModal(2)"><i data-lucide="trash-2"></i></button>
+                        <button class="btn-view" onclick="viewImage(this)"><i class="fas fa-eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(2)"><i class="fas fa-trash-alt"></i></button>
                     </div>
                     <div class="gallery-info">
                         <span class="gallery-title">Aula de Electricidade</span>
@@ -84,8 +84,8 @@
                 <div class="gallery-item">
                     <img src="../assets/gallery/formatura.jpg" alt="Formatura">
                     <div class="gallery-actions">
-                        <button class="btn-view" onclick="viewImage(this)"><i class="fa-eye"></i></button>
-                        <button class="btn-delete" onclick="openDeleteModal(3)"><i class="fa-trash"></i></button>
+                        <button class="btn-view" onclick="viewImage(this)"><i class="fas fa-eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(3)"><i class="fas fa-trash-alt"></i></button>
                     </div>
                     <div class="gallery-info">
                         <span class="gallery-title">Formatura 2023</span>
@@ -95,8 +95,6 @@
                 
                 <!-- Mais itens da galeria -->
             </div>
-            
-         
         </main>
     </div>
 
@@ -104,40 +102,40 @@
     <div id="upload-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('upload-modal')">&times;</span>
-            <h2><i data-lucide="upload" style="margin-right: 10px;"></i>Adicionar Fotos</h2>
+            <h2><i class="fas fa-upload" style="margin-right: 10px;"></i>Adicionar Fotos</h2>
             
             <form id="upload-form">
                 <div class="form-group">
-                    <label><i data-lucide="image" style="margin-right: 5px;"></i>Selecione as fotos</label>
+                    <label><i class="fas fa-image" style="margin-right: 5px;"></i>Selecione as fotos</label>
                     <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
                     <div class="upload-area" id="upload-area">
-                        <i data-lucide="upload-cloud" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 48px; margin-bottom: 15px;"></i>
                         <p>Arraste e solte as fotos aqui ou clique para selecionar</p>
                         <button type="button" class="btn-select" onclick="document.getElementById('file-input').click()">
-                            <i data-lucide="folder"></i> Selecionar Fotos
+                            <i class="fas fa-folder-open"></i> Selecionar Fotos
                         </button>
                     </div>
                     <div id="file-list" class="file-list"></div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="photo-title"><i data-lucide="type" style="margin-right: 5px;"></i>Título</label>
+                    <label for="photo-title"><i class="fas fa-heading" style="margin-right: 5px;"></i>Título</label>
                     <input type="text" id="photo-title" placeholder="Título para as fotos">
                 </div>
                 
                 <div class="form-group">
-                    <label for="photo-date"><i data-lucide="calendar" style="margin-right: 5px;"></i>Data</label>
+                    <label for="photo-date"><i class="fas fa-calendar-alt" style="margin-right: 5px;"></i>Data</label>
                     <input type="date" id="photo-date">
                 </div>
                 
                 <div class="form-group">
-                    <label for="photo-description"><i data-lucide="align-left" style="margin-right: 5px;"></i>Descrição</label>
+                    <label for="photo-description"><i class="fas fa-align-left" style="margin-right: 5px;"></i>Descrição</label>
                     <textarea id="photo-description" rows="3" placeholder="Descrição opcional"></textarea>
                 </div>
                 
                 <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal('upload-modal')"><i data-lucide="x"></i> Cancelar</button>
-                    <button type="submit" class="btn-confirm"><i data-lucide="upload"></i> Enviar Fotos</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('upload-modal')"><i class="fas fa-times"></i> Cancelar</button>
+                    <button type="submit" class="btn-confirm"><i class="fas fa-upload"></i> Enviar Fotos</button>
                 </div>
             </form>
         </div>
@@ -147,12 +145,12 @@
     <div id="confirm-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
-            <h3><i data-lucide="alert-triangle" style="margin-right: 10px;"></i>Confirmar Eliminação</h3>
+            <h3><i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>Confirmar Eliminação</h3>
             <p>Tem certeza que deseja eliminar esta foto?</p>
             <p id="photo-delete-name" style="font-weight: bold; margin: 10px 0;"></p>
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeModal('confirm-modal')"><i data-lucide="x"></i> Cancelar</button>
-                <button class="btn-confirm" onclick="deletePhoto()"><i data-lucide="trash-2"></i> Eliminar</button>
+                <button class="btn-cancel" onclick="closeModal('confirm-modal')"><i class="fas fa-times"></i> Cancelar</button>
+                <button class="btn-confirm" onclick="deletePhoto()"><i class="fas fa-trash-alt"></i> Eliminar</button>
             </div>
         </div>
     </div>
@@ -161,15 +159,12 @@
     <div id="image-viewer" style="display: none;">
         <img id="viewed-image" src="" alt="">
         <div class="viewer-actions">
-            <button onclick="closeImageViewer()"><i data-lucide="x"></i></button>
+            <button onclick="closeImageViewer()"><i class="fas fa-times"></i></button>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
     <script>
-        // Inicializar ícones Lucide
-        lucide.createIcons();
-        
         // Variáveis globais
         let photoToDelete = null;
         let viewer = null;
@@ -253,13 +248,12 @@
                     const fileItem = document.createElement('div');
                     fileItem.className = 'file-item';
                     fileItem.innerHTML = `
-                        <i data-lucide="image"></i>
+                        <i class="fas fa-image"></i>
                         <span>${this.files[i].name}</span>
                         <span>${(this.files[i].size / 1024).toFixed(2)} KB</span>
                     `;
                     fileList.appendChild(fileItem);
                 }
-                lucide.createIcons();
             }
         });
         

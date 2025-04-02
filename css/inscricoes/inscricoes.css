@@ -1,31 +1,9 @@
 
 @import url('../side_bar.css');
 @import url('./modal-inscricoes.css');
-/* Tabela responsiva */
-.table-container {
-  overflow-x: auto;
-  margin: 20px 0;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+@import url('../inscricoes/tables.css');
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 600px;
-}
 
-th, td {
-  padding: 12px 8px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f4f4f4;
-  position: sticky;
-  top: 0;
-}
 
 .status {
   padding: 6px 12px;
@@ -52,11 +30,12 @@ th {
 }
 
 .btn-view {
-  background-color: #007bff;
+  background-color:  #459FCF;
   color: white;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
+  text-align: center;
   cursor: pointer;
   width: 100%;
   transition: background-color 0.3s;
