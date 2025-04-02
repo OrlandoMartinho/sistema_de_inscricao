@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeria - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/galeria/galeria.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
 </head>
 <body>
@@ -16,14 +16,14 @@
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
-                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
-                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
-                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a></li> 
-                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
-                    <li><i data-lucide="mail"></i><a href="contactos.html">Contactos</a></li>
-                    <li class="active"><i data-lucide="image"></i><a href="galeria.html">Galeria</a></li>
-                    <li><i data-lucide="settings"></i><a href="definicoes.html">Configurações</a></li>
-                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html">Sair do sistema</a></li>
+                    <li><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
+                    <li><i class="fas fa-file-alt"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li><i class="fas fa-book"></i> <a href="cursos.html">Cursos</a></li> 
+                    <li><i class="fas fa-calendar-alt"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="contactos.html">Contactos</a></li>
+                    <li class="active"><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
+                    <li><i class="fas fa-cog"></i><a href="definicoes.html">Configurações</a></li>
+                    <li class="logout"><i class="fas fa-sign-out-alt"></i><a href="./login.html"> Sair do sistema</a></li>
                 </ul>
             </nav>
         </aside>
@@ -84,8 +84,8 @@
                 <div class="gallery-item">
                     <img src="../assets/gallery/formatura.jpg" alt="Formatura">
                     <div class="gallery-actions">
-                        <button class="btn-view" onclick="viewImage(this)"><i data-lucide="eye"></i></button>
-                        <button class="btn-delete" onclick="openDeleteModal(3)"><i data-lucide="trash-2"></i></button>
+                        <button class="btn-view" onclick="viewImage(this)"><i class="fa-eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(3)"><i class="fa-trash"></i></button>
                     </div>
                     <div class="gallery-info">
                         <span class="gallery-title">Formatura 2023</span>

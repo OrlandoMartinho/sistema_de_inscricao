@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendarios - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/calendarios/calendarios.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -16,14 +15,14 @@
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
-                    <li ><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
-                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a> </li> 
-                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a> </li> 
-                    <li class="active"> <i data-lucide="calendar-days"></i>  <a href="#">Calendário</a> </li>
-                    <li><i data-lucide="mail"></i><a href="contactos.html">Contactos</a>  </li>
-                    <li><i data-lucide="image"></i><a href="galeria.html">Galeria</a></li>
-                    <li><i data-lucide="settings"></i><a href="definicoes.html">Configurações</a>  </li>
-                    <li class="logout"> <i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a> </li>
+                    <li><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
+                    <li><i class="fa-solid fa-file-lines"></i> <a href="inscricoes.html">Inscrições</a> </li> 
+                    <li><i class="fa-solid fa-book"></i> <a href="cursos.html">Cursos</a> </li> 
+                    <li class="active"> <i class="fa-solid fa-calendar-days"></i>  <a href="#">Calendário</a> </li>
+                    <li><i class="fa-solid fa-envelope"></i><a href="contactos.html">Contactos</a>  </li>
+                    <li><i class="fa-solid fa-image"></i><a href="galeria.html">Galeria</a></li>
+                    <li><i class="fa-solid fa-gear"></i><a href="definicoes.html">Configurações</a>  </li>
+                    <li class="logout"> <i class="fa-solid fa-right-from-bracket"></i><a href="./login.html"> Sair do sistema</a> </li>
                 </ul>
             </nav>
         </aside>
@@ -39,7 +38,7 @@
                 </div>
                 <div class="user-info">
                     <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
-                    <i data-lucide="user"></i>
+                    <i class="fa-solid fa-user"></i>
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
             </header>
@@ -268,8 +267,6 @@
     </dialog>
 
     <script>
-        lucide.createIcons();
-
         // Funções para manipular os modais
         function openModalPublicarEvento() {
             document.getElementById('modal-publicar-evento').showModal();

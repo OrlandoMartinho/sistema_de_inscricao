@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Definições - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/definicoes/definicoes.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -15,14 +15,14 @@
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
-                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
-                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
-                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a></li> 
-                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
-                    <li><i data-lucide="mail"></i><a href="contactos.html">Contactos</a>  </li>
-                    <li><i data-lucide="image"></i><a href="galeria.html">Galeria</a></li>
-                    <li class="active"><i data-lucide="settings"></i><a href="">Configurações</a></li>
-                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html"> Sair do sistema</a></li>
+                    <li><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
+                    <li><i class="fas fa-file-alt"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li><i class="fas fa-book"></i> <a href="cursos.html">Cursos</a></li> 
+                    <li><i class="fas fa-calendar-alt"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="contactos.html">Contactos</a></li>
+                    <li><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
+                    <li class="active"><i class="fas fa-cog"></i><a href="">Configurações</a></li>
+                    <li class="logout"><i class="fas fa-sign-out-alt"></i><a href="./login.html"> Sair do sistema</a></li>
                 </ul>
             </nav>
         </aside>
@@ -307,91 +307,6 @@
         </div>
     </div>
 
-    <script>
-        // Inicializar ícones Lucide
-        lucide.createIcons();
-        
-        // Funções para abrir modais
-        function openModalSeguranca() {
-            document.getElementById('modal-seguranca').style.display = 'block';
-        }
-        
-        function openModalPerfil() {
-            document.getElementById('modal-perfil').style.display = 'block';
-        }
-        
-        function openModalNotificacoes() {
-            document.getElementById('modal-notificacoes').style.display = 'block';
-        }
-        
-        function openModalSistema() {
-            document.getElementById('modal-sistema').style.display = 'block';
-        }
-        
-        function openModalBackup() {
-            document.getElementById('modal-backup').style.display = 'block';
-        }
-        
-        function openModalNotifications() {
-            document.getElementById('modal-notifications').style.display = 'block';
-        }
-        
-        // Funções para fechar modais
-        function closeModalSeguranca() {
-            document.getElementById('modal-seguranca').style.display = 'none';
-        }
-        
-        function closeModalPerfil() {
-            document.getElementById('modal-perfil').style.display = 'none';
-        }
-        
-        function closeModalNotificacoes() {
-            document.getElementById('modal-notificacoes').style.display = 'none';
-        }
-        
-        function closeModalSistema() {
-            document.getElementById('modal-sistema').style.display = 'none';
-        }
-        
-        function closeModalBackup() {
-            document.getElementById('modal-backup').style.display = 'none';
-        }
-        
-        function closeModalNotifications() {
-            document.getElementById('modal-notifications').style.display = 'none';
-        }
-        
-        // Fechar modais ao clicar fora do conteúdo
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-        
-        // Funções de exemplo para backup
-        function criarBackup() {
-            alert('Backup criado com sucesso!');
-            // Aqui iria a lógica real de criação de backup
-        }
-        
-        function restaurarBackup() {
-            const arquivo = document.getElementById('arquivo-backup').files[0];
-            if (arquivo) {
-                alert(`Backup ${arquivo.name} será restaurado. Confirma?`);
-                // Aqui iria a lógica real de restauração
-            } else {
-                alert('Selecione um arquivo de backup primeiro.');
-            }
-        }
-        
-        function marcarTodasComoLidas() {
-            const notificacoes = document.querySelectorAll('.notification-item.unread');
-            notificacoes.forEach(not => not.classList.remove('unread'));
-            alert('Todas as notificações marcadas como lidas.');
-        }
-    </script>
 </body>
+<script src="../js/definicoes/script.js"></script>
 </html>

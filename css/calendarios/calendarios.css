@@ -13,10 +13,7 @@
 }
 
 
-h2 {
-  margin: 0;
-  font-size: 22px;
-}
+ 
 
 .btn-publicar {
   background-color: white;
@@ -33,6 +30,7 @@ h2 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 15px;
+  margin-top: 3vh;
 }
 
 .evento-card {
@@ -65,10 +63,7 @@ h2 {
   font-size: 16px;
 }
 
-p {
-  margin: 5px 0;
-  font-size: 14px;
-}
+ 
 
 /* Media Queries para responsividade */
 @media (min-width: 768px) {

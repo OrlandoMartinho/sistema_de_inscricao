@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactos - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/contatos/contactos.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -15,14 +15,14 @@
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
-                    <li><i data-lucide="circle-gauge"></i> <a href="home.html">Análise</a></li>
-                    <li><i data-lucide="file-text"></i> <a href="inscricoes.html">Inscrições</a></li> 
-                    <li><i data-lucide="book-text"></i> <a href="cursos.html">Cursos</a></li> 
-                    <li><i data-lucide="calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
-                    <li class="active"><i data-lucide="mail"></i><a href="contactos.html">Contactos</a></li>
-                    <li><i data-lucide="image"></i><a href="galeria.html">Galeria</a></li>
-                    <li><i data-lucide="settings"></i><a href="definicoes.html">Configurações</a></li>
-                    <li class="logout"><i data-lucide="log-out"></i><a href="./login.html">Sair do sistema</a></li>
+                    <li><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
+                    <li><i class="fa-solid fa-file-lines"></i> <a href="inscricoes.html">Inscrições</a></li> 
+                    <li><i class="fa-solid fa-book"></i> <a href="cursos.html">Cursos</a></li> 
+                    <li><i class="fa-solid fa-calendar-days"></i> <a href="calendarios.html">Calendário</a></li>
+                    <li class="active"><i class="fa-solid fa-envelope"></i><a href="contactos.html">Contactos</a></li>
+                    <li><i class="fa-solid fa-image"></i><a href="galeria.html">Galeria</a></li>
+                    <li><i class="fa-solid fa-gear"></i><a href="definicoes.html">Configurações</a></li>
+                    <li class="logout"><i class="fa-solid fa-right-from-bracket"></i><a href="./login.html">Sair do sistema</a></li>
                 </ul>
             </nav>
         </aside>
@@ -37,8 +37,8 @@
                     <div id="notificacao-modal-container"></div>
                 </div>
                 <div class="user-info">
-                    <i onclick="openModalNotifications()" data-lucide="bell" class="notificacao" id="notificacao-contacto-abrirModal"></i>
-                    <i data-lucide="user"></i>
+                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-contacto-abrirModal"></i>
+                    <i class="fa-solid fa-user"></i>
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
             </header>
@@ -46,9 +46,9 @@
             <!-- Barra de Ações -->
             <div class="action-bar">
                 <div class="search-bar">
-                    <i data-lucide="search"></i>
+                    <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Pesquisar mensagens...">
-                    <button class="filter-btn"><i data-lucide="filter"></i> Filtrar</button>
+                    <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar</button>
                 </div>
             </div>
             
@@ -77,9 +77,9 @@
                             <td>12/12/2022</td>
                             <td><span class="status pending">Não respondido</span></td>
                             <td>
-                                <button class="btn-view" onclick="openViewModal(1)"><i data-lucide="eye"></i></button>
-                                <button class="btn-reply" onclick="openReplyModal(1)"><i data-lucide="reply"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(1)"><i data-lucide="trash-2"></i></button>
+                                <button class="btn-view" onclick="openViewModal(1)"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(1)"><i class="fa-solid fa-reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(1)"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                         <tr>
@@ -90,9 +90,9 @@
                             <td>10/12/2022</td>
                             <td><span class="status responded">Respondido</span></td>
                             <td>
-                                <button class="btn-view" onclick="openViewModal(2)"><i data-lucide="eye"></i></button>
-                                <button class="btn-reply" onclick="openReplyModal(2)"><i data-lucide="reply"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(2)"><i data-lucide="trash-2"></i></button>
+                                <button class="btn-view" onclick="openViewModal(2)"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(2)"><i class="fa-solid fa-reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(2)"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                         <tr>
@@ -103,9 +103,9 @@
                             <td>05/12/2022</td>
                             <td><span class="status archived">Arquivado</span></td>
                             <td>
-                                <button class="btn-view" onclick="openViewModal(3)"><i data-lucide="eye"></i></button>
-                                <button class="btn-reply" onclick="openReplyModal(3)"><i data-lucide="reply"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(3)"><i data-lucide="trash-2"></i></button>
+                                <button class="btn-view" onclick="openViewModal(3)"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(3)"><i class="fa-solid fa-reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(3)"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                         <tr>
@@ -116,9 +116,9 @@
                             <td>01/12/2022</td>
                             <td><span class="status responded">Respondido</span></td>
                             <td>
-                                <button class="btn-view" onclick="openViewModal(4)"><i data-lucide="eye"></i></button>
-                                <button class="btn-reply" onclick="openReplyModal(4)"><i data-lucide="reply"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(4)"><i data-lucide="trash-2"></i></button>
+                                <button class="btn-view" onclick="openViewModal(4)"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn-reply" onclick="openReplyModal(4)"><i class="fa-solid fa-reply"></i></button>
+                                <button class="btn-delete" onclick="openDeleteModal(4)"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -133,50 +133,50 @@
     <div id="view-contacto-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('view-contacto-modal')">&times;</span>
-            <h2><i data-lucide="mail" style="margin-right: 10px;"></i>Detalhes da Mensagem</h2>
+            <h2><i class="fa-solid fa-envelope" style="margin-right: 10px;"></i>Detalhes da Mensagem</h2>
             
             <div class="form-group">
-                <label><i data-lucide="user" style="margin-right: 5px;"></i>Remetente:</label>
+                <label><i class="fa-solid fa-user" style="margin-right: 5px;"></i>Remetente:</label>
                 <p id="view-remetente">João Carlos</p>
             </div>
             
             <div class="form-group">
-                <label><i data-lucide="at-sign" style="margin-right: 5px;"></i>Email:</label>
+                <label><i class="fa-solid fa-at" style="margin-right: 5px;"></i>Email:</label>
                 <p id="view-email">joao@email.com</p>
             </div>
             
             <div class="form-group">
-                <label><i data-lucide="message-square" style="margin-right: 5px;"></i>Assunto:</label>
+                <label><i class="fa-solid fa-comment" style="margin-right: 5px;"></i>Assunto:</label>
                 <p id="view-assunto">Dúvida sobre inscrição</p>
             </div>
             
             <div class="form-group">
-                <label><i data-lucide="calendar" style="margin-right: 5px;"></i>Data:</label>
+                <label><i class="fa-solid fa-calendar" style="margin-right: 5px;"></i>Data:</label>
                 <p id="view-data">12/12/2022</p>
             </div>
             
             <div class="form-group">
-                <label><i data-lucide="alert-circle" style="margin-right: 5px;"></i>Estado:</label>
+                <label><i class="fa-solid fa-circle-exclamation" style="margin-right: 5px;"></i>Estado:</label>
                 <p id="view-estado"><span class="status pending">Não respondido</span></p>
             </div>
             
             <div class="form-group">
-                <label><i data-lucide="file-text" style="margin-right: 5px;"></i>Mensagem:</label>
+                <label><i class="fa-solid fa-file-lines" style="margin-right: 5px;"></i>Mensagem:</label>
                 <div class="message-content" id="view-mensagem">
                     <!-- Mensagem será inserida aqui via JavaScript -->
                 </div>
             </div>
             
             <div class="form-group" id="view-resposta-container" style="display: none;">
-                <label><i data-lucide="corner-up-left" style="margin-right: 5px;"></i>Resposta:</label>
+                <label><i class="fa-solid fa-share" style="margin-right: 5px;"></i>Resposta:</label>
                 <div class="message-content" id="view-resposta">
                     <!-- Resposta será inserida aqui via JavaScript -->
                 </div>
             </div>
             
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeModal('view-contacto-modal')"><i data-lucide="x"></i> Fechar</button>
-                <button class="btn-confirm" onclick="openReplyModal(currentContactoId)"><i data-lucide="reply"></i> Responder</button>
+                <button class="btn-cancel" onclick="closeModal('view-contacto-modal')"><i class="fa-solid fa-xmark"></i> Fechar</button>
+                <button class="btn-confirm" onclick="openReplyModal(currentContactoId)"><i class="fa-solid fa-reply"></i> Responder</button>
             </div>
         </div>
     </div>
@@ -185,36 +185,36 @@
     <div id="reply-contacto-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('reply-contacto-modal')">&times;</span>
-            <h2><i data-lucide="reply" style="margin-right: 10px;"></i>Responder Mensagem</h2>
+            <h2><i class="fa-solid fa-reply" style="margin-right: 10px;"></i>Responder Mensagem</h2>
             
             <form id="reply-contacto-form">
                 <input type="hidden" id="reply-id">
                 
                 <div class="form-group">
-                    <label><i data-lucide="at-sign" style="margin-right: 5px;"></i>Para:</label>
+                    <label><i class="fa-solid fa-at" style="margin-right: 5px;"></i>Para:</label>
                     <p id="reply-email">joao@email.com</p>
                 </div>
                 
                 <div class="form-group">
-                    <label><i data-lucide="message-square" style="margin-right: 5px;"></i>Assunto:</label>
+                    <label><i class="fa-solid fa-comment" style="margin-right: 5px;"></i>Assunto:</label>
                     <p id="reply-assunto">RE: Dúvida sobre inscrição</p>
                 </div>
                 
                 <div class="form-group">
-                    <label><i data-lucide="file-text" style="margin-right: 5px;"></i>Mensagem Original:</label>
+                    <label><i class="fa-solid fa-file-lines" style="margin-right: 5px;"></i>Mensagem Original:</label>
                     <div class="message-content" id="reply-mensagem-original">
                         <!-- Mensagem original será inserida aqui via JavaScript -->
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="reply-resposta"><i data-lucide="edit" style="margin-right: 5px;"></i>Sua Resposta:</label>
+                    <label for="reply-resposta"><i class="fa-solid fa-pen" style="margin-right: 5px;"></i>Sua Resposta:</label>
                     <textarea id="reply-resposta" rows="6" placeholder="Escreva sua resposta aqui..."></textarea>
                 </div>
                 
                 <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal('reply-contacto-modal')"><i data-lucide="x"></i> Cancelar</button>
-                    <button type="submit" class="btn-confirm"><i data-lucide="send"></i> Enviar Resposta</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('reply-contacto-modal')"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+                    <button type="submit" class="btn-confirm"><i class="fa-solid fa-paper-plane"></i> Enviar Resposta</button>
                 </div>
             </form>
         </div>
@@ -224,19 +224,17 @@
     <div id="confirm-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
-            <h3><i data-lucide="alert-triangle" style="margin-right: 10px;"></i>Confirmar Eliminação</h3>
+            <h3><i class="fa-solid fa-triangle-exclamation" style="margin-right: 10px;"></i>Confirmar Eliminação</h3>
             <p id="delete-message">Tem certeza que deseja eliminar esta mensagem de contacto?</p>
             <p id="contacto-delete-name" style="font-weight: bold; margin: 10px 0;"></p>
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeModal('confirm-modal')"><i data-lucide="x"></i> Cancelar</button>
-                <button class="btn-confirm" onclick="deleteContacto()"><i data-lucide="trash-2"></i> Eliminar</button>
+                <button class="btn-cancel" onclick="closeModal('confirm-modal')"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+                <button class="btn-confirm" onclick="deleteContacto()"><i class="fa-solid fa-trash-can"></i> Eliminar</button>
             </div>
         </div>
     </div>
 
     <script>
-        lucide.createIcons();
-        
         // Variáveis globais
         let currentContactoId = null;
         let contactoToDelete = null;
@@ -311,7 +309,6 @@
                 }
                 
                 document.getElementById('view-contacto-modal').style.display = 'block';
-                lucide.createIcons(); // Atualizar ícones no modal
             }
         }
         
@@ -329,7 +326,6 @@
                 document.getElementById('reply-resposta').value = contacto.resposta || '';
                 
                 document.getElementById('reply-contacto-modal').style.display = 'block';
-                lucide.createIcons(); // Atualizar ícones no modal
             }
         }
         
@@ -339,7 +335,6 @@
             const contacto = contactosData[id];
             document.getElementById('contacto-delete-name').textContent = `${contacto.remetente} - ${contacto.assunto}`;
             document.getElementById('confirm-modal').style.display = 'block';
-            lucide.createIcons(); // Atualizar ícones no modal
         }
         
         // Função para eliminar contacto
