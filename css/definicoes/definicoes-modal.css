@@ -33,7 +33,7 @@
 
 .modal-header h2 {
   font-size: 1.5rem;
-  color: #007bff;
+  color: #459FCF;
   margin: 0;
 }
 
@@ -85,7 +85,7 @@
 
 .form-group input:focus,
 .form-group select:focus {
-  border-color: #007bff;
+  border-color: #459FCF;
   outline: none;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .btn-confirm {
-  background-color: #007bff;
+  background-color: #459FCF;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -155,7 +155,7 @@
 
 .notification-icon {
   margin-right: 15px;
-  color: #007bff;
+  color: #459FCF;
   font-size: 20px;
 }
 
@@ -180,7 +180,7 @@
 
 .backup-options h3 {
   margin-top: 20px;
-  color: #007bff;
+  color: #459FCF;
   font-size: 1.1rem;
 }
 
