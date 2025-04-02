@@ -13,7 +13,6 @@
 }
 
 .modal.active {
-   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,11 +24,11 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     width: 90%;
     max-width: 500px;
-    margin-left: 30vw;
-    margin-top: 2vh;
-   margin-bottom: 2vh;
+    margin: 2vh auto; /* Centraliza o modal e mantém margem vertical */
     padding: 25px;
-   
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close {
@@ -167,18 +166,66 @@ form {
     }
 }
 
-/* Responsividade */
+/* Responsividade - Telas médias (tablets) */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+        width: 85%;
+    }
+    
+    .modal-actions {
+        gap: 8px;
+    }
+    
+    .btn-cancel, .btn-confirm {
+        padding: 8px 16px;
+    }
+}
+
+/* Responsividade - Telas pequenas (celulares) */
 @media (max-width: 576px) {
     .modal-content {
-        padding: 20px 15px;
+        padding: 15px;
         width: 95%;
+        margin: 10px auto; /* Reduz a margem vertical em telas pequenas */
     }
     
     .modal-actions {
         flex-direction: column;
+        gap: 8px;
     }
     
     .btn-cancel, .btn-confirm {
         width: 100%;
+        padding: 10px;
+    }
+    
+    .close {
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+    }
+    
+    .modal h2, .modal h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
+
+/* Telas muito pequenas (celulares pequenos) */
+@media (max-width: 400px) {
+    .modal-content {
+        padding: 12px;
+    }
+    
+    .form-group {
+        margin-bottom: 10px;
     }
 }

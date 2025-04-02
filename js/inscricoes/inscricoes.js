@@ -332,50 +332,158 @@ function getFilteredRows() {
         return `${day}/${month}/${year}`;
     }
 
-    // Função para baixar inscrição
     function downloadInscricao(id) {
-        // Simulação - na prática você buscaria os dados completos da API
-        const inscricao = {
-            1: { nome: "Fulano da Silva", curso: "Electricidade", data: "12/12/2022", estado: "Pendente", documentos: ["Certificado.pdf", "BI.pdf", "Foto1.jpg", "Foto2.jpg"], parecer: "Aguardando análise do coordenador do curso." },
-            2: { nome: "Sicrano da Silva", curso: "Informática", data: "15/12/2022", estado: "Aceite", documentos: ["Certificado.pdf", "BI.pdf", "Foto1.jpg", "Foto2.jpg"], parecer: "Documentação completa e adequada. Aprovado pelo coordenador." },
-            3: { nome: "Alberto Moisés", curso: "Electricidade", data: "18/12/2022", estado: "Rejeitado", documentos: ["Certificado.pdf", "BI.pdf"], parecer: "Faltam documentos obrigatórios (fotos)." }
-        }[id];
-        
-        const doc = new jsPDF();
-        
-        // Cabeçalho
-        doc.setFontSize(18);
-        doc.text('Detalhes da Inscrição', 105, 15, { align: 'center' });
-        doc.setFontSize(12);
-        doc.text(`ID: ${id}`, 14, 25);
-        
-        // Informações básicas
-        doc.setFontSize(14);
-        doc.text('Informações do Candidato', 14, 35);
-        doc.setFontSize(12);
-        doc.text(`Nome: ${inscricao.nome}`, 14, 45);
-        doc.text(`Curso: ${inscricao.curso}`, 14, 55);
-        doc.text(`Data de Inscrição: ${inscricao.data}`, 14, 65);
-        doc.text(`Status: ${inscricao.estado}`, 14, 75);
-        
-        // Documentos
-        doc.setFontSize(14);
-        doc.text('Documentos Anexados:', 14, 90);
-        doc.setFontSize(12);
-        inscricao.documentos.forEach((docName, index) => {
-            doc.text(`- ${docName}`, 20, 100 + (index * 5));
-        });
-        
-        // Parecer
-        doc.setFontSize(14);
-        doc.text('Parecer:', 14, 120);
-        doc.setFontSize(12);
-        const splitText = doc.splitTextToSize(inscricao.parecer, 180);
-        doc.text(splitText, 14, 130);
-        
-        // Rodapé
-        doc.setFontSize(10);
-        doc.text(`Gerado em: ${new Date().toLocaleString()}`, 14, 280);
-        
-        doc.save(`inscricao_${id}_${inscricao.nome.replace(/\s/g, '_')}.pdf`);
-    }
+      try {
+          // Verifica se jsPDF está disponível
+          if (!window.jspdf) {
+              throw new Error("A biblioteca jsPDF não foi carregada corretamente");
+          }
+  
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({
+              orientation: "portrait",
+              unit: "mm",
+              format: "a4"
+          });
+  
+          // Dados da inscrição (simulados)
+          const inscricao = {
+              1: { 
+                  nome: "Fulano da Silva", 
+                  curso: "Electricidade", 
+                  data: "12/12/2022", 
+                  estado: "Pendente", 
+                  documentos: ["Certificado.pdf", "BI.pdf", "Foto1.jpg", "Foto2.jpg"], 
+                  parecer: "Aguardando análise do coordenador do curso." 
+              },
+              2: { 
+                  nome: "Sicrano da Silva", 
+                  curso: "Informática", 
+                  data: "15/12/2022", 
+                  estado: "Aceite", 
+                  documentos: ["Certificado.pdf", "BI.pdf", "Foto1.jpg", "Foto2.jpg"], 
+                  parecer: "Documentação completa e adequada. Aprovado pelo coordenador." 
+              },
+              3: { 
+                  nome: "Alberto Moisés", 
+                  curso: "Electricidade", 
+                  data: "18/12/2022", 
+                  estado: "Rejeitado", 
+                  documentos: ["Certificado.pdf", "BI.pdf"], 
+                  parecer: "Faltam documentos obrigatórios (fotos)." 
+              }
+          }[id];
+  
+          if (!inscricao) {
+              throw new Error("Inscrição não encontrada");
+          }
+  
+          // Configuração de margens
+          const margin = {
+              top: 20,
+              left: 15,
+              right: 15,
+              bottom: 20
+          };
+  
+          let currentY = margin.top;
+  
+          // Adicionar logo (com margem superior)
+          try {
+              const logoUrl = '../assets/logo.png';
+              const logoWidth = 40;
+              const logoHeight = 40;
+              doc.addImage(logoUrl, 'PNG', 
+                  (doc.internal.pageSize.getWidth() - logoWidth) / 2, 
+                  currentY, 
+                  logoWidth, 
+                  logoHeight
+              );
+              currentY += logoHeight + 10; // Espaço após a logo
+          } catch (e) {
+              console.warn("Não foi possível carregar a logo:", e);
+              currentY += 10; // Mantém o espaçamento mesmo sem logo
+          }
+  
+          // Título do documento
+          doc.setFontSize(18);
+          doc.setTextColor(40, 40, 40);
+          doc.text('Detalhes da Inscrição', doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          currentY += 10;
+  
+          // ID da inscrição
+          doc.setFontSize(12);
+          doc.text(`ID: ${id}`, margin.left, currentY);
+          currentY += 8;
+  
+          // Linha divisória
+          doc.setDrawColor(200, 200, 200);
+          doc.line(margin.left, currentY, doc.internal.pageSize.getWidth() - margin.right, currentY);
+          currentY += 10;
+  
+          // Seção: Informações do Candidato
+          doc.setFontSize(14);
+          doc.setTextColor(41, 128, 185);
+          doc.text('Informações do Candidato', margin.left, currentY);
+          currentY += 8;
+  
+          doc.setFontSize(12);
+          doc.setTextColor(40, 40, 40);
+          doc.text(`Nome: ${inscricao.nome}`, margin.left, currentY);
+          currentY += 7;
+          doc.text(`Curso: ${inscricao.curso}`, margin.left, currentY);
+          currentY += 7;
+          doc.text(`Data de Inscrição: ${inscricao.data}`, margin.left, currentY);
+          currentY += 7;
+          doc.text(`Status: ${inscricao.estado}`, margin.left, currentY);
+          currentY += 15;
+  
+          // Seção: Documentos
+          doc.setFontSize(14);
+          doc.setTextColor(41, 128, 185);
+          doc.text('Documentos Anexados:', margin.left, currentY);
+          currentY += 8;
+  
+          doc.setFontSize(12);
+          doc.setTextColor(40, 40, 40);
+          inscricao.documentos.forEach((docName, index) => {
+              doc.text(`• ${docName}`, margin.left + 5, currentY);
+              currentY += 7;
+              
+              // Verifica se precisa de nova página
+              if (currentY > doc.internal.pageSize.height - margin.bottom) {
+                  doc.addPage();
+                  currentY = margin.top;
+              }
+          });
+  
+          currentY += 10;
+  
+          // Seção: Parecer
+          doc.setFontSize(14);
+          doc.setTextColor(41, 128, 185);
+          doc.text('Parecer:', margin.left, currentY);
+          currentY += 8;
+  
+          doc.setFontSize(12);
+          doc.setTextColor(40, 40, 40);
+          const splitText = doc.splitTextToSize(inscricao.parecer, doc.internal.pageSize.getWidth() - (margin.left + margin.right));
+          doc.text(splitText, margin.left, currentY);
+          currentY += splitText.length * 7;
+  
+          // Rodapé
+          doc.setFontSize(10);
+          doc.setTextColor(100, 100, 100);
+          doc.text(`Gerado em: ${new Date().toLocaleString('pt-PT')}`, 
+                  doc.internal.pageSize.getWidth() / 2, 
+                  doc.internal.pageSize.height - margin.bottom + 10, 
+                  { align: 'center' });
+  
+          // Salvar o PDF
+          doc.save(`Inscricao_${id}_${inscricao.nome.replace(/\s/g, '_')}.pdf`);
+  
+      } catch (error) {
+          console.error("Erro ao gerar PDF da inscrição:", error);
+          alert("Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.");
+      }
+  }
