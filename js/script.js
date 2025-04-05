@@ -323,3 +323,13 @@ document.querySelectorAll('.apply-btn').forEach(btn => {
       openMatriculaModal(courseName);
   });
 });
+
+// const links = document.getElementsByTagName("a");
+
+// // Exemplo: mostrar todos no console
+// for (let i = 0; i < links.length; i++) {
+//   links[i].addEventListener("click", function(event) {
+//     event.preventDefault(); 
+//   });
+
+// }
