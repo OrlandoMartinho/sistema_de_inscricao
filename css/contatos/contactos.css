@@ -1,51 +1,7 @@
 
 @import url('../side_bar.css');
 
-/* Container da Tabela - Responsivo */
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
-    -webkit-overflow-scrolling: touch; /* Suave rolagem em dispositivos móveis */
-}
 
-/* Estilos Base da Tabela */
-table {
-    width: 100%;
-    min-width: 600px; /* Largura mínima para manter a legibilidade */
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-table th {
-    background-color: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    text-align: left;
-    padding: 12px 16px;
-    border-bottom: 2px solid #e9ecef;
-    position: sticky;
-    top: 0;
-    white-space: nowrap; /* Impede quebra de linha nos cabeçalhos */
-}
-
-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #e9ecef;
-    vertical-align: middle;
-}
-
-/* Linhas Alternadas para Melhor Legibilidade */
-table tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-table tr:hover {
-    background-color: #e9ecef;
-}
 
 /* Status na Tabela - Adaptável */
 .status {
