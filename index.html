@@ -351,20 +351,16 @@
                         <input type="text" id="ano_lectivo" name="ano_lectivo" value="2024">
                     </div>
                     
-                    <div class="form-group">
-                        <label>ÁREA DE FORMAÇÃO DE:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="area_formacao" value="ELECTRICIDADE"> ELECTRICIDADE, ELECTRÔNICA E TELECOMUNICAÇÕES</label>
-                            <label><input type="radio" name="area_formacao" value="INFORMATICA"> INFORMÁTICA</label>
-                        </div>
-                    </div>
+                    
                     
                     <div class="form-group">
-                        <label>CURSO DE:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="curso" value="TECNICO_ENERGIA"> TÉCNICO DE ENERGIA E INSTALAÇÕES ELÉCTRICAS</label>
-                            <label><input type="radio" name="curso" value="TECNICO_INFORMATICA"> TÉCNICO DE INFORMÁTICA</label>
-                        </div>
+                        <label for="tipo_identificacao">CURSO</label>
+                        <select id="tipo_identificacao" name="tipo_identificacao">
+                            <option value="">Selecione</option>
+                            <option value="electricidade">Electricidade</option>
+                            <option value="informatica">Informática</option>
+                            <option value="Outro">Outro</option>
+                        </select>
                     </div>
                     
                     <div class="form-row">
