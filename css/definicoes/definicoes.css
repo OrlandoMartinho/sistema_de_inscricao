@@ -8,16 +8,19 @@
   flex-direction: column;
   gap: 15px;
   padding: 20px;
+  overflow-x: hidden;
 }
 
 .item-section {
   padding: 20px;
+  overflow-x: hidden;
   cursor: pointer;
   transition: background-color 0.2s;
   border-radius: 5px;
 }
 
 .item-section:hover {
+  
   background-color: #f4f4f4;
 }
 

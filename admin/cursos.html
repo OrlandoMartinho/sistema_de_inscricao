@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cursos - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/cursos/cursos.css">
+    <link rel="stylesheet" href="../css/notification-modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -37,7 +38,10 @@
                     <div id="notificacao-modal-container"></div>
                 </div>
                 <div class="user-info">
-                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-curso-abrirModal"></i>
+                    <div class="notification-bell-container" onclick="openNotificationModal()">
+                        <i class="fa-solid fa-bell notificacao"></i>
+                        <span class="notification-badge"></span>
+                    </div>
                     <i data-lucide="user"></i>
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
@@ -233,5 +237,6 @@
     </div>
 
     <script src="../js/cursos/script.js"></script>
+    <script src="../js/notification-modal.js"></script>
 </body>
 </html>

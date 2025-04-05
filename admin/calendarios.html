@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendarios - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/calendarios/calendarios.css">
+    <link rel="stylesheet" href="../css/notification-modal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -37,7 +38,10 @@
                     <div id="notificacao-modal-container"></div>
                 </div>
                 <div class="user-info">
-                    <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
+                    <div class="notification-bell-container" onclick="openNotificationModal()">
+                        <i class="fa-solid fa-bell notificacao"></i>
+                        <span class="notification-badge"></span>
+                    </div>
                     <i class="fa-solid fa-user"></i>
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
@@ -266,73 +270,8 @@
         </div>
     </dialog>
 
-    <script>
-        // Funções para manipular os modais
-        function openModalPublicarEvento() {
-            document.getElementById('modal-publicar-evento').showModal();
-        }
-
-        function closeModalPublicarEvento() {
-            document.getElementById('modal-publicar-evento').close();
-        }
-
-        function openModalEditarEvento() {
-            document.getElementById('modal-editar-evento').showModal();
-        }
-
-        function closeModalEditarEvento() {
-            document.getElementById('modal-editar-evento').close();
-        }
-
-        function openModalExcluirEvento() {
-            document.getElementById('modal-excluir-evento').showModal();
-        }
-
-        function closeModalExcluirEvento() {
-            document.getElementById('modal-excluir-evento').close();
-        }
-
-        function confirmarExclusaoEvento() {
-            // Lógica para excluir o evento
-            alert('Evento excluído com sucesso!');
-            closeModalExcluirEvento();
-        }
-
-        function openModalNotifications() {
-            document.getElementById('modal-notificacoes').showModal();
-        }
-
-        function closeModalNotifications() {
-            document.getElementById('modal-notificacoes').close();
-        }
-
-        // Fechar modais ao clicar fora do conteúdo
-        document.querySelectorAll('dialog').forEach(dialog => {
-            dialog.addEventListener('click', (e) => {
-                const dialogDimensions = dialog.getBoundingClientRect();
-                if (
-                    e.clientX < dialogDimensions.left ||
-                    e.clientX > dialogDimensions.right ||
-                    e.clientY < dialogDimensions.top ||
-                    e.clientY > dialogDimensions.bottom
-                ) {
-                    dialog.close();
-                }
-            });
-        });
-
-        // Formulários
-        document.getElementById('form-publicar-evento').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Evento publicado com sucesso!');
-            closeModalPublicarEvento();
-        });
-
-        document.getElementById('form-editar-evento').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Evento atualizado com sucesso!');
-            closeModalEditarEvento();
-        });
-    </script>
+    
 </body>
+<script src="../js/notification-modal.js"></script>
+<script src="../js/calendarios/script.js"></script>
 </html>
