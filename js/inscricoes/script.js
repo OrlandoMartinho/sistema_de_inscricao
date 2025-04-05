@@ -135,18 +135,7 @@ function confirmAction() {
     }
 }
 
-// Event listener para o formulário de edição
-document.getElementById('edit-inscricao-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Configurar mensagem de confirmação
-    document.getElementById('confirm-message').textContent = 
-        "Tem certeza que deseja atualizar o status desta inscrição?";
-    currentAction = 'save';
-    
-    // Abrir modal de confirmação
-    document.getElementById('confirm-modal').style.display = 'block';
-});
+
 
 // Fechar modais ao clicar fora do conteúdo
 window.onclick = function(event) {
