@@ -492,7 +492,7 @@ nav {
 
 /* Calendar */
 .calendar {
-  max-width: 800px;
+  max-width: 100vw;
   margin: 40px auto 0;
   background: white;
   padding: 30px;

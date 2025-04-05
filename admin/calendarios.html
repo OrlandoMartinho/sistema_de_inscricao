@@ -151,20 +151,13 @@
     <dialog id="modal-publicar-evento" class="modal">
         <div class="modal-content">
             <button class="close" onclick="closeModalPublicarEvento()">&times;</button>
-            <h2>Publicar Novo Evento</h2>
+            <h2>Publicar Novo Caledário</h2>
             <form id="form-publicar-evento">
                 <div class="form-group">
-                    <label for="evento-titulo">Título do Evento</label>
+                    <label for="evento-titulo">Título</label>
                     <input type="text" id="evento-titulo" name="evento-titulo" required>
                 </div>
-                <div class="form-group">
-                    <label for="evento-data">Data do Evento</label>
-                    <input type="date" id="evento-data" name="evento-data" required>
-                </div>
-                <div class="form-group">
-                    <label for="evento-local">Local</label>
-                    <input type="text" id="evento-local" name="evento-local" required>
-                </div>
+                
                 <div class="form-group">
                     <label for="evento-inscricoes-ate">Inscrições Até</label>
                     <input type="date" id="evento-inscricoes-ate" name="evento-inscricoes-ate">
@@ -185,19 +178,11 @@
     <dialog id="modal-editar-evento" class="modal">
         <div class="modal-content">
             <button class="close" onclick="closeModalEditarEvento()">&times;</button>
-            <h2>Editar Evento</h2>
+            <h2>Editar Calendario</h2>
             <form id="form-editar-evento">
                 <div class="form-group">
-                    <label for="editar-titulo">Título do Evento</label>
-                    <input type="text" id="editar-titulo" name="editar-titulo" value="Inscrição" required>
-                </div>
-                <div class="form-group">
-                    <label for="editar-data">Data do Evento</label>
-                    <input type="date" id="editar-data" name="editar-data" value="2024-08-15" required>
-                </div>
-                <div class="form-group">
-                    <label for="editar-local">Local</label>
-                    <input type="text" id="editar-local" name="editar-local" value="Centro de Treinamento de Aviação, São Paulo" required>
+                    <label for="evento-titulo">Título</label>
+                    <input type="text" id="evento-titulo" name="evento-titulo" required>
                 </div>
                 <div class="form-group">
                     <label for="editar-inscricoes-ate">Inscrições Até</label>
