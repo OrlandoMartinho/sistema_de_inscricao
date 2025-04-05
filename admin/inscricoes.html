@@ -6,24 +6,169 @@
     <title>Inscrições - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/inscricoes/inscricoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <!-- Na seção head ou antes do fechamento do body -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* Estilos para o modal de confirmação de matrícula */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-matricula {
+            width: 80%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .modal-footer {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            text-align: right;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .header-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header-logo h2 {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        
+        .signature-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .radio-group {
+            margin-top: 5px;
+        }
+        
+        .radio-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .mensagem-erro {
+            color: #dc3545;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        
+        input.error, select.error {
+            border-color: #dc3545 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Barra Lateral (mantida igual) -->
+        <!-- Barra Lateral -->
         <aside class="sidebar">
             <img src="../assets/logo-branco.png" alt="Logo do Instituto">
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
-                    <li ><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
+                    <li><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
                     <li class="active"><i class="fas fa-file-alt"></i> <a href="inscricoes.html">Inscrições</a></li> 
                     <li><i class="fas fa-book"></i> <a href="cursos.html">Cursos</a></li> 
                     <li><i class="fas fa-calendar-alt"></i> <a href="calendarios.html">Calendário</a></li>
                     <li><i class="fas fa-envelope"></i><a href="contactos.html">Contactos</a></li>
-                    <li ><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
+                    <li><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
                     <li><i class="fas fa-cog"></i><a href="definicoes.html">Configurações</a></li>
                     <li class="logout"><i class="fas fa-sign-out-alt"></i><a href="./login.html"> Sair do sistema</a></li>
                 </ul>
@@ -41,12 +186,11 @@
                 </div>
                 <div class="user-info">
                     <i onclick="openModalNotifications()" class="fa-solid fa-bell notificacao" id="notificacao-inscricao-abrirModal"></i>
-                    
                     <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
             </header>
             
-            <!-- Barra de Pesquisa com Filtros Aprimorados -->
+            <!-- Barra de Pesquisa com Filtros -->
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Pesquisar por nome ou curso">
                 <select id="status-filter">
@@ -58,6 +202,7 @@
                 <input type="date" id="date-filter">
                 <button class="filter-btn" onclick="applyFilters()"><i class="fa-solid fa-filter"></i> Filtrar</button>
                 <button class="export-btn" onclick="openExportModal()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+                <button class="new-btn" onclick="openNewInscricaoModal()"><i class="fa-solid fa-plus"></i> Nova Inscrição</button>
             </div>
             
             <hr>
@@ -102,34 +247,6 @@
                                 <button class="btn-reject" onclick="rejectInscricao(2)">Rejeitar</button>
                             </td>
                         </tr>
-
-                        <tr data-inscricao="2022-12-15">
-                            <td>2</td>
-                            <td>Sicrano da Silva</td>
-                            <td>Informática</td>
-                            <td>Certificado, BI, Foto 1, Foto 2</td>
-                            <td>15/12/2022</td>
-                            <td><span class="status accepted">Aceite</span></td>
-                            <td><button class="btn-view" onclick="openViewModal(2)">Visualizar</button></td>
-                            <td>
-                                <button class="btn-approve" onclick="approveInscricao(2)">Aprovar</button>
-                                <button class="btn-reject" onclick="rejectInscricao(2)">Rejeitar</button>
-                            </td>
-                        </tr>
-                        <tr data-inscricao="2022-12-15">
-                            <td>2</td>
-                            <td>Sicrano da Silva</td>
-                            <td>Informática</td>
-                            <td>Certificado, BI, Foto 1, Foto 2</td>
-                            <td>15/12/2022</td>
-                            <td><span class="status accepted">Aceite</span></td>
-                            <td><button class="btn-view" onclick="openViewModal(2)">Visualizar</button></td>
-                            <td>
-                                <button class="btn-approve" onclick="approveInscricao(2)">Aprovar</button>
-                                <button class="btn-reject" onclick="rejectInscricao(2)">Rejeitar</button>
-                            </td>
-                        </tr>
-                        
                         <tr data-inscricao="2022-12-18">
                             <td>3</td>
                             <td>Alberto Moisés</td>
@@ -149,45 +266,206 @@
         </main>
     </div>
 
-    <!-- Modal de Visualização de Inscrição - Atualizado -->
-    <div id="view-inscricao-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('view-inscricao-modal')">&times;</span>
-            <h2>Detalhes da Inscrição</h2>
-            
-            <div class="form-group">
-                <label>Nome Completo:</label>
-                <p id="view-nome">Fulano da Silva</p>
+    <!-- Modal de Confirmação de Inscrição (modelo fornecido) -->
+    <div class="modal-overlay" id="matriculaModal">
+        <div class="modal-matricula">
+            <div class="modal-header">
+                <div class="header-logo">
+                    <h2>FICHA DE CONFIRMAÇÃO DE INSCRIÇÃO</h2>
+                </div>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
             </div>
             
-            <div class="form-group">
-                <label>Curso:</label>
-                <p id="view-curso">Electricidade Industrial</p>
-            </div>
-            
-            <div class="form-group">
-                <label>Data de Inscrição:</label>
-                <p id="view-data">12/12/2022</p>
-            </div>
-            
-            <div class="form-group">
-                <label>Estado:</label>
-                <p id="view-estado"><span class="status pending">Pendente</span></p>
-            </div>
-            
-            <div class="form-group">
-                <label>Documentos:</label>
-                <div class="document-list" id="view-documentos">
-                    <!-- Documentos serão inseridos aqui via JavaScript -->
+            <div class="modal-body">
+                <!-- Página 1 - Dados Pessoais -->
+                <div class="page active" id="page1">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="idade">IDADE</label>
+                            <input type="number" id="idade" name="idade">
+                        </div>
+                        <div class="form-group">
+                            <label for="sexo">SEXO</label>
+                            <select id="sexo" name="sexo">
+                                <option value="">Selecione</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="processo">PROCESSO Nº</label>
+                            <input type="text" id="processo" name="processo">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nome">NOME COMPLETO</label>
+                        <input type="text" id="nome" name="nome">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="filiacao">FILIAÇÃO</label>
+                        <input type="text" id="filiacao" name="filiacao">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contacto_aluno">CONTACTO DO ALUNO</label>
+                            <input type="text" id="contacto_aluno" name="contacto_aluno">
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto_encarregado">CONTACTO DO ENCARREGADO</label>
+                            <input type="text" id="contacto_encarregado" name="contacto_encarregado">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="data_nascimento">DATA DE NASCIMENTO</label>
+                            <input type="date" id="data_nascimento" name="data_nascimento">
+                        </div>
+                        <div class="form-group">
+                            <label for="natural">NATURAL</label>
+                            <input type="text" id="natural" name="natural">
+                        </div>
+                        <div class="form-group">
+                            <label for="provincia">PROVÍNCIA</label>
+                            <input type="text" id="provincia" name="provincia">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipo_identificacao">TIPO DE IDENTIFICAÇÃO</label>
+                            <select id="tipo_identificacao" name="tipo_identificacao">
+                                <option value="">Selecione</option>
+                                <option value="BI">Bilhete de Identidade</option>
+                                <option value="Passaporte">Passaporte</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="numero_identificacao">NÚMERO DE IDENTIFICAÇÃO</label>
+                            <input type="text" id="numero_identificacao" name="numero_identificacao">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_validade">DATA DE VALIDADE</label>
+                            <input type="date" id="data_validade" name="data_validade">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="arquivo_identificacao">ARQUIVO DE IDENTIFICAÇÃO</label>
+                        <input type="file" id="arquivo_identificacao" name="arquivo_identificacao">
+                    </div>
+                    <div class="form-group">
+                        <label for="arquivo_foto">FOTO TIPO PASSE</label>
+                        <input type="file" id="arquivo_foto" name="arquivo_foto">
+                    </div>
+                </div>
+                
+                <!-- Página 2 - Dados Acadêmicos -->
+                <div class="page" id="page2">
+                    <div class="form-group">
+                        <label for="ano_lectivo">ANO LECTIVO</label>
+                        <input type="text" id="ano_lectivo" name="ano_lectivo" value="2024">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ÁREA DE FORMAÇÃO DE:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="area_formacao" value="ELECTRICIDADE"> ELECTRICIDADE, ELECTRÔNICA E TELECOMUNICAÇÕES</label>
+                            <label><input type="radio" name="area_formacao" value="INFORMATICA"> INFORMÁTICA</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CURSO DE:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="curso" value="TECNICO_ENERGIA"> TÉCNICO DE ENERGIA E INSTALAÇÕES ELÉCTRICAS</label>
+                            <label><input type="radio" name="curso" value="TECNICO_INFORMATICA"> TÉCNICO DE INFORMÁTICA</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classe">CLASSE A FREQUENTAR</label>
+                            <select id="classe" name="classe">
+                                <option value="">Selecione</option>
+                                <option value="10">10ª</option>
+                                <option value="11">11ª</option>
+                                <option value="12">12ª</option>
+                                <option value="13">13ª</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="turno">TURNO</label>
+                            <select id="turno" name="turno">
+                                <option value="">Selecione</option>
+                                <option value="MANHA">MANHÃ</option>
+                                <option value="TARDE">TARDE</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="signature-area">
+                        <p>Certifica-se que o (a) aluno (a):</p>
+                        <p>Confirmou a matrícula na <span id="classe_confirmacao">______</span> Classe no turno de <span id="turno_confirmacao">______</span> no curso de <span id="curso_confirmacao">______</span></p>
+                        <p>Instituto Politécnico Nº2039 "30 de Setembro" aos <span id="data_confirmacao"></span></p>
+                        <p>O (A) FUNCIONÁRIO (A)</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="form-group">
-                <label>Parecer:</label>
-                <p id="view-parecer">Nenhum parecer foi adicionado ainda.</p>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-voltar" style="display: none;">Voltar</button>
+                <button class="btn btn-primary" id="btn-avancar">Avançar</button>
+                <button class="btn btn-primary" id="btn-confirmar" style="display: none;">Confirmar Inscrição</button>
             </div>
-            
-            <div class="modal-actions">
+        </div>
+    </div>
+
+    <!-- Modal de Visualização de Inscrição -->
+    <div id="view-inscricao-modal" class="modal-overlay">
+        <div class="modal-matricula">
+            <div class="modal-header">
+                <h2>Detalhes da Inscrição</h2>
+                <span class="close-modal" onclick="closeModal('view-inscricao-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nome Completo:</label>
+                    <p id="view-nome">Fulano da Silva</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Curso:</label>
+                    <p id="view-curso">Electricidade Industrial</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Data de Inscrição:</label>
+                    <p id="view-data">12/12/2022</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Estado:</label>
+                    <p id="view-estado"><span class="status pending">Pendente</span></p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Documentos:</label>
+                    <div class="document-list" id="view-documentos">
+                        <!-- Documentos serão inseridos aqui via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Parecer:</label>
+                    <p id="view-parecer">Nenhum parecer foi adicionado ainda.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
                 <button class="btn-download" onclick="downloadInscricao(currentInscricaoId)">Baixar Inscrição</button>
                 <button class="btn-cancel" onclick="closeModal('view-inscricao-modal')">Fechar</button>
             </div>
@@ -195,50 +473,52 @@
     </div>
 
     <!-- Modal de Aprovar/Rejeitar -->
-    <div id="decision-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('decision-modal')">&times;</span>
-            <h2 id="decision-title">Aprovar Inscrição</h2>
-            <input type="hidden" id="decision-id">
-            <input type="hidden" id="decision-type">
-            
-            <div class="form-group">
-                <label for="decision-comment">Comentário:</label>
-                <textarea id="decision-comment" rows="4" placeholder="Digite o parecer..."></textarea>
+    <div id="decision-modal" class="modal-overlay">
+        <div class="modal-matricula">
+            <div class="modal-header">
+                <h2 id="decision-title">Aprovar Inscrição</h2>
+                <span class="close-modal" onclick="closeModal('decision-modal')">&times;</span>
             </div>
-            
-            <div class="modal-actions">
+            <div class="modal-body">
+                <input type="hidden" id="decision-id">
+                <input type="hidden" id="decision-type">
+                
+                <div class="form-group">
+                    <label for="decision-comment">Comentário:</label>
+                    <textarea id="decision-comment" rows="4" placeholder="Digite o parecer..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeModal('decision-modal')">Cancelar</button>
                 <button class="btn-confirm" onclick="confirmDecision()">Confirmar</button>
             </div>
         </div>
     </div>
 
-    
-<!-- Modal de Exportação PDF -->
-<div id="export-pdf-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('export-pdf-modal')">&times;</span>
-        <h2>Exportar para PDF</h2>
-        
-        <p>Selecione o que deseja exportar:</p>
-        
-        <div class="export-options">
-            <button class="btn-export-all" onclick="exportToPDF('all')">
-                <i class="fas fa-database"></i> Exportar todos os dados
-            </button>
-            <button class="btn-export-filtered" onclick="exportToPDF('filtered')">
-                <i class="fas fa-filter"></i> Exportar dados filtrados
-            </button>
-        </div>
-        
-        <div class="modal-actions">
-            <button class="btn-cancel" onclick="closeModal('export-pdf-modal')">Cancelar</button>
+    <!-- Modal de Exportação PDF -->
+    <div id="export-pdf-modal" class="modal-overlay">
+        <div class="modal-matricula">
+            <div class="modal-header">
+                <h2>Exportar para PDF</h2>
+                <span class="close-modal" onclick="closeModal('export-pdf-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Selecione o que deseja exportar:</p>
+                
+                <div class="export-options">
+                    <button class="btn-export-all" onclick="exportToPDF('all')">
+                        <i class="fas fa-database"></i> Exportar todos os dados
+                    </button>
+                    <button class="btn-export-filtered" onclick="exportToPDF('filtered')">
+                        <i class="fas fa-filter"></i> Exportar dados filtrados
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('export-pdf-modal')">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
-
+    <script src="../js/inscricoes/script.js"></script>
 </body>
-<script src="../js/inscricoes/inscricoes.js"></script>
- 
 </html>
