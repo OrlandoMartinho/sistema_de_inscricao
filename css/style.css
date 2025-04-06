@@ -61,7 +61,7 @@ h2 {
 .container {
   max-width: 1200px;
   z-index: 1;
-  overflow: hidden;
+
   margin: 0 auto;
   padding: 0 20px;
   transition: all var(--transition-time) var(--transition-type);
@@ -181,13 +181,13 @@ nav {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('./../assets/img/background.jpg');
+  background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('./../assets/background.jpeg');
   background-size: cover;
   background-position: center;
   color: white;
   padding: 100px 0;
   text-align: center;
-  animation: fadeIn 1s ease-out;
+  /* animation: fadeIn 1s ease-out; */
 }
 
 @keyframes fadeIn {
