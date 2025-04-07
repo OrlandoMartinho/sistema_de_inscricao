@@ -246,7 +246,6 @@
             </div>
         </div>
     </section>
-
     <div class="modal-overlay" id="matriculaModal">
         <div class="modal-matricula">
             <div class="modal-header">
@@ -256,148 +255,148 @@
                 <span class="close-modal" onclick="closeModal()">&times;</span>
             </div>
             
-            <div class="modal-body">
-                <!-- Página 1 - Dados Pessoais -->
-                <div class="page active" id="page1">
-                    <div class="form-row">
+            <form id="form-matricula" action="controllers/inscricoes.php" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="modal-body">
+                    <!-- Página 1 - Dados Pessoais -->
+                    <div class="page active" id="page1">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="idade">IDADE *</label>
+                                <input type="number" id="idade" name="idade" class="validate" min="10" max="30" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="genero">SEXO *</label>
+                                <select id="genero" name="genero" class="validate" required>
+                                    <option value="">Selecione</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Feminino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="numero_do_processo">PROCESSO Nº *</label>
+                                <input type="text" id="numero_do_processo" name="numero_do_processo" class="validate" required>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
-                            <label for="idade">IDADE</label>
-                            <input type="number" id="idade" name="idade">
+                            <label for="nome_completo">NOME COMPLETO *</label>
+                            <input type="text" id="nome_completo" name="nome_completo" class="validate" required minlength="5" maxlength="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="filiacao">FILIAÇÃO *</label>
+                            <input type="text" id="filiacao" name="filiacao" class="validate" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contacto_do_aluno">CONTACTO DO ALUNO *</label>
+                                <input type="tel" id="contacto_do_aluno" name="contacto_do_aluno" class="validate" required pattern="[0-9]{9}">
+                            </div>
+                            <div class="form-group">
+                                <label for="contacto_do_encarregado">CONTACTO DO ENCARREGADO *</label>
+                                <input type="tel" id="contacto_do_encarregado" name="contacto_do_encarregado" class="validate" required pattern="[0-9]{9}">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="data_de_nascimento">DATA DE NASCIMENTO *</label>
+                                <input type="date" id="data_de_nascimento" name="data_de_nascimento" class="validate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="natural_de">NATURAL *</label>
+                                <input type="text" id="natural_de" name="natural_de" class="validate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="provincia">PROVÍNCIA *</label>
+                                <input type="text" id="provincia" name="provincia" class="validate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tipo_de_identificacao">TIPO DE IDENTIFICAÇÃO *</label>
+                                <select id="tipo_de_identificacao" name="tipo_de_identificacao" class="validate" required>
+                                    <option value="">Selecione</option>
+                                    <option value="BI">Bilhete de Identidade</option>
+                                    <option value="Passaporte">Passaporte</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="numero_de_identificacao">NÚMERO DE IDENTIFICAÇÃO *</label>
+                                <input type="text" id="numero_de_identificacao" name="numero_de_identificacao" class="validate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="data_validade">DATA DE VALIDADE *</label>
+                                <input type="date" id="data_validade" name="data_validade" class="validate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="arquivo_de_identificacao">ARQUIVO DE IDENTIFICAÇÃO *</label>
+                            <input type="file" id="arquivo_de_identificacao" name="arquivo_de_identificacao" class="validate" accept=".pdf,.jpg,.jpeg,.png" required>
                         </div>
                         <div class="form-group">
-                            <label for="sexo">SEXO</label>
-                            <select id="sexo" name="sexo">
+                            <label for="foto_tipo_passe">FOTO TIPO PASSE *</label>
+                            <input type="file" id="foto_tipo_passe" name="foto_tipo_passe" class="validate" accept=".jpg,.jpeg,.png" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Página 2 - Dados Acadêmicos -->
+                    <div class="page" id="page2">
+                        <div class="form-group">
+                            <label for="ano_lectivo">ANO LECTIVO *</label>
+                            <input type="text" id="ano_lectivo" name="ano_lectivo" value="2024" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="curso">CURSO *</label>
+                            <select id="curso" name="curso" class="validate" required>
                                 <option value="">Selecione</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="processo">PROCESSO Nº</label>
-                            <input type="text" id="processo" name="processo">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="nome">NOME COMPLETO</label>
-                        <input type="text" id="nome" name="nome">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="filiacao">FILIAÇÃO</label>
-                        <input type="text" id="filiacao" name="filiacao">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="contacto_aluno">CONTACTO DO ALUNO</label>
-                            <input type="text" id="contacto_aluno" name="contacto_aluno">
-                        </div>
-                        <div class="form-group">
-                            <label for="contacto_encarregado">CONTACTO DO ENCARREGADO</label>
-                            <input type="text" id="contacto_encarregado" name="contacto_encarregado">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="data_nascimento">DATA DE NASCIMENTO</label>
-                            <input type="date" id="data_nascimento" name="data_nascimento">
-                        </div>
-                        <div class="form-group">
-                            <label for="natural">NATURAL</label>
-                            <input type="text" id="natural" name="natural">
-                        </div>
-                        <div class="form-group">
-                            <label for="provincia">PROVÍNCIA</label>
-                            <input type="text" id="provincia" name="provincia">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="tipo_identificacao">TIPO DE IDENTIFICAÇÃO</label>
-                            <select id="tipo_identificacao" name="tipo_identificacao">
-                                <option value="">Selecione</option>
-                                <option value="BI">Bilhete de Identidade</option>
-                                <option value="Passaporte">Passaporte</option>
+                                <option value="electricidade">Electricidade</option>
+                                <option value="informatica">Informática</option>
                                 <option value="Outro">Outro</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="numero_identificacao">NÚMERO DE IDENTIFICAÇÃO</label>
-                            <input type="text" id="numero_identificacao" name="numero_identificacao">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="classe">CLASSE A FREQUENTAR *</label>
+                                <select id="classe" name="classe" class="validate" required>
+                                    <option value="">Selecione</option>
+                                    <option value="10">10ª</option>
+                                    <option value="11">11ª</option>
+                                    <option value="12">12ª</option>
+                                    <option value="13">13ª</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="turno">TURNO *</label>
+                                <select id="turno" name="turno" class="validate" required>
+                                    <option value="">Selecione</option>
+                                    <option value="MANHA">MANHÃ</option>
+                                    <option value="TARDE">TARDE</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="data_validade">DATA DE VALIDADE</label>
-                            <input type="date" id="data_validade" name="data_validade">
+                        
+                        <div class="signature-area">
+                            <p>Certifica-se que o (a) aluno (a):</p>
+                            <p>Confirmou a matrícula na <span id="classe_confirmacao">______</span> Classe no turno de <span id="turno_confirmacao">______</span> no curso de <span id="curso_confirmacao">______</span></p>
+                            <p>Instituto Politécnico Nº2039 "30 de Setembro" aos <span id="data_confirmacao"></span></p>
+                            <p>O (A) FUNCIONÁRIO (A)</p>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="arquivo_identificacao">ARQUIVO DE IDENTIFICAÇÃO</label>
-                        <input type="file" id="arquivo_identificacao" name="arquivo_identificacao">
-                    </div>
-                    <div class="form-group">
-                        <label for="arquivo_foto">FOTO TIPO PASSE</label>
-                        <input type="file" id="arquivo_foto" name="arquivo_foto">
                     </div>
                 </div>
                 
-                <!-- Página 2 - Dados Acadêmicos -->
-                <div class="page" id="page2">
-                    <div class="form-group">
-                        <label for="ano_lectivo">ANO LECTIVO</label>
-                        <input type="text" id="ano_lectivo" name="ano_lectivo" value="2024">
-                    </div>
-                    
-                    
-                    
-                    <div class="form-group">
-                        <label for="tipo_identificacao">CURSO</label>
-                        <select id="tipo_identificacao" name="tipo_identificacao">
-                            <option value="">Selecione</option>
-                            <option value="electricidade">Electricidade</option>
-                            <option value="informatica">Informática</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="classe">CLASSE A FREQUENTAR</label>
-                            <select id="classe" name="classe">
-                                <option value="">Selecione</option>
-                                <option value="10">10ª</option>
-                                <option value="11">11ª</option>
-                                <option value="12">12ª</option>
-                                <option value="13">13ª</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="turno">TURNO</label>
-                            <select id="turno" name="turno">
-                                <option value="">Selecione</option>
-                                <option value="MANHA">MANHÃ</option>
-                                <option value="TARDE">TARDE</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="signature-area" style="display: none;">
-                        <p>Certifica-se que o (a) aluno (a):</p>
-                        <p>Confirmou a matrícula na <span id="classe_confirmacao">______</span> Classe no turno de <span id="turno_confirmacao">______</span> no curso de <span id="curso_confirmacao">______</span></p>
-                        <p>Instituto Politécnico Nº2039 "30 de Setembro" aos <span id="data_confirmacao"></span></p>
-                        <p>O (A) FUNCIONÁRIO (A)</p>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-voltar" style="display: none;">Voltar</button>
+                    <button type="button" class="btn btn-primary" id="btn-avancar">Avançar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-confirmar" style="display: none;">Confirmar Inscrição</button>
                 </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="btn-voltar" style="display: none;">Voltar</button>
-                <button class="btn btn-primary" id="btn-avancar">Avançar</button>
-                <button class="btn btn-primary" id="btn-confirmar" style="display: none;">Confirmar Inscrição</button>
-            </div>
+            </form>
         </div>
     </div>
     
@@ -476,6 +475,9 @@
 
     <script src="js/message-modal.js"></script>
     <script src="js/script.js"></script>
+    <!-- apis requests -->
     <script src="apis/contacts.js"></script>
+    <script src="apis/inscricoes.js"></script>
+    
 </body>
 </html>

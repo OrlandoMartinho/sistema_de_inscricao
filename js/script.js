@@ -261,12 +261,7 @@ const validacoes = {
               console.log('Dados do formulário:', Object.fromEntries(formData));
               
               alert('Matrícula confirmada com sucesso!');
-              showSuccessMessage(
-                'Inscrição Enviada com sucesso!',
-                'Inscrição Feita com sucesso!',
-                'ENJOY YOUR STAY',
-                3000 // auto-close after 3 seconds
-            );
+              enviarFormulario()
               closeModal();
           }
       });
