@@ -1,6 +1,6 @@
 document.getElementById('form-contato').addEventListener('submit', function(e) {
     e.preventDefault();
-    alert('Formulário enviado!');
+ 
     // Validação básica do cliente
     const nome = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -8,12 +8,12 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
     const mensagem = document.getElementById('message').value.trim();
     
     if (!nome || !email || !mensagem) {
-        alert('Por favor, preencha todos os campos obrigatórios.');
+        showErrorMessage('Complete bem os campos', 'Erro de digitação', 3000);
         return;
     }
     
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('Por favor, insira um email válido.');
+        showErrorMessage('Insira bem o seu email', 'Erro de digitação', 3000);
         return;
     }
     
@@ -45,6 +45,6 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
     })
     .catch(error => {
         console.error('Erro:', error);
-        alert('Ocorreu um erro ao enviar a mensagem.');
+        showErrorMessage('Não foi possível enviar o contacto.', 'Erro de Envio', 3000);
     });
 });
