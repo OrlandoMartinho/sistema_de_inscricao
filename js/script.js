@@ -1,31 +1,42 @@
 // Expressões regulares para validação
 const validacoes = {
-    nome: /^[a-zA-ZÀ-ÿ\s]{5,}$/, // Min 5 caracteres, apenas letras e espaços
+    nome: /^[a-zA-ZÀ-ÿ\s]{5,100}$/, // Min 5 caracteres, max 100, apenas letras e espaços
     processo: /^\d{4,10}$/, // 4 a 10 dígitos
     telefone: /^[9][1-9]\d{7}$/, // Telefone angolano (9 seguido de 8 dígitos)
-    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email válido
-    bi: /^\d{9}[A-Z]{2}\d{3}$/, // Formato de BI angolano (9 dígitos + 2 letras + 3 dígitos)
+    bi: /^\d{9}[A-Za-z]{2}\d{3}$/i, // Formato de BI angolano (9 dígitos + 2 letras + 3 dígitos)
     data: /^\d{4}-\d{2}-\d{2}$/, // Formato de data YYYY-MM-DD
-    numero: /^\d+$/ // Apenas números
-  };
-  
-  // Mensagens de erro para cada campo
-  const mensagensErro = {
-    nome: "Nome deve ter pelo menos 5 caracteres (apenas letras)",
-    processo: "Nº de processo deve ter entre 4 e 10 dígitos",
-    contacto_aluno: "Telefone inválido (ex: 923456789)",
-    contacto_encarregado: "Telefone inválido (ex: 923456789)",
-    data_nascimento: "Data de nascimento inválida",
-    numero_identificacao: "Número de identificação inválido",
-    email: "Email inválido (ex: exemplo@dominio.com)"
-  };
-  
-  // Função para mostrar erro no campo
-  function mostrarErro(campoId, mensagem) {
+    numero: /^\d+$/, // Apenas números
+    idade: /^(1[0-9]|2[0-9]|30)$/ // Idade entre 10 e 30 anos
+};
+
+// Mensagens de erro para cada campo
+const mensagensErro = {
+    nome_completo: "Nome deve ter entre 5 e 100 caracteres (apenas letras)",
+    numero_do_processo: "Nº de processo deve ter entre 4 e 10 dígitos",
+    contacto_do_aluno: "Telefone inválido (ex: 923456789)",
+    contacto_do_encarregado: "Telefone inválido (ex: 923456789)",
+    data_de_nascimento: "Data de nascimento inválida (formato: AAAA-MM-DD)",
+    numero_de_identificacao: "Número de identificação inválido (formato: 123456789LA123)",
+    idade: "Idade deve ser entre 10 e 30 anos",
+    genero: "Selecione o sexo",
+    filiacao: "Preencha a filiação completa",
+    natural_de: "Preencha a naturalidade",
+    provincia: "Preencha a província",
+    tipo_de_identificacao: "Selecione o tipo de identificação",
+    arquivo_de_identificacao: "Anexe o documento de identificação",
+    foto_tipo_passe: "Anexe a foto tipo passe",
+    curso: "Selecione o curso",
+    classe: "Selecione a classe",
+    turno: "Selecione o turno",
+    data_validade: "Data de validade inválida"
+};
+
+// Função para mostrar erro no campo
+function mostrarErro(campoId, mensagem) {
     const campo = document.getElementById(campoId);
     if (!campo) return;
     
-    campo.style.borderColor = 'red';
+    campo.classList.add('campo-invalido');
     
     // Remove mensagens de erro existentes
     const erroExistente = campo.nextElementSibling;
@@ -42,252 +53,278 @@ const validacoes = {
     mensagemErro.style.marginTop = '5px';
     
     campo.insertAdjacentElement('afterend', mensagemErro);
-  }
-  
-  // Função para limpar erro do campo
-  function limparErro(campoId) {
+}
+
+// Função para limpar erro do campo
+function limparErro(campoId) {
     const campo = document.getElementById(campoId);
     if (!campo) return;
     
-    campo.style.borderColor = '';
+    campo.classList.remove('campo-invalido');
     
     const mensagemErro = campo.nextElementSibling;
     if (mensagemErro && mensagemErro.classList.contains('mensagem-erro')) {
         mensagemErro.remove();
     }
-  }
-  
-  // Validação individual de campo
-  function validarCampo(campoId, regex) {
+}
+
+// Validação individual de campo
+function validarCampo(campoId, regex) {
     const campo = document.getElementById(campoId);
     if (!campo) return false;
     
     const valor = campo.value.trim();
     
-    if (!valor) {
-        mostrarErro(campoId, "Este campo é obrigatório");
+    // Verifica se é campo obrigatório
+    if (campo.required && !valor) {
+        mostrarErro(campoId, mensagensErro[campoId] || "Este campo é obrigatório");
         return false;
     }
     
-    if (regex && !regex.test(valor)) {
+    // Verifica regex se fornecida
+    if (regex && valor && !regex.test(valor)) {
         mostrarErro(campoId, mensagensErro[campoId] || "Formato inválido");
+        return false;
+    }
+    
+    // Verificação especial para arquivos
+    if (campo.type === 'file' && campo.required && !campo.files[0]) {
+        mostrarErro(campoId, mensagensErro[campoId] || "Arquivo obrigatório");
+        return false;
+    }
+    
+    // Verificação especial para selects
+    if (campo.tagName === 'SELECT' && campo.required && !campo.value) {
+        mostrarErro(campoId, mensagensErro[campoId] || "Selecione uma opção");
         return false;
     }
     
     limparErro(campoId);
     return true;
-  }
-  
-  // Função para abrir o modal de matrícula
-  function openMatriculaModal(courseName) {
-    document.getElementById('matriculaModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    
-    // Resetar o formulário ao abrir
-    document.getElementById('page1').classList.add('active');
-    document.getElementById('page2').classList.remove('active');
-    document.getElementById('btn-avancar').style.display = 'inline-block';
-    document.getElementById('btn-voltar').style.display = 'none';
-    document.getElementById('btn-confirmar').style.display = 'none';
-    
-    // Definir o curso selecionado automaticamente
-    if (courseName === 'Informática') {
-        document.getElementById('tipo_identificacao').value = 'informatica';
-    } else if (courseName === 'Electricidade') {
-        document.getElementById('tipo_identificacao').value = 'electricidade';
-    }
-    
-    // Atualizar a confirmação
-    atualizarConfirmacao();
-  }
-  
-  // Função para fechar o modal
-  function closeModal() {
-    document.getElementById('matriculaModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-  
-  // Função para atualizar os campos de confirmação
-  function atualizarConfirmacao() {
-    // Obter valores selecionados
-    const classe = document.getElementById('classe').value;
-    const turno = document.getElementById('turno').value;
-    const curso = document.getElementById('tipo_identificacao').value;
-    
-    // Atualizar texto de confirmação
-    document.getElementById('classe_confirmacao').textContent = classe ? classe + 'ª' : '______';
-    
-    if (turno === 'MANHA') {
-        document.getElementById('turno_confirmacao').textContent = 'MANHÃ';
-    } else if (turno === 'TARDE') {
-        document.getElementById('turno_confirmacao').textContent = 'TARDE';
-    } else {
-        document.getElementById('turno_confirmacao').textContent = '______';
-    }
-    
-    if (curso === 'electricidade') {
-        document.getElementById('curso_confirmacao').textContent = 'TÉCNICO DE ENERGIA E INSTALAÇÕES ELÉCTRICAS';
-    } else if (curso === 'informatica') {
-        document.getElementById('curso_confirmacao').textContent = 'TÉCNICO DE INFORMÁTICA';
-    } else {
-        document.getElementById('curso_confirmacao').textContent = '______';
-    }
-    
-    // Atualizar data atual
-    const hoje = new Date();
-    document.getElementById('data_confirmacao').textContent = hoje.toLocaleDateString('pt-AO');
-  }
-  
-  // Função para validar a página 1
-  function validarPagina1() {
+}
+
+// Função para validar a página 1
+function validarPagina1() {
     let valido = true;
     
-    // Validar cada campo individualmente
-    valido &= validarCampo('idade', validacoes.numero);
-    valido &= validarCampo('sexo');
-    valido &= validarCampo('processo', validacoes.processo);
-    valido &= validarCampo('nome', validacoes.nome);
+    valido &= validarCampo('idade', validacoes.idade);
+    valido &= validarCampo('genero');
+    valido &= validarCampo('numero_do_processo', validacoes.processo);
+    valido &= validarCampo('nome_completo', validacoes.nome);
     valido &= validarCampo('filiacao');
-    valido &= validarCampo('contacto_aluno', validacoes.telefone);
-    valido &= validarCampo('contacto_encarregado', validacoes.telefone);
-    valido &= validarCampo('data_nascimento', validacoes.data);
-    valido &= validarCampo('natural');
+    valido &= validarCampo('contacto_do_aluno', validacoes.telefone);
+    valido &= validarCampo('contacto_do_encarregado', validacoes.telefone);
+    valido &= validarCampo('data_de_nascimento', validacoes.data);
+    valido &= validarCampo('natural_de');
     valido &= validarCampo('provincia');
-    valido &= validarCampo('tipo_identificacao');
-    valido &= validarCampo('numero_identificacao', validacoes.bi);
-    
-    // Validar arquivo se for necessário
-    const arquivo = document.getElementById('arquivo_identificacao');
-    if (arquivo && !arquivo.files[0]) {
-        mostrarErro('arquivo_identificacao', 'Por favor, anexe o documento de identificação');
-        valido = false;
-    } else {
-        limparErro('arquivo_identificacao');
-    }
+    valido &= validarCampo('tipo_de_identificacao');
+    valido &= validarCampo('numero_de_identificacao', validacoes.bi);
+    valido &= validarCampo('data_validade', validacoes.data);
+    valido &= validarCampo('arquivo_de_identificacao');
+    valido &= validarCampo('foto_tipo_passe');
     
     return valido;
-  }
-  
-  // Função para validar a página 2
-  function validarPagina2() {
+}
+
+// Função para validar a página 2
+function validarPagina2() {
     let valido = true;
     
-    valido &= validarCampo('ano_lectivo');
-    valido &= validarCampo('tipo_identificacao');
+    valido &= validarCampo('curso');
     valido &= validarCampo('classe');
     valido &= validarCampo('turno');
     
     return valido;
-  }
-  
-  // Event listeners quando o DOM estiver carregado
-  document.addEventListener('DOMContentLoaded', function() {
-    // Adiciona listeners para validação em tempo real
-    document.getElementById('nome')?.addEventListener('blur', function() {
-        validarCampo('nome', validacoes.nome);
-    });
+}
+
+// Função para abrir o modal de matrícula
+function openMatriculaModal(courseName) {
+    const modal = document.getElementById('matriculaModal');
+    if (!modal) {
+        console.error('Modal element not found');
+        return;
+    }
     
-    document.getElementById('processo')?.addEventListener('blur', function() {
-        validarCampo('processo', validacoes.processo);
-    });
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
     
-    document.getElementById('contacto_aluno')?.addEventListener('blur', function() {
-        validarCampo('contacto_aluno', validacoes.telefone);
-    });
+    // Resetar o formulário ao abrir
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    if (page1 && page2) {
+        page1.classList.add('active');
+        page2.classList.remove('active');
+    }
     
-    document.getElementById('contacto_encarregado')?.addEventListener('blur', function() {
-        validarCampo('contacto_encarregado', validacoes.telefone);
-    });
+    const btnAvancar = document.getElementById('btn-avancar');
+    const btnVoltar = document.getElementById('btn-voltar');
+    const btnConfirmar = document.getElementById('btn-confirmar');
+    if (btnAvancar && btnVoltar && btnConfirmar) {
+        btnAvancar.style.display = 'inline-block';
+        btnVoltar.style.display = 'none';
+        btnConfirmar.style.display = 'none';
+    }
     
-    document.getElementById('numero_identificacao')?.addEventListener('blur', function() {
-        validarCampo('numero_identificacao', validacoes.bi);
-    });
+    // // Definir o curso selecionado automaticamente se fornecido
+    // const cursoSelect = document.getElementById('curso');
+    // if (cursoSelect && courseName) {
+    //     for (let option of cursoSelect.options) {
+    //         if (option.text.toLowerCase().includes(courseName.toLowerCase())) {
+    //             option.selected = true;
+    //             break;
+    //         }
+    //     }
+    // }
     
-    document.getElementById('data_nascimento')?.addEventListener('blur', function() {
-        validarCampo('data_nascimento', validacoes.data);
+    // Limpar todos os erros ao abrir o modal
+    document.querySelectorAll('.validate').forEach(campo => {
+        if (campo.id) {
+            limparErro(campo.id);
+        }
     });
-  
+}
+
+// Função para fechar o modal
+function closeModal() {
+    const modal = document.getElementById('matriculaModal');
+    if (!modal) return;
+    
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    
+    // Resetar o formulário
+    const form = document.getElementById('form-matricula');
+    if (form) {
+        form.reset();
+    }
+}
+
+// // Função para enviar o formulário
+// function enviarFormulario() {
+//     if (!validarPagina2()) {
+//         return false;
+//     }
+
+//     const form = document.getElementById('form-matricula');
+//     if (!form) return false;
+    
+//     const formData = new FormData(form);
+    
+//     fetch(form.action, {
+//         method: 'POST',
+//         body: formData
+//     })
+//     .then(response => {
+//         if (!response.ok) throw new Error('Erro na rede');
+//         return response.json();
+//     })
+//     .then(data => {
+//         if (data.success) {
+//             alert('Inscrição confirmada com sucesso!');
+//             closeModal();
+//         } else {
+//             alert('Erro: ' + (data.message || 'Erro ao processar inscrição'));
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Erro:', error);
+//         alert('Ocorreu um erro ao enviar. Por favor, tente novamente.');
+//     });
+// }
+
+// Event listeners quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function() {
+    // Validação em tempo real para campos importantes
+    const camposParaValidar = {
+        'nome_completo': validacoes.nome,
+        'numero_do_processo': validacoes.processo,
+        'contacto_do_aluno': validacoes.telefone,
+        'contacto_do_encarregado': validacoes.telefone,
+        'numero_de_identificacao': validacoes.bi,
+        'data_de_nascimento': validacoes.data,
+        'data_validade': validacoes.data,
+        'idade': validacoes.idade
+    };
+    
+    for (const [campoId, regex] of Object.entries(camposParaValidar)) {
+        const campo = document.getElementById(campoId);
+        if (campo) {
+            campo.addEventListener('blur', function() {
+                validarCampo(campoId, regex);
+            });
+        }
+    }
+    
     // Configuração do modal de duas páginas
     const btnAvancar = document.getElementById('btn-avancar');
     const btnVoltar = document.getElementById('btn-voltar');
     const btnConfirmar = document.getElementById('btn-confirmar');
-    const page1 = document.getElementById('page1');
-    const page2 = document.getElementById('page2');
     
     if (btnAvancar) {
-      btnAvancar.addEventListener('click', function() {
-          if (page1.classList.contains('active')) {
-              // Validação dos campos da página 1 antes de avançar
-              if (!validarPagina1()) {
-                  return;
-              }
-              
-              page1.classList.remove('active');
-              page2.classList.add('active');
-              btnAvancar.style.display = 'none';
-              btnVoltar.style.display = 'inline-block';
-              btnConfirmar.style.display = 'inline-block';
-              
-              // Preencher dados de confirmação
-              atualizarConfirmacao();
-          }
-      });
+        btnAvancar.addEventListener('click', function() {
+            if (validarPagina1()) {
+                const page1 = document.getElementById('page1');
+                const page2 = document.getElementById('page2');
+                if (page1 && page2) {
+                    page1.classList.remove('active');
+                    page2.classList.add('active');
+                }
+                if (btnAvancar && btnVoltar && btnConfirmar) {
+                    btnAvancar.style.display = 'none';
+                    btnVoltar.style.display = 'inline-block';
+                    btnConfirmar.style.display = 'inline-block';
+                }
+            }
+        });
     }
     
     if (btnVoltar) {
-      btnVoltar.addEventListener('click', function() {
-          page2.classList.remove('active');
-          page1.classList.add('active');
-          btnAvancar.style.display = 'inline-block';
-          btnVoltar.style.display = 'none';
-          btnConfirmar.style.display = 'none';
-      });
+        btnVoltar.addEventListener('click', function() {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            if (page1 && page2) {
+                page1.classList.add('active');
+                page2.classList.remove('active');
+            }
+            if (btnAvancar && btnVoltar && btnConfirmar) {
+                btnAvancar.style.display = 'inline-block';
+                btnVoltar.style.display = 'none';
+                btnConfirmar.style.display = 'none';
+            }
+        });
     }
     
+    // Configurar botão de confirmação
     if (btnConfirmar) {
-      btnConfirmar.addEventListener('click', function() {
-          if (validarPagina2()) {
-              // Simular envio do formulário
-              const formData = new FormData();
-              document.querySelectorAll('#page1 input, #page1 select, #page2 input, #page2 select').forEach(element => {
-                  if (element.type !== 'file') {
-                      formData.append(element.name, element.value);
-                  } else if (element.files[0]) {
-                      formData.append(element.name, element.files[0]);
-                  }
-              });
-              
-              // Aqui você faria a requisição AJAX para enviar os dados
-              console.log('Dados do formulário:', Object.fromEntries(formData));
-              
-              alert('Matrícula confirmada com sucesso!');
-              enviarFormulario()
-              closeModal();
-          }
-      });
+        btnConfirmar.addEventListener('click', function(e) {
+            e.preventDefault();
+            enviarFormulario();
+        });
     }
-    
-    // Atualizar campos de confirmação quando os valores mudam
-    document.getElementById('classe')?.addEventListener('change', atualizarConfirmacao);
-    document.getElementById('turno')?.addEventListener('change', atualizarConfirmacao);
-    document.getElementById('tipo_identificacao')?.addEventListener('change', atualizarConfirmacao);
     
     // Fechar o modal ao clicar fora dele
-    document.getElementById('matriculaModal')?.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal();
-        }
-    });
+    const modal = document.getElementById('matriculaModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    }
     
-    // Atualizar os botões de inscrição para usar a nova função
+    // Configurar botões de aplicação
     document.querySelectorAll('.apply-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            const courseName = this.closest('tr').querySelector('td:first-child').textContent;
-            openMatriculaModal(courseName);
+            const row = this.closest('tr');
+            if (row) {
+                const courseName = row.querySelector('td:first-child')?.textContent;
+                openMatriculaModal(courseName);
+            }
         });
     });
-  });
+});
 
-  function openModal() {
+// Função global para abrir modal
+function openModal() {
     openMatriculaModal();
 }

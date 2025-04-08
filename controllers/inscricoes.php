@@ -3,51 +3,58 @@ include '../config/conection.php';
 
 class Inscricao {
     private $conn;
-    public $id_inscricao;
-    public $idade;
-    public $genero;
-    public $numero_do_processo;
-    public $nome_completo;
-    public $contacto_do_aluno;
-    public $contacto_do_encarregado;
+    private $id_inscricao;
+    private$idade;
+    private $genero;
+    private $numero_do_processo;
+    private $nome_completo;
+    private$contacto_do_aluno;
+    private $contacto_do_encarregado;
     public $id_calendario;
-    public $data_de_nascimento;
-    public $natural_de;
-    public $provincia;
-    public $tipo_de_identificacao;
-    public $numero_de_identificacao;
+    private $data_de_nascimento;
+    private $natural_de;
+    private $provincia;
+    private $tipo_de_identificacao;
+    private $numero_de_identificacao;
+    private $data_de_validade;
     public $arquivo_de_identificacao;
-    public $foto_tipo_passe;
-    public $classe;
-    public $turno;
-    public $data_de_criacao;
-    public $aprovacao;
-    public $comentario;
+    private $foto_tipo_passe;
+    private $classe;
+    private $turno;
+    private $data_de_criacao;
+    private $aprovacao;
+    private $comentario;
+
+
 
     public function __construct($conn) {
         $this->conn = $conn;
     }
-
-    // Método para registrar uma nova inscrição
     public function registrar() {
         // Obter dados do POST
         $this->idade = $_POST['idade'] ?? '';
+        $this->id_calendario = $_POST['id_calendario'] ?? '';
         $this->genero = $_POST['genero'] ?? '';
         $this->numero_do_processo = $_POST['numero_do_processo'] ?? '';
         $this->nome_completo = $_POST['nome_completo'] ?? '';
         $this->contacto_do_aluno = $_POST['contacto_do_aluno'] ?? '';
         $this->contacto_do_encarregado = $_POST['contacto_do_encarregado'] ?? '';
+        $this->id_calendario = $_POST['id_calendario'] ?? null;
         $this->data_de_nascimento = $_POST['data_de_nascimento'] ?? '';
         $this->natural_de = $_POST['natural_de'] ?? '';
         $this->provincia = $_POST['provincia'] ?? '';
         $this->tipo_de_identificacao = $_POST['tipo_de_identificacao'] ?? '';
         $this->numero_de_identificacao = $_POST['numero_de_identificacao'] ?? '';
+        $this->data_de_validade = $_POST['data_de_validade'] ?? null;
         $this->classe = $_POST['classe'] ?? '';
         $this->turno = $_POST['turno'] ?? '';
         $this->data_de_criacao = date('Y-m-d H:i:s');
-        $this->aprovacao = 0; // Não aprovado por padrão
+        $this->aprovacao = 0;
         $this->comentario = '';
-
+    
+        error_log("📥 Dados recebidos do POST:");
+        error_log(print_r($_POST, true));
+    
         // Validação dos campos obrigatórios
         $camposObrigatorios = [
             'idade' => 'Idade',
@@ -62,56 +69,66 @@ class Inscricao {
             'tipo_de_identificacao' => 'Tipo de Identificação',
             'numero_de_identificacao' => 'Número de Identificação',
             'classe' => 'Classe',
-            'turno' => 'Turno'
+            'turno' => 'Turno',
+            'id_calendario' => 'ID do Calendário'
         ];
-
+    
         $erros = [];
         foreach ($camposObrigatorios as $campo => $nome) {
             if (empty($this->$campo)) {
                 $erros[] = "O campo {$nome} é obrigatório.";
             }
         }
-
+    
         if (!empty($erros)) {
+            error_log("❌ Erros de campos obrigatórios: " . implode(', ', $erros));
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => $erros]);
             return false;
         }
-
-        // Validação adicional
-        if (!is_numeric($this->idade)){
+    
+        // Validações adicionais
+        if (!is_numeric($this->idade)) {
             $erros[] = "A idade deve ser um número válido.";
         }
-
+    
         if (!preg_match('/^[0-9]{9}$/', $this->contacto_do_aluno)) {
             $erros[] = "O contacto do aluno deve ter 9 dígitos.";
         }
-
+    
         if (!preg_match('/^[0-9]{9}$/', $this->contacto_do_encarregado)) {
             $erros[] = "O contacto do encarregado deve ter 9 dígitos.";
         }
-
+    
         if (!empty($erros)) {
+            error_log("❌ Erros de validação adicional: " . implode(', ', $erros));
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => $erros]);
             return false;
         }
-
+    
         try {
-            // Processar upload de arquivos (simplificado - implementação real depende da sua configuração)
+            error_log("📤 Iniciando upload de arquivos...");
             $this->arquivo_de_identificacao = $this->processarUpload('arquivo_de_identificacao');
             $this->foto_tipo_passe = $this->processarUpload('foto_tipo_passe');
-
+    
+            error_log("✅ Uploads finalizados. Iniciando INSERT...");
             $sql = "INSERT INTO inscricoes (
-                idade, genero, numero_do_processo, nome_completo, contacto_do_aluno, 
-                contacto_do_encarregado, id_calendario, data_de_nascimento, natural_de, 
-                provincia, tipo_de_identificacao, numero_de_identificacao, arquivo_de_identificacao, 
-                foto_tipo_passe, classe, turno, data_de_criacao, aprovacao, comentario
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            $stmt = $this->conn->prepare($sql);
+                idade, genero, numero_de_processo, nome_completo, 
+                contacto_do_aluno, contacto_do_encarregado, id_calendario,
+                data_de_nascimento, natural_de, provincia, 
+                tipo_de_identificacao, numero_de_identificacao, data_de_validade,
+                arquivo_de_identificacao, foto_tipo_passe, classe, turno, 
+                data_de_criacao, aprovacao, comentario
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            $stmt = $this->conn->prepare($sql); // <--- ESSENCIAL
+            if (!$stmt) {
+                throw new Exception("Erro ao preparar a query: " . $this->conn->error);
+            }
+    
             $stmt->bind_param(
-                "isisssissssssssssis",
+                "isisssisssssssssssis",
                 $this->idade,
                 $this->genero,
                 $this->numero_do_processo,
@@ -124,6 +141,7 @@ class Inscricao {
                 $this->provincia,
                 $this->tipo_de_identificacao,
                 $this->numero_de_identificacao,
+                $this->data_de_validade,
                 $this->arquivo_de_identificacao,
                 $this->foto_tipo_passe,
                 $this->classe,
@@ -132,17 +150,17 @@ class Inscricao {
                 $this->aprovacao,
                 $this->comentario
             );
-
+    
             if ($stmt->execute()) {
                 $this->id_inscricao = $stmt->insert_id;
-
-                // Adicionar notificação
+                error_log("✅ Inscrição inserida com sucesso. ID: {$this->id_inscricao}");
+    
                 $descricao = "Nova inscrição registrada: " . $this->nome_completo;
                 $sql2 = "INSERT INTO notificacoes (descricao) VALUES (?)";
                 $stmt2 = $this->conn->prepare($sql2);
                 $stmt2->bind_param("s", $descricao);
                 $stmt2->execute();
-
+    
                 http_response_code(201);
                 echo json_encode([
                     'success' => true,
@@ -157,22 +175,27 @@ class Inscricao {
                 throw new Exception("Erro ao executar a query: " . $stmt->error);
             }
         } catch (Exception $e) {
+            error_log("🚨 Exceção lançada: " . $e->getMessage());
             http_response_code(500);
             echo json_encode([
                 'success' => false,
                 'message' => 'Erro ao registrar inscrição.',
                 'error' => $e->getMessage()
             ]);
-            error_log("Erro no banco de dados: " . $e->getMessage());
             return false;
         }
     }
+    
 
     private function processarUpload($campo) {
-        // Implementação básica - deve ser adaptada para seu ambiente
         if (isset($_FILES[$campo]) && $_FILES[$campo]['error'] === UPLOAD_ERR_OK) {
             $diretorio = '../uploads/';
-            $nomeArquivo = uniqid() . '_' . basename($_FILES[$campo]['name']);
+            if (!is_dir($diretorio)) {
+                mkdir($diretorio, 0755, true);
+            }
+            
+            $extensao = pathinfo($_FILES[$campo]['name'], PATHINFO_EXTENSION);
+            $nomeArquivo = uniqid() . '.' . $extensao;
             $caminhoCompleto = $diretorio . $nomeArquivo;
 
             if (move_uploaded_file($_FILES[$campo]['tmp_name'], $caminhoCompleto)) {
@@ -182,7 +205,6 @@ class Inscricao {
         return null;
     }
 
-    // Método para editar uma inscrição
     public function editar($id_inscricao) {
         if (!is_numeric($id_inscricao)) {
             http_response_code(400);
@@ -190,21 +212,46 @@ class Inscricao {
             return false;
         }
 
-        // Obter dados do POST (similar ao registrar)
-        // Implementação similar ao registrar, mas com UPDATE
+        // Obter dados do POST
+        $this->idade = $_POST['idade'] ?? '';
+        $this->genero = $_POST['genero'] ?? '';
+        $this->numero_do_processo = $_POST['numero_do_processo'] ?? '';
+        $this->nome_completo = $_POST['nome_completo'] ?? '';
+        $this->contacto_do_aluno = $_POST['contacto_do_aluno'] ?? '';
+        $this->contacto_do_encarregado = $_POST['contacto_do_encarregado'] ?? '';
+        $this->id_calendario = $_POST['id_calendario'] ?? null;
+        $this->data_de_nascimento = $_POST['data_de_nascimento'] ?? '';
+        $this->natural_de = $_POST['natural_de'] ?? '';
+        $this->provincia = $_POST['provincia'] ?? '';
+        $this->tipo_de_identificacao = $_POST['tipo_de_identificacao'] ?? '';
+        $this->numero_de_identificacao = $_POST['numero_de_identificacao'] ?? '';
+        $this->data_de_validade = $_POST['data_de_validade'] ?? null;
+        $this->classe = $_POST['classe'] ?? '';
+        $this->turno = $_POST['turno'] ?? '';
+        $this->aprovacao = $_POST['aprovacao'] ?? 0;
+        $this->comentario = $_POST['comentario'] ?? '';
+
+        // Processar uploads se existirem
+        if (isset($_FILES['arquivo_de_identificacao'])) {
+            $this->arquivo_de_identificacao = $this->processarUpload('arquivo_de_identificacao');
+        }
+        if (isset($_FILES['foto_tipo_passe'])) {
+            $this->foto_tipo_passe = $this->processarUpload('foto_tipo_passe');
+        }
 
         try {
             $sql = "UPDATE inscricoes SET 
                     idade = ?, genero = ?, numero_do_processo = ?, nome_completo = ?, 
                     contacto_do_aluno = ?, contacto_do_encarregado = ?, id_calendario = ?, 
                     data_de_nascimento = ?, natural_de = ?, provincia = ?, 
-                    tipo_de_identificacao = ?, numero_de_identificacao = ?, 
+                    tipo_de_identificacao = ?, numero_de_identificacao = ?, data_de_validade = ?,
+                    " . ($this->arquivo_de_identificacao ? "arquivo_de_identificacao = ?, " : "") .
+                    ($this->foto_tipo_passe ? "foto_tipo_passe = ?, " : "") . "
                     classe = ?, turno = ?, aprovacao = ?, comentario = ?
                     WHERE id_inscricao = ?";
 
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param(
-                "isisssissssssssii",
+            // Construir os parâmetros dinamicamente
+            $params = [
                 $this->idade,
                 $this->genero,
                 $this->numero_do_processo,
@@ -217,12 +264,25 @@ class Inscricao {
                 $this->provincia,
                 $this->tipo_de_identificacao,
                 $this->numero_de_identificacao,
-                $this->classe,
-                $this->turno,
-                $this->aprovacao,
-                $this->comentario,
-                $id_inscricao
-            );
+                $this->data_de_validade
+            ];
+
+            if ($this->arquivo_de_identificacao) {
+                $params[] = $this->arquivo_de_identificacao;
+            }
+            if ($this->foto_tipo_passe) {
+                $params[] = $this->foto_tipo_passe;
+            }
+
+            $params[] = $this->classe;
+            $params[] = $this->turno;
+            $params[] = $this->aprovacao;
+            $params[] = $this->comentario;
+            $params[] = $id_inscricao;
+
+            $stmt = $this->conn->prepare($sql);
+            $tipos = str_repeat('s', count($params) - 1) . 'i'; // Todos strings exceto o último que é inteiro (id)
+            $stmt->bind_param($tipos, ...$params);
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -249,7 +309,6 @@ class Inscricao {
         }
     }
 
-    // Método para eliminar uma inscrição
     public function eliminar($id_inscricao) {
         if (!is_numeric($id_inscricao)) {
             http_response_code(400);
