@@ -6,7 +6,7 @@ async function carregarCursos() {
     try {
         const response = await fetch('controllers/cursos.php');
         const data = await response.json();
-        
+        console.log('[DEBUG] Dados dos cursos:', data);
         const gridContainer = document.querySelector('#cursos .grid');
         
         if (data.success) {

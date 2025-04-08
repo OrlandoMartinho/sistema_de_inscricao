@@ -6,7 +6,6 @@ async function carregarGaleria() {
     try {
         const response = await fetch('controllers/galeria.php');
         const data = await response.json();
-        console.log('[DEBUG] Dados da galeria:', data);
         if (data.success) {
             const galleryContainer = document.getElementById('gallery-container');
             galleryContainer.innerHTML = ''; // Limpa o loading
