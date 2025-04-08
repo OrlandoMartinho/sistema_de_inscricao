@@ -31,11 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     row.innerHTML = `
                         <td>${curso}</td>
+                        <td>${evento.numero_de_vagas}</td>
                         <td>${evento.titulo_do_anuncio}</td>
                         <td>${formatDate(evento.data_de_termino)}</td>
                         <td class="event">${descricao}</td>
                         <td>
-                            <button class="apply-btn" onclick="openModal('${curso}')">
+                            <button class="apply-btn" onclick="openMatriculaModal('${id_curso}')">
                                 Inscrever-se
                             </button>
                         </td>
@@ -69,9 +70,3 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCalendarEvents();
 });
 
-// Função para abrir o modal (deve ser implementada conforme sua necessidade)
-function openModal(curso) {
-    alert(`Inscrição para o curso de ${curso}`);
-    // Aqui você pode implementar a lógica para abrir um modal real
-    // e processar a inscrição do usuário
-}

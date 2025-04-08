@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function carregarCursos() {
     try {
-        const response = await fetch('http://seusite.com/api/cursos.php?action=visualizar_todos');
+        const response = await fetch('controllers/cursos.php');
         const data = await response.json();
         
         const gridContainer = document.querySelector('#cursos .grid');

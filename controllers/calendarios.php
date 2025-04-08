@@ -11,6 +11,8 @@ class Calendario {
     private $data_de_criacao;
     private $nome_do_curso;
 
+    private $numero_de_vagas;
+
     public function __construct($conn) {
         $this->conn = $conn;
     }
@@ -21,6 +23,7 @@ class Calendario {
         $this->descricao = $_POST['descricao'] ?? '';
         $this->id_curso = $_POST['id_curso'] ?? null;
         $this->data_de_criacao = date('Y-m-d H:i:s');
+        $this->numero_de_vagas = $_POST['numero_de_vagas'] ?? null;
         
         // Validação dos campos obrigatórios
         if (empty($this->titulo_do_anuncio)) {
@@ -61,8 +64,8 @@ class Calendario {
             }
     
             // Inserir o evento no calendário
-            $sql = "INSERT INTO calendarios (titulo_do_anuncio, data_de_termino, descricao, id_curso, nome_do_curso, data_de_criacao) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO calendarios (titulo_do_anuncio, data_de_termino, descricao, id_curso, nome_do_curso,numero_de_vagas, data_de_criacao) 
+                    VALUES (?, ?, ?, ?, ?, ?,?)";
             $stmt = $this->conn->prepare($sql);
             
             $stmt->bind_param("sssis", 
@@ -71,6 +74,7 @@ class Calendario {
                 $this->descricao, 
                 $this->id_curso, 
                 $this->nome_do_curso,
+                $this->numero_de_vagas, 
                 $this->data_de_criacao);
         
             if ($stmt->execute()) {
