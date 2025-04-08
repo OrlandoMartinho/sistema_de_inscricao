@@ -1,5 +1,5 @@
 // Função para enviar o formulário
-function enviarFormulario() {
+function enviarFormulario(id_curso) {
     console.log('[DEBUG] Iniciando envio do formulário...');
     
     if (!validarPagina1() || !validarPagina2()) {
@@ -8,7 +8,7 @@ function enviarFormulario() {
     }
     
     const formData = new FormData(document.getElementById('form-matricula'));
-    
+    formData.append('id_curso', id_curso);
     // Simulação de envio (substituir por fetch real)
     console.log('Dados do formulário:', Object.fromEntries(formData));
     

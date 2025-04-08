@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS Calendarios (
     data_de_termino DATE,
     descricao VARCHAR(255),
     id_curso INT,
+    nome_do_curso VARCHAR(255),
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso)
 );
@@ -77,10 +78,11 @@ CREATE TABLE IF NOT EXISTS Contactos (
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Galeria (
+CREATE TABLE IF NOT EXISTS Galerias (
     id_galeria INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(255),
     data_do_evento DATE,
     descricao VARCHAR(255),
+    foto LONGBLOB,
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );

@@ -137,6 +137,7 @@ function validarPagina2() {
     return valido;
 }
 
+const id_curso = null
 // Função para abrir o modal de matrícula
 function openMatriculaModal(courseName) {
     const modal = document.getElementById('matriculaModal');
@@ -144,6 +145,8 @@ function openMatriculaModal(courseName) {
         console.error('Modal element not found');
         return;
     }
+
+    id_curso = courseName;
     
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -298,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnConfirmar) {
         btnConfirmar.addEventListener('click', function(e) {
             e.preventDefault();
-            enviarFormulario();
+            enviarFormulario(id_curso);
         });
     }
     

@@ -1,0 +1,49 @@
+document.addEventListener('DOMContentLoaded', function() {
+    carregarGaleria();
+});
+
+async function carregarGaleria() {
+    try {
+        const response = await fetch('controllers/galeria.php');
+        const data = await response.json();
+        console.log('[DEBUG] Dados da galeria:', data);
+        if (data.success) {
+            const galleryContainer = document.getElementById('gallery-container');
+            galleryContainer.innerHTML = ''; // Limpa o loading
+            
+            if (data.data.length > 0) {
+                data.data.forEach(galeria => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = galeria.foto || 'https://via.placeholder.com/500x300?text=Sem+Imagem';
+                    img.alt = galeria.titulo;
+                    img.loading = 'lazy';
+                    
+                    // Opcional: Adicionar overlay com informações
+                    const overlay = document.createElement('div');
+                    overlay.className = 'gallery-overlay';
+                    overlay.innerHTML = `
+                        <h3>${galeria.titulo}</h3>
+                        <p>${galeria.data_do_evento ? new Date(galeria.data_do_evento).toLocaleDateString() : 'Data não informada'}</p>
+                    `;
+                    
+                    galleryItem.appendChild(img);
+                    galleryItem.appendChild(overlay);
+                    galleryContainer.appendChild(galleryItem);
+                });
+            } else {
+                galleryContainer.innerHTML = '<p class="no-gallery">Nenhuma imagem na galeria ainda.</p>';
+            }
+        } else {
+            console.error('Erro ao carregar galeria:', data.message);
+            document.getElementById('gallery-container').innerHTML = 
+                '<p class="gallery-error">Não foi possível carregar a galeria. Tente novamente mais tarde.</p>';
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        document.getElementById('gallery-container').innerHTML = 
+            '<p class="gallery-error">Erro ao conectar com o servidor.</p>';
+    }
+}

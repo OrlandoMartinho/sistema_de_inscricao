@@ -162,37 +162,22 @@
         </div>
     </section>
     
-    <!-- Galeria Section -->
-    <section class="section section-bg" id="galeria">
-        <div class="container">
-            <div class="section-title">
-                <h2>Galeria</h2>
-                <p>Momentos da nossa instituição e eventos</p>
-            </div>
-            
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alunos em aula">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Formatura">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Laboratório">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Evento cultural">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1541178735493-479c1a27ed24?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Workshop">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Biblioteca">
-                </div>
+<!-- Galeria Section -->
+<section class="section section-bg" id="galeria">
+    <div class="container">
+        <div class="section-title">
+            <h2>Galeria</h2>
+            <p>Momentos da nossa instituição e eventos</p>
+        </div>
+        
+        <div class="gallery" id="gallery-container">
+            <!-- Itens serão inseridos dinamicamente via JS -->
+            <div class="gallery-loading">
+                <p>Carregando galeria...</p>
             </div>
         </div>
-    </section>
-    
+    </div>
+</section>
     <!-- Calendário Section -->
     <section class="section" id="calendario">
         <div class="container">
@@ -200,7 +185,6 @@
                 <h2>Calendário Inscrições</h2>
                 <p>Datas importantes para matrículas e eventos</p>
             </div>
-            
             <div class="calendar">
                 <table>
                     <thead>
@@ -212,35 +196,8 @@
                             <th>Ação</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Informática</td>
-                            <td>Inscrições para o ano lectivo de 2026</td>
-                            <td>15/12/2026</td>
-                            <td class="event">Este ano vai ser cadastrado novos alunos</td>
-                            <td><button class="apply-btn" onclick="openModal('Informática')">Inscrever-se</button></td>
-                        </tr>
-                        <tr>
-                            <td>Electrónica</td>
-                            <td>Inscrições para o ano lectivo de 2026</td>
-                            <td>15/12/2026</td>
-                            <td class="event">Este ano vai ser cadastrado novos alunos</td>
-                            <td><button class="apply-btn" onclick="openModal('Electrónica')">Inscrever-se</button></td>
-                        </tr>
-                        <tr>
-                            <td>Mecânica</td>
-                            <td>Inscrições para o ano lectivo de 2026</td>
-                            <td>15/12/2026</td>
-                            <td class="event">Este ano vai ser cadastrado novos alunos</td>
-                            <td><button class="apply-btn" onclick="openModal('Mecânica')">Inscrever-se</button></td>
-                        </tr>
-                        <tr>
-                            <td>Enfermagem</td>
-                            <td>Inscrições para o ano lectivo de 2026</td>
-                            <td>15/12/2026</td>
-                            <td class="event">Este ano vai ser cadastrado novos alunos</td>
-                            <td><button class="apply-btn" onclick="openModal('Enfermagem')">Inscrever-se</button></td>
-                        </tr>
+                    <tbody id="calendar-body">
+                        <!-- Os dados serão inseridos aqui via JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -471,8 +428,11 @@
     <script src="js/message-modal.js"></script>
     <script src="js/script.js"></script>
     <!-- apis requests -->
+    <script src="apis/calendarios.js"></script>
     <script src="apis/contacts.js"></script>
     <script src="apis/inscricoes.js"></script>
+    <script src="apis/galeria.js"></script>
+    
     
 </body>
 </html>
