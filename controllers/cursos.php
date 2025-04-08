@@ -8,7 +8,7 @@ class Cursos {
     private $descricao;
     private $area;
     private $duracao;
-    private $numero_de_vagas;
+   
     private $data_de_criacao;
 
     public function __construct($conn) {
@@ -21,7 +21,6 @@ class Cursos {
         $this->descricao = $_POST['descricao'] ?? '';
         $this->area = $_POST['area'] ?? '';
         $this->duracao = $_POST['duracao'] ?? 0;
-        $this->numero_de_vagas = $_POST['numero_de_vagas'] ?? 0;
         $this->data_de_criacao = date('Y-m-d H:i:s');
         
         // Validação dos campos obrigatórios
@@ -38,16 +37,11 @@ class Cursos {
             return false;
         }
         
-        // Validação do número de vagas
-        if (!is_numeric($this->numero_de_vagas) || $this->numero_de_vagas < 0) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Número de vagas inválido.']);
-            return false;
-        }
+     
     
         try {
-            $sql = "INSERT INTO cursos (nome, descricao, area, duracao, numero_de_vagas, data_de_criacao) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO cursos (nome, descricao, area, duracao,  data_de_criacao) 
+                    VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
             
             $stmt->bind_param("sssiis", 
@@ -55,7 +49,7 @@ class Cursos {
                 $this->descricao, 
                 $this->area, 
                 $this->duracao, 
-                $this->numero_de_vagas,
+             
                 $this->data_de_criacao);
         
             if ($stmt->execute()) {
@@ -144,7 +138,7 @@ class Cursos {
         $this->descricao = $_PUT['descricao'] ?? '';
         $this->area = $_PUT['area'] ?? '';
         $this->duracao = $_PUT['duracao'] ?? 0;
-        $this->numero_de_vagas = $_PUT['numero_de_vagas'] ?? 0;
+    
 
         // Validação dos campos obrigatórios
         if (empty($this->nome) || empty($this->descricao) || empty($this->area)) {
@@ -159,7 +153,6 @@ class Cursos {
                     descricao = ?, 
                     area = ?, 
                     duracao = ?, 
-                    numero_de_vagas = ? 
                     WHERE id_curso = ?";
             $stmt = $this->conn->prepare($sql);
             
@@ -168,7 +161,6 @@ class Cursos {
                 $this->descricao, 
                 $this->area, 
                 $this->duracao, 
-                $this->numero_de_vagas,
                 $id_curso);
 
             if ($stmt->execute()) {
