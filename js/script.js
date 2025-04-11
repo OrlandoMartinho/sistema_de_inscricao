@@ -263,7 +263,7 @@ async function  loaderAdmin(){
 document.addEventListener('DOMContentLoaded',  function() {
 
 
-   alert('Bem-vindo ao sistema de matrícula!');
+ 
    loaderAdmin()
     
 

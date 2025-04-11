@@ -3,83 +3,90 @@ include '../config/conection.php';
 session_start();
 header('Content-Type: application/json');
 
-// Enable error reporting for debugging
+// Ativar logs de erros
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // Don't show errors to users
+ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', '../logs/login_errors.log');
 
-// Log script start
-error_log("[LOGIN] Login attempt started - " . date('Y-m-d H:i:s'));
+// Tempo de expiração do token (4 horas em segundos)
+define('TOKEN_EXPIRATION', 4 * 60 * 60);
 
 try {
-    // Validate input
-    if (empty($_POST['email']) || empty($_POST['senha'])) {
-        error_log("[LOGIN] Missing email or password - IP: " . $_SERVER['REMOTE_ADDR']);
-        http_response_code(400);
-        echo json_encode(['status' => 'erro', 'mensagem' => 'Email e senha são obrigatórios.']);
-        exit;
+    // Validação dos campos
+    if (!isset($_POST['email'], $_POST['senha'])) {
+        throw new Exception("Campos obrigatórios não enviados.");
     }
 
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $senha = $_POST['senha'];
-    
-    error_log("[LOGIN] Attempting login for email: " . $email . " - IP: " . $_SERVER['REMOTE_ADDR']);
 
-    // Database query
-    $sql = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
-    error_log("[LOGIN] Preparing SQL: " . $sql);
-    
+    error_log("[LOGIN] Tentativa de login para o email: $email - IP: " . $_SERVER['REMOTE_ADDR']);
+
+    // Consulta SQL
+    $sql = "SELECT * FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
+
     if (!$stmt) {
-        error_log("[LOGIN] Prepare failed: " . $conn->error);
-        throw new Exception("Database error");
+        error_log("[LOGIN] Erro ao preparar SQL: " . $conn->error);
+        throw new Exception("Erro no banco de dados.");
     }
-    
-    $stmt->bind_param("ss", $email, $senha);
-    $executed = $stmt->execute();
-    
-    if (!$executed) {
-        error_log("[LOGIN] Execute failed: " . $stmt->error);
-        throw new Exception("Database error");
-    }
-    
+
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
     $result = $stmt->get_result();
-    error_log("[LOGIN] Found rows: " . $result->num_rows);
+
+    error_log("[LOGIN] Linhas encontradas: " . $result->num_rows);
 
     if ($result->num_rows > 0) {
-        // User found
         $usuario = $result->fetch_assoc();
-        error_log("[LOGIN] User found: " . print_r($usuario, true));
-        
-        $_SESSION['token'] = hash('sha256', $senha . time());
-        $_SESSION['usuario'] = $usuario['nome'] ?? 'admin';
-        $_SESSION['email'] = $email;
-        
-        error_log("[LOGIN] Login successful for user: " . $_SESSION['usuario'] . " - Token: " . $_SESSION['token']);
 
-        echo json_encode([
-            'status' => 'success',
-            'mensagem' => 'Login realizado com sucesso.',
-            'usuario' => $_SESSION['usuario'],
-            'token' => $_SESSION['token']
-        ]);
+        if (password_verify($senha, $usuario['senha'])) {
+            // Login válido - gerar token com expiração
+            $token = hash('sha256', $senha . time() . bin2hex(random_bytes(16)));
+            $expira_em = time() + TOKEN_EXPIRATION;
+            
+            // Armazenar na sessão
+            $_SESSION['token'] = $token;
+            $_SESSION['token_expira'] = $expira_em;
+            $_SESSION['usuario'] = $usuario['nome'];
+            $_SESSION['email'] = $usuario['email'];
+            $_SESSION['user_id'] = $usuario['id']; // Adicionado para referência
+
+            error_log("[LOGIN] Login bem-sucedido para: " . $_SESSION['usuario'] . " - Token expira em: " . date('Y-m-d H:i:s', $expira_em));
+
+            echo json_encode([
+                'status' => 'success',
+                'mensagem' => 'Login realizado com sucesso.',
+                'usuario' => $_SESSION['usuario'],
+                'token' => $token,
+                'expira_em' => $expira_em,
+                'expira_em_formatado' => date('Y-m-d H:i:s', $expira_em)
+            ]);
+        } else {
+            // Senha incorreta
+            error_log("[LOGIN] Senha inválida para: $email");
+            echo json_encode([
+                'status' => 'erro',
+                'mensagem' => 'Email ou senha inválidos.'
+            ]);
+        }
     } else {
-        error_log("[LOGIN] Invalid credentials for email: " . $email . " - IP: " . $_SERVER['REMOTE_ADDR']);
+        // Email não encontrado
+        error_log("[LOGIN] Email não encontrado: $email");
         echo json_encode([
             'status' => 'erro',
             'mensagem' => 'Email ou senha inválidos.'
         ]);
     }
 } catch (Exception $e) {
-    error_log("[LOGIN] Exception: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    error_log("[LOGIN] Exceção: " . $e->getMessage() . " em " . $e->getFile() . ":" . $e->getLine());
     http_response_code(500);
     echo json_encode([
         'status' => 'erro',
-        'mensagem' => 'Ocorreu um erro interno. Por favor, tente novamente mais tarde.'
+        'mensagem' => 'Erro interno. Tente novamente mais tarde.'
     ]);
 }
 
-// Log script end
-error_log("[LOGIN] Script execution completed - " . date('Y-m-d H:i:s') . "\n");
+error_log("[LOGIN] Fim do script - " . date('Y-m-d H:i:s') . "\n");
 ?>
