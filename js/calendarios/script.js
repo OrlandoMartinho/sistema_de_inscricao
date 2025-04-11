@@ -65,3 +65,5 @@ document.getElementById('form-editar-evento').addEventListener('submit', functio
     alert('Evento atualizado com sucesso!');
     closeModalEditarEvento();
 });
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

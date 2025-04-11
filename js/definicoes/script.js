@@ -80,3 +80,6 @@ function marcarTodasComoLidas() {
     notificacoes.forEach(not => not.classList.remove('unread'));
     alert('Todas as notificações marcadas como lidas.');
 }
+
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

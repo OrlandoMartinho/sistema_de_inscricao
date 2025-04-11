@@ -24,13 +24,21 @@ form.addEventListener('submit', async function(e) {
 
     if (data.status === 'success') {
       alert(data.mensagem);
+      showSuccessMessage(
+        data.mensagem,
+        'Logon efectuado com sucesso',
+        'success',
+        'ENJOY YOUR STAY',
+        3000 // auto-close after 3 seconds
+    );
       window.location.href = 'home.html';
     } else {
-      alert(data.mensagem);
+        showErrorMessage('Os seus dados de Login estão incorretos', 'Credenciais inválidas', 3000);
     }
 
   } catch (error) {
     console.error('❌ Erro na requisição:', error);
-    alert('Erro ao tentar fazer login. Tente novamente.');
+ 
+    showErrorMessage('Erro ao tentar fazer login. Tente novamente.', 'Erro no servidor', 3000);
   }
 });

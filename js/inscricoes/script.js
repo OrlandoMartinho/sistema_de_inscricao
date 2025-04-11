@@ -462,3 +462,6 @@ window.addEventListener('click', function(event) {
         closeModal(event.target.id);
     }
 });
+
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

@@ -147,3 +147,5 @@ document.getElementById('upload-form').addEventListener('submit', function(e) {
 document.addEventListener('DOMContentLoaded', function() {
     initGalleryViewer();
 });
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

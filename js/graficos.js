@@ -112,3 +112,6 @@ new Chart(ctx6, {
         maintainAspectRatio: false
     }
 });
+
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

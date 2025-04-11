@@ -336,3 +336,5 @@ a:hover {
     padding: 1.2rem 1rem;
   }
 }
+
+@import url('./message-modal.css');

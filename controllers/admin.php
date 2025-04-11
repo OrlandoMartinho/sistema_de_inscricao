@@ -39,7 +39,7 @@ function setupAdmin($conn, $adminConfig) {
             'action' => 'update',
             'success' => $success,
             'message' => $success ? 'Admin atualizado com sucesso!' : 'Erro ao atualizar admin: ' . $stmt->error,
-            'email' => $email
+            'email' => $email,
         ];
     } else {
         // Cria o admin

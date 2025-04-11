@@ -253,8 +253,8 @@ async function  loaderAdmin(){
       
         const data = await response.json();
         
-        console.log("✅ Resposta do servidor:", data);
-    
+        console.log("✅ Resposta do servidor:",  data.data.email);
+        localStorage.setItem('email', data.data.email);
       
       } catch (error) {
         alert('Erro ao tentar fazer login. Tente novamente.');

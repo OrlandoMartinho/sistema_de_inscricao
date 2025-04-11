@@ -143,3 +143,6 @@ document.getElementById('reply-contacto-form').addEventListener('submit', functi
     
     // Aqui você atualizaria a tabela ou recarregaria os dados
 });
+
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

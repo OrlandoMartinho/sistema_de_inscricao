@@ -121,3 +121,5 @@
             alert("Curso atualizado com sucesso!");
             closeModal('edit-curso-modal-container');
         });
+
+        document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";
