@@ -1,5 +1,8 @@
 <?php
 // env_loader.php
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 function loadEnv2($jsonPath) {
     if (!file_exists($jsonPath)) {

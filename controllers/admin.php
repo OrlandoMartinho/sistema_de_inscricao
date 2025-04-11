@@ -1,5 +1,9 @@
 <?php
-// admin_setup.php
+// admin_setup.php~
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 
 include '../config/conection.php';
 include './env_loader.php';

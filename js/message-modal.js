@@ -65,7 +65,7 @@ class MessageModal {
         document.body.style.overflow = 'auto';
     }
 }
-
+alert("message-modal.js loaded successfully!"); // Debugging line
 // Cria uma instância global
 const messageModal = new MessageModal();
 

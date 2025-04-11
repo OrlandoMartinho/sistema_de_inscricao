@@ -2,6 +2,9 @@
 include '../config/conection.php';
 session_start();
 header('Content-Type: application/json');
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 // Ativar logs de erros
 error_reporting(E_ALL);
