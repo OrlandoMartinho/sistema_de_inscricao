@@ -43,7 +43,13 @@ try {
 
     // Verificação normal do token
     if (!isset($_SESSION['token'], $_SESSION['token_expira'])) {
-        throw new Exception('Token não encontrado', 401);
+      
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Sessão encerrada com sucesso',
+            'redirect' => '../admin/login.html'
+        ]);
+        exit();
     }
 
     // Verifica se o token expirou
