@@ -5,16 +5,23 @@
  * @param {number} checkInterval Intervalo de verificação em milissegundos (padrão: 1 minuto)
  */
 function initTokenVerifier(checkInterval = 60000) {
+    console.log('Iniciando verificação do token...');
+    
     // Verifica imediatamente ao carregar
     checkTokenStatus();
     
     // Configura verificação periódica
-    setInterval(checkTokenStatus, checkInterval);
+    setInterval(() => {
+        console.log('Verificando status do token...');
+        checkTokenStatus();
+    }, checkInterval);
 }
 
 
 async function checkTokenStatus() {
     try {
+        console.log('Iniciando a verificação do status do token...');
+        
         const response = await fetch('../controllers/token_check.php', {
             method: 'GET',
             headers: {
@@ -25,11 +32,24 @@ async function checkTokenStatus() {
         });
 
         const data = await response.json();
+        console.log('Resposta do servidor recebida:', data);
 
         if (!response.ok || data.status === 'error') {
             // Token inválido ou expirado
+            console.warn('Token inválido ou expirado:', data.message);
             if (data.redirect) {
                 redirectToLogin(data.message);
+            }
+            return;
+        }
+
+        if (data.status === 'success' && data.message === 'Sessão encerrada com sucesso') {
+            // Caso a sessão tenha sido encerrada com sucesso, redireciona para a página de login
+            console.log('Sessão encerrada com sucesso. Redirecionando para login...');
+            if (data.redirect && !sessionStorage.getItem('redirected')) {
+                // Marca que o redirecionamento foi feito
+                sessionStorage.setItem('redirected', 'true');
+                window.location.href = data.redirect;
             }
             return;
         }
@@ -48,29 +68,42 @@ async function checkTokenStatus() {
  * @param {string} message Mensagem de erro
  */
 function redirectToLogin(message) {
-    // Armazena a página atual para possível redirecionamento após login
-    sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+    console.log('Redirecionando para login...');
     
-    // Codifica a mensagem para URL
-    const encodedMessage = encodeURIComponent(message || 'Sessão expirada');
-    
-    // Redireciona para login
-    window.location.href = `/login.php?error=${encodedMessage}`;
+    // Verifica se o redirecionamento já foi feito para evitar redirecionamento contínuo
+    if (!sessionStorage.getItem('redirected')) {
+        // Armazena a página atual para possível redirecionamento após login
+        sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+        
+        // Codifica a mensagem para URL
+        const encodedMessage = encodeURIComponent(message || 'Sessão expirada');
+        console.log('Mensagem de erro codificada:', encodedMessage);
+        
+        // Marca que o redirecionamento foi feito
+        sessionStorage.setItem('redirected', 'true');
+        
+        // Redireciona para login
+        window.location.href = `/login.php?error=${encodedMessage}`;
+    }
 }
 
 // Inicia o verificador quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM carregado. Iniciando verificador de token...');
+    
     // Verifica a cada 1 minuto (60000 ms)
     initTokenVerifier(60000);
     
     // Opcional: Verificar token antes de ações importantes
     document.querySelectorAll('[data-requires-auth]').forEach(element => {
         element.addEventListener('click', async (e) => {
-            const response = await fetch('../api/token_check.php');
+            console.log('Verificando token antes de ação importante...');
+            const response = await fetch('../controllers/token_check.php');
             const data = await response.json();
             
             if (!response.ok || data.status === 'error') {
                 e.preventDefault();
+                console.warn('Token inválido ou expirado antes da ação:', data.message);
                 redirectToLogin(data.message);
             }
         });
