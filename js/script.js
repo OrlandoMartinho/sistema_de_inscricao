@@ -236,7 +236,37 @@ function closeModal() {
 // }
 
 // Event listeners quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function() {
+
+async function  loaderAdmin(){
+        
+    try {
+        const response = await fetch('controllers/admin.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+      
+        if (!response.ok) {
+          throw new Error(`Erro HTTP! status: ${response.status}`);
+        }
+      
+        const data = await response.json();
+        
+        console.log("✅ Resposta do servidor:", data);
+    
+      
+      } catch (error) {
+        alert('Erro ao tentar fazer login. Tente novamente.');
+      }
+}
+document.addEventListener('DOMContentLoaded',  function() {
+
+
+   alert('Bem-vindo ao sistema de matrícula!');
+   loaderAdmin()
+    
+
     // Validação em tempo real para campos importantes
     const camposParaValidar = {
         'nome_completo': validacoes.nome,

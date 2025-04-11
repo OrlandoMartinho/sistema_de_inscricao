@@ -1,0 +1,11 @@
+[2025-04-11 06:15:50] ERRO: Table 'sistema_inscricoes.users' doesn't exist
+[2025-04-11 06:17:26] {"action":"create","success":true,"message":"Admin criado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:17:40] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:20:46] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:21:40] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:22:39] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:25:08] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:25:24] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:25:56] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:26:48] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
+[2025-04-11 06:27:16] {"action":"update","success":true,"message":"Admin atualizado com sucesso!","email":"admin@email.com"}
