@@ -158,11 +158,13 @@ class Inscricao {
                 $this->id_inscricao = $stmt->insert_id;
                 error_log("✅ Inscrição inserida com sucesso. ID: {$this->id_inscricao}");
     
-                $descricao = "Nova inscrição registrada: " . $this->nome_completo;
-                $sql2 = "INSERT INTO notificacoes (descricao) VALUES (?)";
+                $descricao = "A uma nova inscrição a ser avaliada"; // ← define em variável
+                $titulo = "Nova inscrição recebida"; // ← define em variável
+                $sql2 = "INSERT INTO notificacoes (descricao, titulo) VALUES (?, ?)";
                 $stmt2 = $this->conn->prepare($sql2);
-                $stmt2->bind_param("s", $descricao);
+                $stmt2->bind_param("ss", $descricao, $titulo); // ← agora tudo são variáveis
                 $stmt2->execute();
+
     
                 http_response_code(201);
                 echo json_encode([

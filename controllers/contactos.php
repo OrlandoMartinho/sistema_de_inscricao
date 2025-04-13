@@ -59,10 +59,12 @@ class Contacto {
             if ($stmt->execute()) {
                 // Adiciona notificação
                 $descricao = "Novo contato recebido de: " . $this->nome . " (" . $this->email . ")";
-                $sql2 = "INSERT INTO notificacoes (descricao) VALUES (?)";
+                $titulo = "Novo contato recebido"; // ← define em variável
+                $sql2 = "INSERT INTO notificacoes (descricao, titulo) VALUES (?, ?)";
                 $stmt2 = $this->conn->prepare($sql2);
-                $stmt2->bind_param("s", $descricao);
+                $stmt2->bind_param("ss", $descricao, $titulo); // ← agora tudo são variáveis
                 $stmt2->execute();
+                
     
                 http_response_code(201);
                 echo json_encode([

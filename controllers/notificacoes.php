@@ -5,7 +5,7 @@ header("Pragma: no-cache");
 header("Expires: 0");
 
 class Notificacoes {
-    private $id_notificacoes;
+    private $id_notificacao;
     private $conn;
     public $data_de_notificacao;
     public $descricao;
@@ -65,17 +65,17 @@ class Notificacoes {
     }
 
     // Método para deletar uma notificação
-    public function deletar($id_notificacoes) {
-        if (!is_numeric($id_notificacoes)) {
+    public function deletar($id_notificacao) {
+        if (!is_numeric($id_notificacao)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'ID de notificação inválido.']);
             return false;
         }
 
         try {
-            $sql = "DELETE FROM notificacoes WHERE id_notificacoes = ?";
+            $sql = "DELETE FROM notificacoes WHERE id_notificacao = ?";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("i", $id_notificacoes);
+            $stmt->bind_param("i", $id_notificacao);
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -103,15 +103,10 @@ class Notificacoes {
     }
 
     // Método para visualizar notificações por usuário
-    public function visualizar_por_usuario($id_usuario) {
-        if (!is_numeric($id_usuario)) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'ID de usuário inválido.']);
-            return false;
-        }
-
+    public function visualizar_por_usuario() {
+       
         try {
-            $sql = "SELECT * FROM notificacoes  ORDER BY data_de_notificacao DESC";
+            $sql = "SELECT * FROM notificacoes  ORDER BY data_da_notificacao DESC";
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
                 throw new Exception("Erro ao preparar a consulta: " . $this->conn->error);
@@ -146,8 +141,8 @@ class Notificacoes {
     }
 
     // Método para marcar notificação como lida
-    public function marcar_como_lido($id_notificacoes) {
-        if (!is_numeric($id_notificacoes)) {
+    public function marcar_como_lido($id_notificacao) {
+        if (!is_numeric($id_notificacao)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'ID de notificação inválido.']);
             return false;
@@ -155,9 +150,9 @@ class Notificacoes {
 
         try {
             // Supondo que temos uma coluna 'lida' na tabela notificacoes
-            $sql = "UPDATE notificacoes SET lida = 1 WHERE id_notificacoes = ?";
+            $sql = "UPDATE notificacoes SET lido = 1 WHERE id_notificacao = ?";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("i", $id_notificacoes);
+            $stmt->bind_param("i", $id_notificacao);
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -191,22 +186,19 @@ $notificacoes = new Notificacoes($conn);
 
 // Rotas
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id_usuario'])) {
-        $notificacoes->visualizar_por_usuario($_GET['id_usuario']);
-    } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de usuário não fornecido.']);
-    }
+ 
+    $notificacoes->visualizar_por_usuario();
+
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['marcar_lido'])) {
-        $notificacoes->marcar_como_lido($_POST['id_notificacoes']);
+        $notificacoes->marcar_como_lido($_POST['id_notificacao']);
     } else {
         $notificacoes->adicionar();
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_notificacoes'])) {
-        $notificacoes->deletar($_DELETE['id_notificacoes']);
+    if (isset($_DELETE['id_notificacao'])) {
+        $notificacoes->deletar($_DELETE['id_notificacao']);
     } else {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'ID de notificação não fornecido.']);

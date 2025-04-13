@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS Notificacoes (
     data_da_notificacao VARCHAR(100),
     descricao VARCHAR(255),
     id_usuario INT,
+    lido INT NOT NULL DEFAULT 0, 
+    titulo VARCHAR(255) DEFAULT NULL,
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 );
 

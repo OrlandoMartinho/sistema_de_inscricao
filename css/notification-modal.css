@@ -1,196 +1,302 @@
-/* notification-modal.css */
-.notification-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 350px;
-  height: 100vh;
-  background-color: white;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transform: translateX(100%);
-  opacity: 0;
-  transition: 
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3s ease;
-}
-
-.notification-modal.active {
-  display: block;
-  transform: translateX(0);
-  opacity: 1;
-  overflow-x: hidden;
-}
-
+/* Estilo do modal de notificações */
 .notification-overlay {
-  display: none;
   position: fixed;
-  overflow-x: hidden;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0);
-  z-index: 999;
-  overflow-x: hidden;
-  transition: background-color 0.3s ease;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .notification-overlay.active {
-  display: block;
-  overflow-x: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  visibility: visible;
+}
+
+.notification-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  max-width: 100%;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-modal.active {
+  transform: translateX(0);
 }
 
 .notification-header {
-  padding: 15px;
-  background-color: #459FCF;
-  color: white;
-  overflow-x: hidden;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transform: translateY(-20px);
-  opacity: 0;
-  animation: slideDown 0.3s ease-out 0.2s forwards;
+  background-color: #f8f9fa;
 }
 
 .notification-header h3 {
   margin: 0;
   font-size: 1.2rem;
-  overflow-x: hidden;
+  color: #333;
+}
+
+.notification-count {
+  color: #6c757d;
+  font-weight: normal;
+}
+
+.notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.notification-actions button:hover {
+  background-color: #e9ecef;
+}
+
+.mark-all-read {
+  color: #0d6efd;
+}
+
+.mark-all-read:disabled {
+  color: #adb5bd;
+  cursor: not-allowed;
+  background-color: transparent !important;
 }
 
 .close-notification {
-  background: none;
-  border: none;
-  color: white;
   font-size: 1.5rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  line-height: 1;
+  color: #6c757d;
+  padding: 0 0 3px 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 .close-notification:hover {
-  transform: scale(1.1);
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.notification-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.empty-notifications {
+  padding: 30px 20px;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.95rem;
 }
 
 .notification-list {
+  list-style: none;
   padding: 0;
   margin: 0;
-  list-style: none;
 }
 
 .notification-item {
-  padding: 15px;
+  padding: 15px 20px;
   border-bottom: 1px solid #eee;
-  display: flex;
-  align-items: center;
   cursor: pointer;
-  transform: translateX(20px);
-  opacity: 0;
-  animation: slideIn 0.3s ease-out forwards;
-  overflow-x: hidden;
-  transition: 
-    background-color 0.2s ease,
-    transform 0.2s ease;
+  transition: background-color 0.2s;
 }
 
 .notification-item:hover {
-  background-color: #f5f5f5;
-  transform: translateX(0) scale(1.02);
+  background-color: #f8f9fa;
 }
 
 .notification-item.unread {
-  background-color: #f5f9fc;
+  background-color: #f0f7ff;
+}
+
+.notification-item.unread:hover {
+  background-color: #e6f0ff;
+}
+
+.notification-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #e9ecef;
+  border-radius: 50%;
+  margin-right: 15px;
+  flex-shrink: 0;
 }
 
 .notification-icon {
-  margin-right: 10px;
-  color: #459FCF;
-  font-size: 1.2rem;
-  transition: transform 0.2s ease;
-}
-
-.notification-item:hover .notification-icon {
-  transform: scale(1.1);
+  color: #495057;
+  font-size: 1rem;
 }
 
 .notification-content {
   flex: 1;
 }
 
-.notification-time {
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.notification-header strong {
+  font-size: 0.95rem;
+  color: #212529;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.notification-close:hover {
+  color: #dc3545;
+}
+
+.notification-content p {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  color: #495057;
+  line-height: 1.4;
+}
+
+.notification-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.8rem;
-  color: #777;
-  margin-top: 5px;
-  transition: color 0.2s ease;
+  color: #6c757d;
 }
 
-.notification-item:hover .notification-time {
-  color: #555;
+.notification-time {
+  font-style: italic;
 }
 
+.mark-as-read {
+  background: none;
+  border: none;
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 2px 5px;
+  border-radius: 3px;
+  border: solid 1px #0d6efd;
+}
+
+.mark-as-read:hover {
+  text-decoration: underline;
+}
+
+.read-status {
+  color: #28a745;
+  font-size: 0.8rem;
+}
+
+.notification-error {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.notification-error.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(10px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Badge de notificações não lidas */
 .notification-badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background-color: #ff4757;
+  background-color: #dc3545;
   color: white;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 0.7rem;
-  display: flex;
+  width: 20px;
+  height: 20px;
+  display: none;
   align-items: center;
   justify-content: center;
-  transform: scale(0);
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  font-size: 0.7rem;
+  font-weight: bold;
 }
 
-.notification-bell-container {
-  position: relative;
-  margin-right: 15px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+/* Layout responsivo */
+@media (max-width: 576px) {
+  .notification-modal {
+      width: 100%;
+  }
+  
+  .notification-item {
+      flex-direction: column;
+  }
+  
+  .notification-icon-container {
+      margin-right: 0;
+      margin-bottom: 10px;
+  }
 }
 
-.notification-bell-container:hover {
-  transform: scale(1.1) rotate(-10deg);
-}
-
-.notification-badge.active {
-  transform: scale(1);
-}
-
-/* Animações personalizadas */
+/* Animações */
 @keyframes slideIn {
-  from {
-    transform: translateX(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+@keyframes slideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
 }
-
-/* Animações para cada item de notificação com delays */
-.notification-item:nth-child(1) { animation-delay: 0.3s; }
-.notification-item:nth-child(2) { animation-delay: 0.35s; }
-.notification-item:nth-child(3) { animation-delay: 0.4s; }
-.notification-item:nth-child(4) { animation-delay: 0.45s; }
-.notification-item:nth-child(5) { animation-delay: 0.5s; }

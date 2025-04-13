@@ -1,9 +1,8 @@
-// notification-modal.js
 class NotificationModal {
     constructor() {
         this.notifications = [];
         this.unreadCount = 0;
-        this.apiUrl = '../api/notificacoes.php'; // Ajuste o caminho conforme necessário
+        this.apiUrl = '../controllers/notificacoes.php';
         this.currentUserId = null;
         this.isOpen = false;
         
@@ -11,7 +10,7 @@ class NotificationModal {
         this.initEventListeners();
         this.fetchCurrentUser();
     }
-  
+
     /**
      * Inicializa a estrutura do modal de notificações
      */
@@ -21,7 +20,7 @@ class NotificationModal {
                 <div class="notification-overlay" id="notificationOverlay"></div>
                 <div class="notification-modal" id="notificationModal">
                     <div class="notification-header">
-                        <h3>Notificações <span class="notification-count">(${this.unreadCount})</span></h3>
+                        <h3>Notificações <span class="notification-count">${this.unreadCount}</span></h3>
                         <div class="notification-actions">
                             <button class="mark-all-read" ${this.unreadCount === 0 ? 'disabled' : ''}>
                                 Marcar todas como lidas
@@ -39,19 +38,16 @@ class NotificationModal {
             document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
     }
-  
+
     /**
      * Configura os event listeners
      */
     initEventListeners() {
-        // Fechar modal ao clicar no overlay ou no botão de fechar
         document.getElementById('notificationOverlay')?.addEventListener('click', () => this.close());
         document.querySelector('.close-notification')?.addEventListener('click', () => this.close());
         
-        // Marcar todas como lidas
         document.querySelector('.mark-all-read')?.addEventListener('click', () => this.markAllAsRead());
         
-        // Abrir modal ao clicar no ícone de notificações
         document.querySelectorAll('.notification-icon-container').forEach(container => {
             container.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -59,50 +55,42 @@ class NotificationModal {
             });
         });
         
-        // Fechar modal ao pressionar ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.close();
             }
         });
     }
-  
+
     /**
-     * Obtém o ID do usuário atual (simulação - implemente conforme sua aplicação)
+     * Obtém o ID do usuário atual
      */
     fetchCurrentUser() {
-        // Implemente de acordo com seu sistema de autenticação
-        // Pode ser de localStorage, cookie, ou variável global
-        this.currentUserId = localStorage.getItem('userId') || 1; // Exemplo temporário
+        this.currentUserId = localStorage.getItem('userId') || 1;
         
-        // Se temos um usuário, carregamos as notificações
         if (this.currentUserId) {
             this.fetchNotifications();
-            
-            // Configura polling para atualizações periódicas (opcional)
             this.setupPolling();
         }
     }
-  
+
     /**
      * Configura atualização periódica das notificações
      */
     setupPolling() {
-        // Atualiza a cada 2 minutos (120000ms)
         this.pollingInterval = setInterval(() => {
             if (document.visibilityState === 'visible') {
                 this.fetchNotifications();
             }
         }, 120000);
         
-        // Atualiza quando a página ganha foco
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
                 this.fetchNotifications();
             }
         });
     }
-  
+
     /**
      * Busca notificações do servidor
      */
@@ -129,32 +117,27 @@ class NotificationModal {
             this.showError('Erro de conexão');
         }
     }
-  
+
     /**
      * Processa as notificações recebidas da API
      */
     processNotifications(apiNotifications) {
-        // Transforma o formato da API para o formato interno
+        console.log('Notificações recebidas:', apiNotifications);
         this.notifications = apiNotifications.map(notification => ({
-            id: notification.id_notificacoes,
-            title: this.getNotificationTitle(notification.descricao),
+            id: notification.id_notificacao,
+            title: notification.titulo || this.getNotificationTitle(notification.descricao),
             message: notification.descricao,
-            time: notification.data_de_notificacao,
+            time: notification.data_da_notificacao,
             type: this.detectNotificationType(notification.descricao),
-            unread: !notification.lida, // Assumindo que existe campo 'lida'
-            raw: notification // Mantém os dados originais
+            unread: notification.lido === 0,
+            raw: notification
         }));
         
-        // Atualiza contador de não lidas
         this.unreadCount = this.notifications.filter(n => n.unread).length;
-        
-        // Renderiza as notificações
         this.renderNotifications();
-        
-        // Atualiza o badge
         this.updateBadge();
     }
-  
+
     /**
      * Renderiza a lista de notificações
      */
@@ -204,12 +187,9 @@ class NotificationModal {
             </li>
         `).join('');
         
-        // Adiciona event listeners para os novos elementos
         document.querySelectorAll('.notification-item').forEach(item => {
             item.addEventListener('click', (e) => {
-                // Não faz nada se o clique foi em um botão interno
                 if (e.target.tagName === 'BUTTON') return;
-                
                 const id = item.getAttribute('data-id');
                 this.handleNotificationClick(id);
             });
@@ -231,19 +211,17 @@ class NotificationModal {
             });
         });
         
-        // Atualiza o botão "Marcar todas como lidas"
         const markAllButton = document.querySelector('.mark-all-read');
         if (markAllButton) {
             markAllButton.disabled = this.unreadCount === 0;
         }
         
-        // Atualiza o contador no cabeçalho
         const countElement = document.querySelector('.notification-count');
         if (countElement) {
-            countElement.textContent = `(${this.unreadCount})`;
+            countElement.textContent = this.unreadCount > 99 ? '99+' : this.unreadCount;
         }
     }
-  
+
     /**
      * Atualiza o badge de contagem de não lidas
      */
@@ -253,38 +231,29 @@ class NotificationModal {
             badge.style.display = this.unreadCount > 0 ? 'flex' : 'none';
         });
     }
-  
+
     /**
      * Manipula o clique em uma notificação
      */
     handleNotificationClick(id) {
+        console.log('Notificação clicada:', id);
         const notification = this.notifications.find(n => n.id == id);
         if (!notification) return;
         
-        // Marca como lida se não estiver lida
         if (notification.unread) {
             this.markAsRead(id);
         }
         
-        // Aqui você pode adicionar ações específicas para cada tipo de notificação
-        switch (notification.type) {
-            case 'user':
-                console.log('Notificação de usuário:', notification);
-                // window.location.href = `/users/${notification.raw.id_usuario}`;
-                break;
-            case 'course':
-                console.log('Notificação de curso:', notification);
-                // window.location.href = `/courses/${notification.raw.id_curso}`;
-                break;
-            default:
-                console.log('Notificação genérica:', notification);
-        }
+        // Implemente ações específicas conforme necessário
+        console.log('Notificação clicada:', notification);
     }
-  
+
     /**
      * Marca uma notificação como lida
      */
     async markAsRead(id) {
+
+        console.log('Marcar como lida:', id);
         const notification = this.notifications.find(n => n.id == id);
         if (!notification || !notification.unread) return;
         
@@ -294,7 +263,7 @@ class NotificationModal {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `marcar_lido=1&id_notificacoes=${id}`
+                body: `marcar_lido=1&id_notificacao=${id}`
             });
             
             const data = await response.json();
@@ -313,7 +282,7 @@ class NotificationModal {
             this.showError('Erro de conexão');
         }
     }
-  
+
     /**
      * Marca todas as notificações como lidas
      */
@@ -321,13 +290,11 @@ class NotificationModal {
         if (this.unreadCount === 0) return;
         
         try {
-            // Otimismo: marca como lida no frontend primeiro
             this.notifications.forEach(n => n.unread = false);
             this.unreadCount = 0;
             this.updateBadge();
             this.renderNotifications();
             
-            // Envia requisição para o backend
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
@@ -341,7 +308,6 @@ class NotificationModal {
             if (!data.success) {
                 console.error('Erro ao marcar todas como lidas:', data.message);
                 this.showError('Erro ao marcar como lidas');
-                // Reverte no frontend se falhar no backend
                 this.fetchNotifications();
             }
         } catch (error) {
@@ -350,7 +316,7 @@ class NotificationModal {
             this.fetchNotifications();
         }
     }
-  
+
     /**
      * Remove uma notificação
      */
@@ -361,13 +327,12 @@ class NotificationModal {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `id_notificacoes=${id}`
+                body: `id_notificacao=${id}`
             });
             
             const data = await response.json();
             
             if (data.success) {
-                // Remove a notificação da lista
                 this.notifications = this.notifications.filter(n => n.id != id);
                 if (this.notifications.length === 0) {
                     document.querySelector('.notification-body').innerHTML = 
@@ -384,7 +349,7 @@ class NotificationModal {
             this.showError('Erro de conexão');
         }
     }
-  
+
     /**
      * Mostra uma mensagem de erro temporária
      */
@@ -403,7 +368,7 @@ class NotificationModal {
             }, 3000);
         }
     }
-  
+
     /**
      * Abre o modal de notificações
      */
@@ -412,11 +377,9 @@ class NotificationModal {
         document.getElementById('notificationOverlay')?.classList.add('active');
         document.body.style.overflow = 'hidden';
         this.isOpen = true;
-        
-        // Atualiza as notificações ao abrir
         this.fetchNotifications();
     }
-  
+
     /**
      * Fecha o modal de notificações
      */
@@ -426,18 +389,14 @@ class NotificationModal {
         document.body.style.overflow = 'auto';
         this.isOpen = false;
     }
-  
+
     /**
      * Alterna o estado do modal (abre/fecha)
      */
     toggle() {
-        if (this.isOpen) {
-            this.close();
-        } else {
-            this.open();
-        }
+        this.isOpen ? this.close() : this.open();
     }
-  
+
     /**
      * Detecta o tipo de notificação baseado no conteúdo
      */
@@ -458,18 +417,15 @@ class NotificationModal {
             return 'default';
         }
     }
-  
+
     /**
      * Extrai um título da descrição da notificação
      */
     getNotificationTitle(description) {
         const firstSentence = description.split('.')[0] || description;
-        if (firstSentence.length > 50) {
-            return firstSentence.substring(0, 50) + '...';
-        }
-        return firstSentence;
+        return firstSentence.length > 50 ? firstSentence.substring(0, 50) + '...' : firstSentence;
     }
-  
+
     /**
      * Obtém o ícone correspondente ao tipo de notificação
      */
@@ -484,7 +440,7 @@ class NotificationModal {
         };
         return icons[type] || icons.default;
     }
-  
+
     /**
      * Formata a data para exibição amigável
      */
@@ -493,29 +449,27 @@ class NotificationModal {
         const notificationDate = new Date(dateString);
         const diffInSeconds = Math.floor((now - notificationDate) / 1000);
         
-        if (diffInSeconds < 60) {
-            return `Agora mesmo`;
-        } else if (diffInSeconds < 3600) {
+        if (diffInSeconds < 60) return `Agora mesmo`;
+        if (diffInSeconds < 3600) {
             const minutes = Math.floor(diffInSeconds / 60);
             return `Há ${minutes} minuto${minutes !== 1 ? 's' : ''}`;
-        } else if (diffInSeconds < 86400) {
+        }
+        if (diffInSeconds < 86400) {
             const hours = Math.floor(diffInSeconds / 3600);
             return `Há ${hours} hora${hours !== 1 ? 's' : ''}`;
-        } else if (diffInSeconds < 2592000) {
+        }
+        if (diffInSeconds < 2592000) {
             const days = Math.floor(diffInSeconds / 86400);
             return `Há ${days} dia${days !== 1 ? 's' : ''}`;
-        } else {
-            return notificationDate.toLocaleDateString('pt-BR');
         }
+        return notificationDate.toLocaleDateString('pt-BR');
     }
-  }
-  
-  // Cria uma instância global quando o DOM estiver pronto
-  document.addEventListener('DOMContentLoaded', () => {
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     window.notificationModal = new NotificationModal();
     
-    // Expõe funções globais para uso em outros scripts
     window.openNotificationModal = () => window.notificationModal.open();
     window.closeNotificationModal = () => window.notificationModal.close();
     window.toggleNotificationModal = () => window.notificationModal.toggle();
-  });
+});

@@ -32,7 +32,7 @@ async function checkTokenStatus() {
         });
 
         const data = await response.json();
-        console.log('Resposta do servidor recebida:', data);
+        console.log('Resposta do servidor recebidaaaaa:', data);
 
         if (!response.ok || data.status === 'error') {
             // Token inválido ou expirado
