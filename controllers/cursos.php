@@ -25,11 +25,11 @@ class Cursos {
         $this->area = $_POST['area'] ?? '';
         $this->duracao = $_POST['duracao'] ?? 0;
         $this->data_de_criacao = date('Y-m-d H:i:s');
-        
+        error_log("Dados recebidos: " . json_encode($_POST)); // Log dos dados recebidos
         // Validação dos campos obrigatórios
         if (empty($this->nome) || empty($this->descricao) || empty($this->area)) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Nome, descrição e área são campos obrigatórios.']);
+            echo json_encode(['success' => false, 'message' => 'Nome, descrição e área são campos obrigatórios.','data' => $_POST]);
             return false;
         }
         
