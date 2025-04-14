@@ -147,58 +147,95 @@
     <!-- Modal de Inscrição -->
     <div id="inscricao-modal-container"></div>
 
-    <!-- Modal Publicar Evento -->
-    <dialog id="modal-publicar-evento" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModalPublicarEvento()">&times;</button>
-            <h2>Publicar Novo Caledário</h2>
-            <form id="form-publicar-evento">
-                <div class="form-group">
-                    <label for="evento-titulo">Título</label>
-                    <input type="text" id="evento-titulo" name="evento-titulo" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="evento-inscricoes-ate">Inscrições Até</label>
-                    <input type="date" id="evento-inscricoes-ate" name="evento-inscricoes-ate">
-                </div>
-                <div class="form-group">
-                    <label for="evento-descricao">Descrição</label>
-                    <textarea id="evento-descricao" name="evento-descricao" rows="4"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancelar" onclick="closeModalPublicarEvento()">Cancelar</button>
-                    <button type="submit" class="btn-confirmar">Publicar Evento</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
+  <!-- Modal Publicar Evento -->
+<dialog id="modal-publicar-evento" class="modal">
+    <div class="modal-content">
+        <button class="close" onclick="closeModalPublicarEvento()">&times;</button>
+        <h2>Publicar Novo Calendário</h2>
+        <form id="form-publicar-evento">
+            <div class="form-group">
+                <label for="titulo-anuncio">Título do Anúncio</label>
+                <input type="text" id="titulo-anuncio" name="titulo-anuncio" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="evento-curso">Curso Relacionado</label>
+                <select id="evento-curso" name="evento-curso" required onchange="atualizarNomeCurso()">
+                    <option value="">Selecione um curso</option>
+                    <!-- Os cursos serão preenchidos via JavaScript -->
+                </select>
+                <input type="hidden" id="nome-curso" name="nome-curso">
+            </div>
+
+            <div class="form-group">
+                <label for="numero-vagas">Número de Vagas</label>
+                <input type="number" id="numero-vagas" name="numero-vagas" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="data-termino">Data de Término</label>
+                <input type="date" id="data-termino" name="data-termino" required>
+            </div>
+            
+            
+            
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" rows="4" required></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancelar" onclick="closeModalPublicarEvento()">Cancelar</button>
+                <button type="submit" class="btn-confirmar">Publicar Evento</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 
     <!-- Modal Editar Evento -->
-    <dialog id="modal-editar-evento" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModalEditarEvento()">&times;</button>
-            <h2>Editar Calendario</h2>
-            <form id="form-editar-evento">
-                <div class="form-group">
-                    <label for="evento-titulo">Título</label>
-                    <input type="text" id="evento-titulo" name="evento-titulo" required>
-                </div>
-                <div class="form-group">
-                    <label for="editar-inscricoes-ate">Inscrições Até</label>
-                    <input type="date" id="editar-inscricoes-ate" name="editar-inscricoes-ate" value="2024-08-01">
-                </div>
-                <div class="form-group">
-                    <label for="editar-descricao">Descrição</label>
-                    <textarea id="editar-descricao" name="editar-descricao" rows="4">Descrição do evento de inscrição</textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancelar" onclick="closeModalEditarEvento()">Cancelar</button>
-                    <button type="submit" class="btn-confirmar">Salvar Alterações</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
+<dialog id="modal-editar-evento" class="modal">
+    <div class="modal-content">
+        <button class="close" onclick="closeModalEditarEvento()">&times;</button>
+        <h2>Editar Evento do Calendário</h2>
+        <form id="form-editar-evento">
+            <input type="hidden" id="editar-id-calendario" name="editar-id-calendario">
+            
+            <div class="form-group">
+                <label for="editar-titulo-anuncio">Título do Anúncio</label>
+                <input type="text" id="editar-titulo-anuncio" name="editar-titulo-anuncio" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="editar-evento-curso">Curso Relacionado</label>
+                <select id="editar-evento-curso" name="editar-evento-curso" required onchange="atualizarNomeCursoEdicao()">
+                    <option value="">Selecione um curso</option>
+                    <!-- Os cursos serão preenchidos via JavaScript -->
+                </select>
+                <input type="hidden" id="editar-nome-curso" name="editar-nome-curso">
+            </div>
+            
+            <div class="form-group">
+                <label for="editar-data-termino">Data de Término</label>
+                <input type="date" id="editar-data-termino" name="editar-data-termino" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="editar-numero-vagas">Número de Vagas</label>
+                <input type="number" id="editar-numero-vagas" name="editar-numero-vagas" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="editar-descricao">Descrição</label>
+                <textarea id="editar-descricao" name="editar-descricao" rows="4" required></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancelar" onclick="closeModalEditarEvento()">Cancelar</button>
+                <button type="submit" class="btn-confirmar">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 
     <!-- Modal Excluir Evento -->
     <dialog id="modal-excluir-evento" class="modal">

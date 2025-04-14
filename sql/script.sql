@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS Calendarios (
     descricao VARCHAR(255),
     id_curso INT,
     nome_do_curso VARCHAR(255),
-    numero_de_vagas INT,
+    numero_de_vagas INT ,
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso)
 );
