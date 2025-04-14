@@ -11,49 +11,25 @@ class Cursos {
     private $descricao;
     private $area;
     private $duracao;
-   
- 
 
     public function __construct($conn) {
         $this->conn = $conn;
     }
+
     public function cadastrar() {
         $this->nome = $_POST['nome'] ?? '';
         $this->descricao = $_POST['descricao'] ?? '';
         $this->area = $_POST['area'] ?? '';
         $this->duracao = $_POST['duracao'] ?? 0;
-    
-        // error_log("Dados recebidos para cadastro: " . json_encode($_POST));
-    
-        // if (empty($this->nome) || empty($this->descricao) || empty($this->area)) {
-        //     error_log("Campos obrigatórios ausentes.");
-        //     http_response_code(400);
-        //     echo json_encode(['success' => false, 'message' => $_POST,'data' => $_POST]);
-        //     return false;
-        // }
-    
-        // if (!is_numeric($this->duracao) || $this->duracao <= 0) {
-        //     error_log("Duração inválida: " . $this->duracao);
-        //     http_response_code(400);
-        //     echo json_encode(['success' => false, 'message' => 'Duração deve ser um número positivo.']);
-        //     return false;
-        // }
-    
-        // // Data de criação manual (caso não esteja vindo via POST)
-        // $this->data_de_criacao = date("Y-m-d H:i:s");
-        // error_log("Data de criação: " . $this->data_de_criacao);
-    
+
         try {
             $sql = "INSERT INTO cursos (nome, descricao, area, duracao) VALUES (?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("sssi", $this->nome, $this->descricao, $this->area, $this->duracao);
-    
+
             if ($stmt->execute()) {
                 $this->id_curso = $stmt->insert_id;
-                error_log("Curso inserido com ID: " . $this->id_curso);
-    
                 
-    
                 http_response_code(201);
                 echo json_encode([
                     'success' => true,
@@ -78,7 +54,7 @@ class Cursos {
             return false;
         }
     }
-    
+
     public function eliminar($id_curso) {
         if (!is_numeric($id_curso)) {
             http_response_code(400);
@@ -116,44 +92,33 @@ class Cursos {
         }
     }
 
-    public function editar($id_curso) {
-        if (!is_numeric($id_curso)) {
+    public function editar($dados) {
+        if (!is_numeric($dados['id_curso'])) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'ID de curso inválido.']);
             return false;
         }
 
-        // Obter dados do PUT
-        parse_str(file_get_contents("php://input"), $_PUT);
-        
-        $this->nome = $_PUT['nome'] ?? '';
-        $this->descricao = $_PUT['descricao'] ?? '';
-        $this->area = $_PUT['area'] ?? '';
-        $this->duracao = $_PUT['duracao'] ?? 0;
-    
-
-        // Validação dos campos obrigatórios
-        if (empty($this->nome) || empty($this->descricao) || empty($this->area)) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Nome, descrição e área são campos obrigatórios.']);
-            return false;
-        }
+        $this->nome = $dados['nome'] ?? '';
+        $this->descricao = $dados['descricao'] ?? '';
+        $this->area = $dados['area'] ?? '';
+        $this->duracao = $dados['duracao'] ?? 0;
 
         try {
             $sql = "UPDATE cursos SET 
                     nome = ?, 
                     descricao = ?, 
                     area = ?, 
-                    duracao = ?, 
+                    duracao = ? 
                     WHERE id_curso = ?";
             $stmt = $this->conn->prepare($sql);
             
-            $stmt->bind_param("sssiii", 
+            $stmt->bind_param("sssii", 
                 $this->nome, 
                 $this->descricao, 
                 $this->area, 
                 $this->duracao, 
-                $id_curso);
+                $dados['id_curso']);
 
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -266,22 +231,45 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $curso->visualizar_todos();
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $curso->cadastrar();
-} elseif ($_SERVER["REQUEST_METHOD"] == "PUT") {
-    parse_str(file_get_contents("php://input"), $_PUT);
-    if (isset($_PUT['id_curso'])) {
-        $curso->editar($_PUT['id_curso']);
+    // Verifica o tipo de ação
+    if (isset($_POST['action'])) {
+        switch ($_POST['action']) {
+            case 'create':
+                $curso->cadastrar();
+                break;
+                
+            case 'update':
+                if (isset($_POST['id_curso'])) {
+                    $dados = [
+                        'id_curso' => $_POST['id_curso'],
+                        'nome' => $_POST['nome'] ?? '',
+                        'descricao' => $_POST['descricao'] ?? '',
+                        'area' => $_POST['area'] ?? '',
+                        'duracao' => $_POST['duracao'] ?? 0
+                    ];
+                    $curso->editar($dados);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID de curso não fornecido.']);
+                }
+                break;
+                
+            case 'delete':
+                if (isset($_POST['id_curso'])) {
+                    $curso->eliminar($_POST['id_curso']);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID de curso não fornecido.']);
+                }
+                break;
+                
+            default:
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Ação não reconhecida.']);
+        }
     } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de curso não fornecido.']);
-    }
-} elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_curso'])) {
-        $curso->eliminar($_DELETE['id_curso']);
-    } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de curso não fornecido.']);
+        // POST sem ação especificada - assumimos criação
+        $curso->cadastrar();
     }
 } else {
     http_response_code(405);

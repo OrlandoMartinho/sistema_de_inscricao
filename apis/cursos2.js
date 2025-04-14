@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${curso.descricao}</td>
                         <td>${curso.area}</td>
                         <td>${duracao}</td>
-                  
                         <td>
                             <button class="btn-edit" onclick="openModalEditCurso(${curso.id_curso})"><i class="fas fa-edit"></i></button>
                             <button class="btn-delete" onclick="openDeleteModal(${curso.id_curso}, '${curso.nome}')"><i class="fas fa-trash"></i></button>
@@ -29,13 +28,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     tbody.appendChild(tr);
                 });
             } else {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center;">Nenhum curso cadastrado ainda.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Nenhum curso cadastrado ainda.</td></tr>`;
             }
         } catch (error) {
             console.error('Erro ao carregar cursos:', error);
             document.querySelector('table tbody').innerHTML = `
                 <tr>
-                    <td colspan="8" style="text-align: center; color: red;">
+                    <td colspan="6" style="text-align: center; color: red;">
                         Erro ao carregar cursos. Tente novamente mais tarde.
                     </td>
                 </tr>
@@ -79,21 +78,28 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById(modalId).style.display = 'none';
     };
 
+    // Função DELETE atualizada com sistema de action
     window.deleteCurso = async function () {
         if (!cursoIdToDelete) return;
 
         try {
             const formData = new FormData();
+            formData.append('action', 'delete');
             formData.append('id_curso', cursoIdToDelete);
-            formData.append('_method', 'DELETE');
+
+            console.log('Enviando para exclusão:', {
+                action: 'delete',
+                id_curso: cursoIdToDelete
+            });
 
             const response = await fetch('../controllers/cursos.php', {
-                method: 'DELETE',
+                method: 'POST',
                 body: formData
             });
 
             const data = await response.json();
-
+            console.log('Resposta do servidor:', data);
+            
             if (data.success) {
                 alert('Curso excluído com sucesso!');
                 closeModal('confirm-modal');
@@ -109,20 +115,33 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Event listener do formulário de edição atualizado
     document.getElementById('edit-curso-form').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         try {
-            const formData = new FormData();
-            const dados = getEdicaoData();
-            validarFormulario(dados);
+            const formData = new FormData(this);
+            const idCurso = document.getElementById('edit-curso-id').value;
+            formData.append('action', 'update');
+            formData.append('id_curso', idCurso);
 
-            formData.append('id_curso', dados.id_curso);
-            formData.append('nome', dados.nome);
-            formData.append('descricao', dados.descricao);
-            formData.append('area', dados.area);
-            formData.append('duracao', dados.duracao);
-            formData.append('_method', 'PUT');
+            console.log('Enviando para edição:', {
+                action: 'update',
+                id_curso: idCurso,
+                nome: formData.get('nome'),
+                descricao: formData.get('descricao'),
+                area: formData.get('area'),
+                duracao: formData.get('duracao')
+            });
+
+            // Validação dos dados
+            const dados = {
+                nome: formData.get('nome'),
+                descricao: formData.get('descricao'),
+                area: formData.get('area'),
+                duracao: parseInt(formData.get('duracao')) || 0
+            };
+            validarFormulario(dados);
 
             const response = await fetch('../controllers/cursos.php', {
                 method: 'POST',
@@ -130,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
+            console.log('Resposta do servidor:', data);
 
             if (data.success) {
                 alert('Curso atualizado com sucesso!');
@@ -173,10 +193,9 @@ function getCadastroData() {
         nome: document.getElementById('curso-nome').value.trim(),
         descricao: document.getElementById('curso-descricao').value.trim(),
         area: document.getElementById('curso-area').value,
-        duracao: parseInt(document.getElementById('edit-curso-duracao').value) || 0
+        duracao: parseInt(document.getElementById('curso-duracao').value) || 0
     };
 }
-
 function getEdicaoData() {
     return {
         id_curso: document.getElementById('edit-curso-id').value,
@@ -193,24 +212,31 @@ async function cadastrarCurso() {
         validarFormulario(dados);
 
         const formData = new FormData();
+        formData.append('action', 'create');
         formData.append('nome', dados.nome);
         formData.append('descricao', dados.descricao);
         formData.append('area', dados.area);
         formData.append('duracao', dados.duracao);
 
+        console.log('Enviando para cadastro:', {
+            action: 'create',
+            nome: dados.nome,
+            descricao: dados.descricao,
+            area: dados.area,
+            duracao: dados.duracao
+        });
+
         const response = await fetch('../controllers/cursos.php', {
             method: 'POST',
             body: formData
         });
-        if (!response.ok) {
-            throw new Error('Erro na comunicação com o servidor');
-        }
-        console.log('Response:', response); 
+
         const data = await response.json();
 
         if (data.success) {
             alert('Curso cadastrado com sucesso!');
             closeModal('curso-modal-container');
+            document.dispatchEvent(new Event('DOMContentLoaded'));
         } else {
             throw new Error(data.message || 'Erro ao cadastrar curso');
         }
