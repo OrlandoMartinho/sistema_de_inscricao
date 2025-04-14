@@ -122,9 +122,14 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const formData = new FormData(this);
             const idCurso = document.getElementById('edit-curso-id').value;
+            const dados = getEdicaoData();
             formData.append('action', 'update');
             formData.append('id_curso', idCurso);
-
+            formData.append('nome', dados.nome);
+            formData.append('descricao', dados.descricao);
+            formData.append('area', dados.area);
+            formData.append('duracao', dados.duracao);
+            
             console.log('Enviando para edição:', {
                 action: 'update',
                 id_curso: idCurso,
@@ -134,15 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 duracao: formData.get('duracao')
             });
 
-            // Validação dos dados
-            const dados = {
-                nome: formData.get('nome'),
-                descricao: formData.get('descricao'),
-                area: formData.get('area'),
-                duracao: parseInt(formData.get('duracao')) || 0
-            };
+           
             validarFormulario(dados);
-
+            console.log('Dados validados:', formData);
             const response = await fetch('../controllers/cursos.php', {
                 method: 'POST',
                 body: formData
@@ -198,7 +197,6 @@ function getCadastroData() {
 }
 function getEdicaoData() {
     return {
-        id_curso: document.getElementById('edit-curso-id').value,
         nome: document.getElementById('edit-curso-nome').value.trim(),
         descricao: document.getElementById('edit-curso-descricao').value.trim(),
         area: document.getElementById('edit-curso-area').value,
