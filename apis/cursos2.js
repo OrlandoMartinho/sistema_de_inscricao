@@ -129,19 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('descricao', dados.descricao);
             formData.append('area', dados.area);
             formData.append('duracao', dados.duracao);
-            
-            console.log('Enviando para edição:', {
-                action: 'update',
-                id_curso: idCurso,
-                nome: formData.get('nome'),
-                descricao: formData.get('descricao'),
-                area: formData.get('area'),
-                duracao: formData.get('duracao')
-            });
+
+           
 
            
             validarFormulario(dados);
-            console.log('Dados validados:', formData);
+         
             const response = await fetch('../controllers/cursos.php', {
                 method: 'POST',
                 body: formData
