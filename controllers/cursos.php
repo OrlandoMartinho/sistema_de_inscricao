@@ -12,59 +12,48 @@ class Cursos {
     private $area;
     private $duracao;
    
-    private $data_de_criacao;
+ 
 
     public function __construct($conn) {
         $this->conn = $conn;
     }
-
     public function cadastrar() {
-        // Obter dados do POST
         $this->nome = $_POST['nome'] ?? '';
         $this->descricao = $_POST['descricao'] ?? '';
         $this->area = $_POST['area'] ?? '';
         $this->duracao = $_POST['duracao'] ?? 0;
-        $this->data_de_criacao = date('Y-m-d H:i:s');
-        error_log("Dados recebidos: " . json_encode($_POST)); // Log dos dados recebidos
-        // Validação dos campos obrigatórios
-        if (empty($this->nome) || empty($this->descricao) || empty($this->area)) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Nome, descrição e área são campos obrigatórios.','data' => $_POST]);
-            return false;
-        }
-        
-        // Validação da duração
-        if (!is_numeric($this->duracao) || $this->duracao <= 0) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Duração deve ser um número positivo.']);
-            return false;
-        }
-        
-     
+    
+        // error_log("Dados recebidos para cadastro: " . json_encode($_POST));
+    
+        // if (empty($this->nome) || empty($this->descricao) || empty($this->area)) {
+        //     error_log("Campos obrigatórios ausentes.");
+        //     http_response_code(400);
+        //     echo json_encode(['success' => false, 'message' => $_POST,'data' => $_POST]);
+        //     return false;
+        // }
+    
+        // if (!is_numeric($this->duracao) || $this->duracao <= 0) {
+        //     error_log("Duração inválida: " . $this->duracao);
+        //     http_response_code(400);
+        //     echo json_encode(['success' => false, 'message' => 'Duração deve ser um número positivo.']);
+        //     return false;
+        // }
+    
+        // // Data de criação manual (caso não esteja vindo via POST)
+        // $this->data_de_criacao = date("Y-m-d H:i:s");
+        // error_log("Data de criação: " . $this->data_de_criacao);
     
         try {
-            $sql = "INSERT INTO cursos (nome, descricao, area, duracao,  data_de_criacao) 
-                    VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO cursos (nome, descricao, area, duracao) VALUES (?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
-            
-            $stmt->bind_param("sssiis", 
-                $this->nome, 
-                $this->descricao, 
-                $this->area, 
-                $this->duracao, 
-             
-                $this->data_de_criacao);
-        
+            $stmt->bind_param("sssi", $this->nome, $this->descricao, $this->area, $this->duracao);
+    
             if ($stmt->execute()) {
                 $this->id_curso = $stmt->insert_id;
+                error_log("Curso inserido com ID: " . $this->id_curso);
+    
                 
-                // Adiciona notificação
-                $descricao = "Novo curso cadastrado: " . $this->nome;
-                $sql2 = "INSERT INTO notificacoes (descricao) VALUES (?)";
-                $stmt2 = $this->conn->prepare($sql2);
-                $stmt2->bind_param("s", $descricao);
-                $stmt2->execute();
-        
+    
                 http_response_code(201);
                 echo json_encode([
                     'success' => true,
@@ -79,17 +68,17 @@ class Cursos {
                 throw new Exception("Erro ao executar a query: " . $stmt->error);
             }
         } catch (Exception $e) {
+            error_log("Erro ao cadastrar curso: " . $e->getMessage());
             http_response_code(500);
             echo json_encode([
                 'success' => false,
                 'message' => 'Erro ao cadastrar curso.',
                 'error' => $e->getMessage()
             ]);
-            error_log("Erro no banco de dados: " . $e->getMessage());
             return false;
         }
     }
-
+    
     public function eliminar($id_curso) {
         if (!is_numeric($id_curso)) {
             http_response_code(400);

@@ -30,12 +30,10 @@ async function carregarCursos() {
                     }
                     
                     card.innerHTML = `
-                        <h3>${curso.nome}</h3>
-                        <p>${curso.descricao}</p>
-                        <p><strong>Área:</strong> ${curso.area}</p>
-                        <p><strong>Duração:</strong> ${textoDuracao || 'Não informada'}</p>
-                        <p><strong>Vagas:</strong> ${curso.numero_de_vagas}</p>
-                        <button class="btn-saiba-mais" data-id="${curso.id_curso}">Saiba mais</button>
+                        <h3>${curso.nome || 'Não informada'}</h3>
+                        <p>${curso.descricao || 'Não informada'}</p>
+                        <p><strong>Área:</strong> ${curso.area || 'Não informada'}</p>
+                        <p><strong>Duração:</strong> ${curso.duracao + " Meses" || 'Não informada'}</p>
                     `;
                     
                     gridContainer.appendChild(card);

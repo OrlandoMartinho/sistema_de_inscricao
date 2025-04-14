@@ -135,33 +135,6 @@ tr:hover {
   transform: translateY(-2px);
 }
 
-/* Paginação */
-.pagination {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 5px;
-}
-
-.btn-pagination {
-  border: 1px solid #ddd;
-  background: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: all 0.3s ease;
-}
-
-.btn-pagination:hover {
-  background-color: #f5f5f5;
-}
-
-.btn-pagination.active {
-  background-color: #2196F3;
-  color: white;
-  border-color: #2196F3;
-}
 
 /* Responsividade */
 @media screen and (max-width: 768px) {

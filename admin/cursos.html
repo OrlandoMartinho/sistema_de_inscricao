@@ -67,67 +67,14 @@
                         <tr>
                             <th>ID</th>
                             <th>Nome do Curso</th>
+                            <th>Descrição</th>
                             <th>Área</th>
                             <th>Duração</th>
-                            <th>Vagas</th>
-                            <th>Inscrições</th>
-                            <th>Estado</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Electricidade Industrial</td>
-                            <td>Engenharia</td>
-                            <td>6 meses</td>
-                            <td>25</td>
-                            <td>18</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <button class="btn-edit" onclick="openModalEditCurso(1)"><i class="fas fa-edit"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(1)"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Informática Básica</td>
-                            <td>Tecnologia</td>
-                            <td>3 meses</td>
-                            <td>30</td>
-                            <td>42</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <button class="btn-edit" onclick="openModalEditCurso(1)"><i class="fas fa-edit"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(1)"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Mecânica Automóvel</td>
-                            <td>Mecânica</td>
-                            <td>9 meses</td>
-                            <td>20</td>
-                            <td>15</td>
-                            <td><span class="status inactive">Inativo</span></td>
-                            <td>
-                                <button class="btn-edit" onclick="openModalEditCurso(1)"><i class="fas fa-edit"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(1)"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Gestão de Pequenos Negócios</td>
-                            <td>Administração</td>
-                            <td>4 meses</td>
-                            <td>35</td>
-                            <td>28</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <button class="btn-edit" onclick="openModalEditCurso(1)"><i class="fas fa-edit"></i></button>
-                                <button class="btn-delete" onclick="openDeleteModal(1)"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                       
                     </tbody>
                 </table>
             </div>
@@ -160,10 +107,7 @@
                     <label for="edit-curso-duracao">Duração</label>
                     <input type="text" id="edit-curso-duracao" placeholder="Ex: 6 meses" required>
                 </div>
-                <div class="form-group">
-                    <label for="curso-vagas">Vagas</label>
-                    <input type="number" id="curso-vagas" min="1" required>
-                </div>
+                
                 <div class="form-group">
                     <label for="curso-descricao">Descrição</label>
                     <textarea id="curso-descricao" rows="3"></textarea>
@@ -171,7 +115,7 @@
                  
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="closeModal('curso-modal-container')">Cancelar</button>
-                    <button type="submit" class="btn-confirm">Salvar Curso</button>
+                    <button type="submit" class="btn-confirm" onclick="cadastrarCurso()">Salvar Curso</button>
                 </div>
             </form>
         </div>
@@ -202,10 +146,7 @@
                     <label for="edit-curso-duracao">Duração</label>
                     <input type="text" id="edit-curso-duracao" placeholder="Ex: 6 meses" required>
                 </div>
-                <div class="form-group">
-                    <label for="edit-curso-vagas">Vagas</label>
-                    <input type="number" id="edit-curso-vagas" min="1" required>
-                </div>
+                
                 <div class="form-group">
                     <label for="edit-curso-descricao">Descrição</label>
                     <textarea id="edit-curso-descricao" rows="3"></textarea>
