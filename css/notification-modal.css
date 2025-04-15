@@ -221,6 +221,8 @@
   border: solid 1px #0d6efd;
 }
 
+
+
 .mark-as-read:hover {
   text-decoration: underline;
 }
@@ -259,19 +261,28 @@
 
 /* Badge de notificações não lidas */
 .notification-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
+ 
   background-color: #dc3545;
   color: white;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+ 
   display: none;
+ 
+}
+
+.notify{
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  margin-top: -2.4vh;
+  margin-left: .3vw; 
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
-  font-weight: bold;
+  font-size: .7rem;
 }
 
 /* Layout responsivo */

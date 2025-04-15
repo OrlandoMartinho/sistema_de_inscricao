@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeria - Sistema de Inscrição</title>
     <link rel="stylesheet" href="../css/galeria/galeria.css">
-    <link rel="stylesheet" href="../css/notification-modal.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
 </head>
@@ -24,7 +24,7 @@
                     <li><i class="fas fa-envelope"></i><a href="contactos.html">Contactos</a></li>
                     <li class="active"><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
                     <li><i class="fas fa-cog"></i><a href="definicoes.html">Configurações</a></li>
-                    <li class="logout" onclick = "fazerLogout()" > <i class="fas fa-sign-out-alt"></i><a> Sair do sistema</a> </li>
+                    <li class="logout"><i class="fas fa-sign-out-alt"></i><a href="./login.html"> Sair do sistema</a></li>
                 </ul>
             </nav>
         </aside>
@@ -38,11 +38,10 @@
                 </div>
                 <div class="user-info">
                     <div class="notification-bell-container" onclick="openNotificationModal()">
-                        <i class="fa-solid fa-bell notificacao"></i>
-                        <span class="notification-badge"></span>
+                        <i class="fa-solid fa-bell notificacao"><p class="notify">3</p></i>
                     </div>
                     <i class="fas fa-user"></i>
-                    <span id="nomeUsuario">Asidaini Pinto</span><span>(Administrador)</span>
+                    <span>Asidaini Pinto</span><span>(Administrador)</span>
                 </div>
             </header>
             
@@ -73,9 +72,29 @@
                     </div>
                 </div>
                 
-              
+                <div class="gallery-item">
+                    <img src="../assets/gallery/curso1.jpg" alt="Aula Prática">
+                    <div class="gallery-actions">
+                        <button class="btn-view" onclick="viewImage(this)"><i class="fas fa-eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(2)"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-title">Aula de Electricidade</span>
+                        <span class="gallery-date">22/04/2023</span>
+                    </div>
+                </div>
                 
-              
+                <div class="gallery-item">
+                    <img src="../assets/gallery/formatura.jpg" alt="Formatura">
+                    <div class="gallery-actions">
+                        <button class="btn-view" onclick="viewImage(this)"><i class="fas fa-eye"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(3)"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-title">Formatura 2023</span>
+                        <span class="gallery-date">10/12/2023</span>
+                    </div>
+                </div>
                 
                 <!-- Mais itens da galeria -->
             </div>
@@ -150,9 +169,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
    
 </body>
+<script src="../js/notification-modal.js"></script>
 <script src="../js/tokenVerifier.js"></script>
 <script src="../js/logout.js"></script>
-<script src="../js/notification-modal.js"></script>
-<script src="../js/galeria/script.js"></script>
 <script src="../apis/galeria2.js"></script>
+<script src="../js/galeria/script.js"></script>
 </html>

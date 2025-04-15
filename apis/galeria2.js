@@ -373,6 +373,7 @@ function enviarFotos({ title, date, description, files }) {
     console.log('[GALERIA] Enviando requisição para o servidor...');
     const startTime = performance.now();
     console.log('Conteúdo do FormData:', formData);
+    formData.append('action', 'upload');
     fetch('../controllers/galeria.php', {
         method: 'POST',
         body: formData
@@ -490,13 +491,12 @@ function deletePhoto() {
     btnDelete.disabled = true;
     
     const startTime = performance.now();
-    
+    const formData = new FormData();
+    formData.append('id_galeria', fotoParaDeletar);
+    formData.append('action', 'delete');
     fetch(`../controllers/galeria.php?id_galeria=${fotoParaDeletar}`, {
-        method: 'DELETE',
-        headers: {
-         
-            'Content-Type': 'application/json'
-        }
+        method: 'POST',
+        body: formData,
     })
     .then(response => {
         const duration = (performance.now() - startTime).toFixed(2);

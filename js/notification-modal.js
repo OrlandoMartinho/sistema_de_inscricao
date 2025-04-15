@@ -226,7 +226,7 @@ class NotificationModal {
      * Atualiza o badge de contagem de não lidas
      */
     updateBadge() {
-        document.querySelectorAll('.notification-badge').forEach(badge => {
+        document.querySelectorAll('.notify').forEach(badge => {
             badge.textContent = this.unreadCount > 99 ? '99+' : this.unreadCount;
             badge.style.display = this.unreadCount > 0 ? 'flex' : 'none';
         });

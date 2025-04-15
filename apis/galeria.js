@@ -9,14 +9,14 @@ async function carregarGaleria() {
         if (data.success) {
             const galleryContainer = document.getElementById('gallery-container');
             galleryContainer.innerHTML = ''; // Limpa o loading
-            
+            console.log("dados da API",data.data);
             if (data.data.length > 0) {
                 data.data.forEach(galeria => {
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
                     
                     const img = document.createElement('img');
-                    img.src = galeria.foto || 'https://via.placeholder.com/500x300?text=Sem+Imagem';
+                    img.src = galeria.foto_url 
                     img.alt = galeria.titulo;
                     img.loading = 'lazy';
                     
