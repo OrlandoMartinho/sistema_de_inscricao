@@ -368,7 +368,7 @@ class Galeria {
                 while($row = $result->fetch_assoc()) {
                     // Adiciona a URL completa da foto para cada galeria
                     $row['foto_url'] = !empty($row['foto']) ? 
-                        'http://' . $_SERVER['HTTP_HOST'] . '/uploads/galerias/' . $row['foto'] : null;
+                        'http://' . $_SERVER['HTTP_HOST'] . '/sistema_de_inscricao/uploads/galerias/' . $row['foto'] : null;
                     $galerias[] = $row;
                 }
             }

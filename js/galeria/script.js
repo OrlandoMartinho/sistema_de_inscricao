@@ -115,33 +115,6 @@ uploadArea.addEventListener('drop', function(e) {
     fileInput.dispatchEvent(event);
 });
 
-// Envio do formulário
-document.getElementById('upload-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const title = document.getElementById('photo-title').value;
-    const date = document.getElementById('photo-date').value;
-    const description = document.getElementById('photo-description').value;
-    const files = document.getElementById('file-input').files;
-    
-    if (files.length === 0) {
-        alert("Por favor, selecione pelo menos uma foto!");
-        return;
-    }
-    
-    // Aqui você faria o upload das fotos via AJAX
-    console.log("Enviando fotos:", {
-        title,
-        date,
-        description,
-        files: files.length
-    });
-    
-    alert("Fotos enviadas com sucesso!");
-    closeModal('upload-modal');
-    this.reset();
-    document.getElementById('file-list').innerHTML = '';
-});
 
 // Inicializar quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function() {

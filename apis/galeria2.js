@@ -318,67 +318,61 @@ function removerArquivo(fileItem) {
 /**
  * Envia as fotos para o servidor
  */
-function enviarFotos() {
-    console.log('[GALERIA] Preparando envio de fotos...');
-    
-    const titulo = document.getElementById('photo-title')?.value.trim();
-    const dataEvento = document.getElementById('photo-date')?.value;
-    const descricao = document.getElementById('photo-description')?.value.trim();
-    
-    console.log('[GALERIA] Dados do formulário:', {
-        titulo,
-        dataEvento,
-        descricao,
-        numFiles: selectedFiles.length
-    });
-    
-    // Validações
-    if (selectedFiles.length === 0) {
-        console.log('[GALERIA] Nenhum arquivo selecionado para upload');
-        mostrarErro('Selecione pelo menos uma foto para enviar.');
+document.getElementById('upload-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById('photo-title')?.value.trim();
+    const date = document.getElementById('photo-date')?.value;
+    const description = document.getElementById('photo-description')?.value.trim();
+    const files = document.getElementById('file-input')?.files;
+
+    if (!files || files.length === 0) {
+        alert("Por favor, selecione pelo menos uma foto!");
         return;
     }
-    
-    if (!titulo || titulo.length < 3) {
-        console.log('[GALERIA] Título inválido:', titulo);
-        mostrarErro('O título é obrigatório e deve ter pelo menos 3 caracteres.');
+
+    // Validação básica
+    if (!title || title.length < 3) {
+        alert("O título é obrigatório e deve ter pelo menos 3 caracteres.");
         return;
     }
-    
-    // Preparar FormData
+
+    enviarFotos({ title, date, description, files });
+});
+
+function enviarFotos({ title, date, description, files }) {
     const formData = new FormData();
     
-    // Adicionar arquivos
-    selectedFiles.forEach((file, index) => {
-        formData.append(`fotos[${index}]`, file);
+    // Adiciona arquivos
+    Array.from(files).forEach((file, index) => {
+        formData.append(`foto`, file);
         console.log(`[GALERIA] Adicionando arquivo ${index}:`, file.name);
     });
-    
-    // Adicionar outros campos
-    formData.append('titulo', titulo);
-    if (dataEvento) formData.append('data_do_evento', dataEvento);
-    if (descricao) formData.append('descricao', descricao);
-    
-    // Debug: mostrar conteúdo do FormData
+    console.log()
+    // Adiciona campos do formulário
+    formData.append('titulo', title);
+    if (date) formData.append('data_do_evento', date);
+    if (description) formData.append('descricao', description);
+
+    // Debug do conteúdo
     console.log('[GALERIA] Conteúdo do FormData:');
     for (let [key, value] of formData.entries()) {
         console.log(key, value instanceof File ? `${value.name} (${formatFileSize(value.size)})` : value);
     }
-    
-    // Mostrar loading
+
     const btnEnviar = document.querySelector('#upload-form .btn-confirm');
     if (!btnEnviar) {
         console.error('[GALERIA] Botão de enviar não encontrado');
         return;
     }
-    
+
     const originalText = btnEnviar.innerHTML;
     btnEnviar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
     btnEnviar.disabled = true;
-    
+
     console.log('[GALERIA] Enviando requisição para o servidor...');
     const startTime = performance.now();
-    
+    console.log('Conteúdo do FormData:', formData);
     fetch('../controllers/galeria.php', {
         method: 'POST',
         body: formData
@@ -386,41 +380,44 @@ function enviarFotos() {
     .then(response => {
         const duration = (performance.now() - startTime).toFixed(2);
         console.log(`[GALERIA] Resposta recebida em ${duration}ms. Status:`, response.status);
-        
+
         if (!response.ok) {
-            console.error('[GALERIA] Erro na resposta:', response.status, response.statusText);
             throw new Error(`Erro ${response.status}: ${response.statusText}`);
         }
+
         return response.json();
     })
     .then(data => {
-        console.log('[GALERIA] Dados da resposta:', data);
-        
         if (data.success) {
-            console.log('[GALERIA] Upload bem-sucedido:', data.message);
             mostrarSucesso(data.message || 'Fotos enviadas com sucesso!');
             closeModal('upload-modal');
             carregarGaleria();
-            resetarFormulario();
+
+            // Resetar formulário
+            document.getElementById('upload-form').reset();
+            document.getElementById('file-list').innerHTML = '';
         } else {
-            console.error('[GALERIA] Erro no upload:', data.message);
-            mostrarErro(data.message || 'Erro ao enviar fotos');
+            mostrarErro(data.message || 'Erro ao enviar fotos.');
         }
     })
     .catch(error => {
         console.error('[GALERIA] Erro na requisição:', error);
-        mostrarErro(error.message || 'Erro ao conectar com o servidor');
+        mostrarErro(error.message || 'Erro ao conectar com o servidor.');
     })
     .finally(() => {
-        console.log('[GALERIA] Finalizando processo de upload');
         btnEnviar.innerHTML = originalText;
         btnEnviar.disabled = false;
     });
 }
 
-/**
- * Reseta o formulário de upload
- */
+// Função auxiliar para formatar o tamanho do arquivo
+function formatFileSize(bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
 function resetarFormulario() {
     console.log('[GALERIA] Resetando formulário de upload...');
     
