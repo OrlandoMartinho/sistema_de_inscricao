@@ -1,4 +1,6 @@
 <?php
+
+
 // Função para carregar variáveis de um env.json
 function loadEnvJson($jsonPath) {
     if (!file_exists($jsonPath)) {

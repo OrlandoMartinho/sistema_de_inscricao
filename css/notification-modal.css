@@ -270,8 +270,17 @@
  
 }
 
+.notification-bell-container{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .notify{
-  background-color: #dc3545;
+  background-color: #ff0000;
+  position: relative;
   color: white;
   border-radius: 50%;
   margin-top: -2.4vh;

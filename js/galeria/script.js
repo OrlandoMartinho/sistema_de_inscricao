@@ -148,34 +148,34 @@ function openDeleteModal(id, title) {
     }
 }
 
-// Eliminar foto
-async function deletePhoto() {
-    if (!photoToDelete) return;
+// // Eliminar foto
+// async function deletePhoto() {
+//     if (!photoToDelete) return;
 
-    try {
-        // Simulação de chamada AJAX
-        console.log(`Eliminando foto com ID ${photoToDelete}...`);
+//     try {
+//         // Simulação de chamada AJAX
+//         console.log(`Eliminando foto com ID ${photoToDelete}...`);
         
-        // Aqui você faria a chamada real à API:
-        // const response = await fetch(`/api/photos/${photoToDelete}`, { method: 'DELETE' });
-        // if (!response.ok) throw new Error('Falha ao eliminar foto');
+//         // Aqui você faria a chamada real à API:
+//         // const response = await fetch(`/api/photos/${photoToDelete}`, { method: 'DELETE' });
+//         // if (!response.ok) throw new Error('Falha ao eliminar foto');
         
-        // Simulando um atraso de rede
-        await new Promise(resolve => setTimeout(resolve, 1000));
+//         // Simulando um atraso de rede
+//         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        showNotification('Foto eliminada com sucesso!', 'success');
-        closeModal('confirm-modal');
+//         showNotification('Foto eliminada com sucesso!', 'success');
+//         closeModal('confirm-modal');
         
-        // Recarregar a galeria ou remover o item da DOM
-        // location.reload(); // Ou atualizar a lista via AJAX
+//         // Recarregar a galeria ou remover o item da DOM
+//         // location.reload(); // Ou atualizar a lista via AJAX
         
-    } catch (error) {
-        console.error('Erro ao eliminar foto:', error);
-        showNotification('Erro ao eliminar foto', 'error');
-    } finally {
-        photoToDelete = null;
-    }
-}
+//     } catch (error) {
+//         console.error('Erro ao eliminar foto:', error);
+//         showNotification('Erro ao eliminar foto', 'error');
+//     } finally {
+//         photoToDelete = null;
+//     }
+// }
 
 // Mostrar notificação
 function showNotification(message, type = 'info') {
