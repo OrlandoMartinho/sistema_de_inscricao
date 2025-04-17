@@ -400,10 +400,22 @@ header('Content-Type: application/json');
 // Para permitir upload de arquivos via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST" || $_SERVER["REQUEST_METHOD"] == "PUT") {
     // Verifica se há arquivos para upload
-    if (!empty($_FILES)) {
+    if (!empty($_FILES) && $_POST['action'] !== 'delete') {
         // Mantém os outros campos do POST
         $_POST = array_merge($_POST, $_GET);
     }
+
+    if(isset($_POST['action']) && $_POST['action'] == 'delete') {
+        if (isset($_POST['id_galeria'])) {
+            $galeria->eliminar($_POST['id_galeria']);
+            http_response_code(200);
+            echo json_encode(['success' => false, 'message' => 'ID galeria eliminado com sucesso.']);
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
+        }
+    } 
+
 }
 
 $galeria = new Galeria($conn);
@@ -432,14 +444,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
     }
-} elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_galeria'])) {
-        $galeria->eliminar($_DELETE['id_galeria']);
-    } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
-    }
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['action'] == 'delete') {
+
+    
 } else {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Método não permitido.']);

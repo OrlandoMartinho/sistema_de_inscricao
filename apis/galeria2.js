@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('[GALERIA] DOM completamente carregado - Inicializando sistema de galeria');
-    
-   
+    console.log('[GALERIA] DOM completamente carregado - Inicializando sistema de galeria');  
     // Carregar galeria
     console.log('[GALERIA] Iniciando carregamento da galeria...');
     carregarGaleria();
@@ -443,17 +441,6 @@ function openModalUpload() {
     document.getElementById('upload-modal').style.display = 'block';
 }
 
-/**
- * Abre o modal de confirmação para deletar uma foto
- * @param {number} id - ID da foto
- * @param {string} titulo - Título da foto
- */
-function openDeleteModal(id, titulo) {
-    console.log(`[GALERIA] Abrindo modal de confirmação para deletar foto ID ${id}:`, titulo);
-    fotoParaDeletar = id;
-    document.getElementById('photo-delete-name').textContent = titulo;
-    document.getElementById('confirm-modal').style.display = 'block';
-}
 
 /**
  * Fecha um modal
@@ -469,70 +456,6 @@ function closeModal(modalId) {
 }
 
 
-// function deletePhoto() {
-//     alert("Deletar foto?");
-//     console.log('Valor de fotoParaDeletar ao iniciar deletePhoto:', fotoParaDeletar); // Log de debug
-//     alert("Valor de fotoParaDeletar ao iniciar deletePhoto:", fotoParaDeletar); // Log de debug
-//     if (!fotoParaDeletar) {
-//         console.log('[GALERIA] Nenhuma foto selecionada para deletar');
-//         return;
-//     }
-    
-//     console.log(`[GALERIA] Iniciando processo de exclusão da foto ID ${fotoParaDeletar}`);
-    
-//     // Mostrar loading
-//     const btnDelete = document.querySelector('#confirm-modal .btn-confirm');
-//     if (!btnDelete) {
-//         console.error('[GALERIA] Botão de deletar não encontrado');
-//         return;
-//     }
-    
-//     const originalText = btnDelete.innerHTML;
-//     btnDelete.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
-//     btnDelete.disabled = true;
-    
-//     const startTime = performance.now();
-//     const formData = new FormData();
-//     formData.append('id_galeria', fotoParaDeletar);
-//     formData.append('action', 'delete');
-//     console.log('[GALERIA] Enviando requisição de exclusão para o servidor...',formData);
-//     fetch(`../controllers/galeria.php?id_galeria=${fotoParaDeletar}`, {
-//         method: 'POST',
-//         body: formData,
-//     })
-//     .then(response => {
-//         const duration = (performance.now() - startTime).toFixed(2);
-//         console.log(`[GALERIA] Resposta da exclusão recebida em ${duration}ms. Status:`, response.status);
-        
-//         if (!response.ok) {
-//             console.error('[GALERIA] Erro na exclusão:', response.status, response.statusText);
-//             throw new Error(`Erro ${response.status}: ${response.statusText}`);
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         console.log('[GALERIA] Resultado da exclusão:', data);
-        
-//         if (data.success) {
-//             console.log('[GALERIA] Foto excluída com sucesso:', data.message);
-//             mostrarSucesso(data.message || 'Foto eliminada com sucesso!');
-//             closeModal('confirm-modal');
-//             carregarGaleria();
-//         } else {
-//             console.error('[GALERIA] Falha na exclusão:', data.message);
-//             mostrarErro(data.message || 'Erro ao eliminar foto');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('[GALERIA] Erro na requisição de exclusão:', error);
-//         mostrarErro(error.message || 'Erro ao conectar com o servidor');
-//     })
-//     .finally(() => {
-//         console.log('[GALERIA] Finalizando processo de exclusão');
-//         btnDelete.innerHTML = originalText;
-//         btnDelete.disabled = false;
-//     });
-// }
 
 /**
  * Visualiza uma imagem em tela cheia
@@ -669,86 +592,8 @@ window.galeriaAtual = [];
 window.fotoParaDeletar = null; // Agora é explicitamente global
 window.selectedFiles = [];
 
-/**
- * Abre o modal de confirmação para deletar uma foto (corrigido)
- * @param {number} id - ID da foto
- * @param {string} titulo - Título da foto
- */
-function openDeleteModal(id, titulo) {
-    console.log(`[GALERIA] Abrindo modal de confirmação para deletar foto ID ${id}:`, titulo);
-    window.fotoParaDeletar = id; // Usando window para garantir escopo global
-    console.log('Valor atual de fotoParaDeletar:', window.fotoParaDeletar); // Log de debug
-    document.getElementById('photo-delete-name').textContent = titulo;
-    document.getElementById('confirm-modal').style.display = 'block';
-}
 
-/**
- * Deleta uma foto (versão corrigida)
- */
-function deletePhoto() {
-    console.log('Valor de fotoParaDeletar ao iniciar deletePhoto:', window.fotoParaDeletar); // Log de debug
-    
-    if (!window.fotoParaDeletar) {
-        console.error('[GALERIA] Erro: Nenhuma foto selecionada para deletar');
-        mostrarErro('Nenhuma foto selecionada para deletar');
-        return;
-    }
-    
-    console.log(`[GALERIA] Iniciando exclusão da foto ID ${window.fotoParaDeletar}`);
-    
-    const btnDelete = document.querySelector('#confirm-modal .btn-confirm');
-    if (!btnDelete) {
-        console.error('[GALERIA] Botão de deletar não encontrado');
-        return;
-    }
-    
-    // Estado de loading
-    const originalText = btnDelete.innerHTML;
-    btnDelete.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
-    btnDelete.disabled = true;
-    
-    const formData = new FormData();
-    formData.append('id_galeria', window.fotoParaDeletar);
-    formData.append('action', 'delete');
-    
-    console.log('[GALERIA] Enviando requisição de exclusão...');
-    fetch('../controllers/galeria.php', { // Removido parâmetro da URL
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro ${response.status}: ${response.statusText}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            mostrarSucesso(data.message || 'Foto eliminada com sucesso!');
-            carregarGaleria();
-        } else {
-            mostrarErro(data.message || 'Erro ao eliminar foto');
-        }
-    })
-    .catch(error => {
-        console.error('[GALERIA] Erro na exclusão:', error);
-        mostrarErro('Erro ao conectar com o servidor: ' + error.message);
-    })
-    .finally(() => {
-        btnDelete.innerHTML = originalText;
-        btnDelete.disabled = false;
-        closeModal('confirm-modal');
-        window.fotoParaDeletar = null; // Resetar após a operação
-    });
-}
 
-// No seu HTML, certifique-se que o botão de confirmação está assim:
-// <button class="btn-confirm" onclick="deletePhoto()">Confirmar</button>
-
-/**
- * Fecha um modal (adicionado reset de fotoParaDeletar)
- * @param {string} modalId - ID do modal a ser fechado
- */
 function closeModal(modalId) {
     console.log(`[GALERIA] Fechando modal: ${modalId}`);
     document.getElementById(modalId).style.display = 'none';
@@ -760,4 +605,109 @@ function closeModal(modalId) {
     if (modalId === 'upload-modal') {
         resetarFormulario();
     }
+}
+
+function closeModal(modalId) {
+    console.log(`[GALERIA] Fechando modal: ${modalId}`);
+    document.getElementById(modalId).style.display = 'none';
+    
+    if (modalId === 'upload-modal') {
+        resetarFormulario();
+    }
+}
+
+function deletePhoto() {
+    console.log('[GALERIA] Iniciando função deletePhoto()');
+    
+    // Confirmar antes de deletar
+    console.log('[GALERIA] Exibindo confirmação para o usuário');
+    if (!confirm("Tem certeza que deseja deletar esta foto?")) {
+        console.log('[GALERIA] Usuário cancelou a exclusão');
+        return; // Cancela se o usuário não confirmar
+    }
+
+    console.log('[GALERIA] Obtendo id_galeria do localStorage');
+    const id_galeria = localStorage.getItem("id_galeria");
+    console.log('[GALERIA] Valor obtido do localStorage:', id_galeria);
+
+    if (!id_galeria) {
+        console.error('[GALERIA] Erro: ID da foto não encontrado no localStorage');
+        mostrarErro("ID da foto não encontrado");
+        return;
+    }
+
+    console.log('[GALERIA] ID da foto a ser deletada:', id_galeria);
+    
+    console.log('[GALERIA] Buscando botão de deletar no DOM');
+    const btnDelete = document.querySelector('#btn-delete-photo');
+    if (!btnDelete) {
+        console.error('[GALERIA] Erro: Botão #btn-delete-photo não encontrado');
+        return;
+    }
+
+    console.log('[GALERIA] Armazenando texto original do botão:', btnDelete.innerHTML);
+    const originalText = btnDelete.innerHTML;
+    
+    console.log('[GALERIA] Atualizando estado do botão para "Deletando..."');
+    btnDelete.innerHTML = 'Deletando...';
+    btnDelete.disabled = true;
+
+    console.log('[GALERIA] Criando FormData para a requisição');
+    const formData = new FormData();
+    formData.append('id_galeria', id_galeria);
+    formData.append('action', 'delete');
+
+    console.log('[GALERIA] Conteúdo do FormData:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}: ${value}`);
+    }
+
+    console.log('[GALERIA] Enviando requisição para o servidor...');
+    console.log('[GALERIA] Endpoint: ../controllers/galeria.php');
+    console.log('[GALERIA] Método: POST');
+    
+    fetch(`../controllers/galeria.php`, {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        console.log('[GALERIA] Resposta recebida do servidor');
+        console.log('[GALERIA] Headers:', response);
+        console.log('[GALERIA] Status:', response.status, response.statusText);
+
+        if (!response.ok) {
+            console.error('[GALERIA] Erro na resposta:', response.status, response.statusText);
+            throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('[GALERIA] Dados da resposta:', data);
+        
+        if (data.success) {
+            console.log('[GALERIA] Sucesso:', data.message);
+            mostrarSucesso(data.message || 'Foto deletada com sucesso!');
+            console.log('[GALERIA] Fechando modal...');
+            closeModal('confirm-modal');
+            console.log('[GALERIA] Recarregando galeria...');
+            carregarGaleria();
+        } else {
+            console.error('[GALERIA] Falha na resposta:', data.message);
+            throw new Error(data.message || 'Falha na exclusão');
+        }
+    })
+    .catch(error => {
+        console.log('[GALERIA] Entrou no bloco catch');
+        console.error('[GALERIA] Erro completo:', error);
+        console.error('[GALERIA] Mensagem de erro:', error.message);
+        console.error('[GALERIA] Stack trace:', error.stack);
+        mostrarErro(error.message || 'Erro ao deletar foto');
+    })
+    .finally(() => {
+        console.log('[GALERIA] Entrou no bloco finally');
+        console.log('[GALERIA] Restaurando estado original do botão');
+        btnDelete.innerHTML = originalText;
+        btnDelete.disabled = false;
+        console.log('[GALERIA] Processo de exclusão concluído');
+    });
 }

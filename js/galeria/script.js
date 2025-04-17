@@ -138,6 +138,8 @@ function openModalUpload() {
 function openDeleteModal(id, title) {
     try {
         photoToDelete = id;
+       
+        localStorage.setItem("id_galeria", id);
         const deleteNameElement = document.getElementById('photo-delete-name');
         if (deleteNameElement) {
             deleteNameElement.textContent = title || "Foto selecionada";
@@ -149,33 +151,6 @@ function openDeleteModal(id, title) {
 }
 
 // // Eliminar foto
-// async function deletePhoto() {
-//     if (!photoToDelete) return;
-
-//     try {
-//         // Simulação de chamada AJAX
-//         console.log(`Eliminando foto com ID ${photoToDelete}...`);
-        
-//         // Aqui você faria a chamada real à API:
-//         // const response = await fetch(`/api/photos/${photoToDelete}`, { method: 'DELETE' });
-//         // if (!response.ok) throw new Error('Falha ao eliminar foto');
-        
-//         // Simulando um atraso de rede
-//         await new Promise(resolve => setTimeout(resolve, 1000));
-        
-//         showNotification('Foto eliminada com sucesso!', 'success');
-//         closeModal('confirm-modal');
-        
-//         // Recarregar a galeria ou remover o item da DOM
-//         // location.reload(); // Ou atualizar a lista via AJAX
-        
-//     } catch (error) {
-//         console.error('Erro ao eliminar foto:', error);
-//         showNotification('Erro ao eliminar foto', 'error');
-//     } finally {
-//         photoToDelete = null;
-//     }
-// }
 
 // Mostrar notificação
 function showNotification(message, type = 'info') {
@@ -257,38 +232,38 @@ function setupFileUpload() {
         }
     });
 
-    // Envio do formulário
-    uploadForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+    // // Envio do formulário
+    // uploadForm.addEventListener('submit', async function(e) {
+    //     e.preventDefault();
         
-        if (!fileInput.files || fileInput.files.length === 0) {
-            showNotification('Selecione pelo menos uma foto', 'warning');
-            return;
-        }
+    //     if (!fileInput.files || fileInput.files.length === 0) {
+    //         showNotification('Selecione pelo menos uma foto', 'warning');
+    //         return;
+    //     }
 
-        try {
-            // Simulação de envio
-            console.log('Enviando fotos...');
+    //     try {
+    //         // Simulação de envio
+    //         console.log('Enviando fotos...');
             
-            // Aqui você faria o upload real:
-            // const formData = new FormData(this);
-            // const response = await fetch('/api/upload', { method: 'POST', body: formData });
-            // if (!response.ok) throw new Error('Falha no upload');
+    //         // Aqui você faria o upload real:
+    //         // const formData = new FormData(this);
+    //         // const response = await fetch('/api/upload', { method: 'POST', body: formData });
+    //         // if (!response.ok) throw new Error('Falha no upload');
             
-            // Simulando um atraso de rede
-            await new Promise(resolve => setTimeout(resolve, 1500));
+    //         // Simulando um atraso de rede
+    //         await new Promise(resolve => setTimeout(resolve, 1500));
             
-            showNotification('Fotos enviadas com sucesso!', 'success');
-            closeModal('upload-modal');
+    //         showNotification('Fotos enviadas com sucesso!', 'success');
+    //         closeModal('upload-modal');
             
-            // Recarregar a galeria ou atualizar via AJAX
-            // location.reload();
+    //         // Recarregar a galeria ou atualizar via AJAX
+    //         // location.reload();
             
-        } catch (error) {
-            console.error('Erro no upload:', error);
-            showNotification('Erro ao enviar fotos', 'error');
-        }
-    });
+    //     } catch (error) {
+    //         console.error('Erro no upload:', error);
+    //         showNotification('Erro ao enviar fotos', 'error');
+    //     }
+    // });
 }
 
 // Inicialização da página
