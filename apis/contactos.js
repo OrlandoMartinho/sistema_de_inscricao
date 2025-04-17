@@ -42,7 +42,7 @@ function renderContactosTable(contactos) {
         tbody.appendChild(tr);
         return;
     }
-
+    console.log("contactos:",contactos)
     contactos.forEach(contacto => {
         const tr = document.createElement('tr');
         
@@ -52,7 +52,7 @@ function renderContactosTable(contactos) {
         
         // Determinar estado
         let estadoClass, estadoText;
-        if (contacto.respondido === 1) {
+        if (contacto.respondido==1) {
             estadoClass = 'responded';
             estadoText = 'Respondido';
         } else {
@@ -145,24 +145,19 @@ async function openReplyModal(id) {
 // Função para enviar a resposta
 async function sendReply() {
     const resposta = document.getElementById('reply-resposta').value.trim();
-    
+   console.log('respostas:',resposta)
     if (!resposta) {
         showAlert('error', 'Erro', 'Por favor, escreva uma resposta');
         return false;
     }
-
+    const formData = new FormData()
+    formData.append('action','put')
+    formData.append('id_contacto',currentContactoId)
+    formData.append('resposta',resposta)
     try {
         const response = await fetch('../controllers/contactos.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                responder: true,
-                id_contacto: currentContactoId,
-                resposta: resposta  // Adicionei o campo resposta que estava faltando
-            })
+            body: formData
         });
 
         const data = await response.json();

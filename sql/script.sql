@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS Contactos (
     email VARCHAR(255),
     assunto VARCHAR(255),
     mensagem VARCHAR(255),
+    resposta VARCHAR(255) DEFAULT NULL,
     respondido INT,
     data_de_resposta DATETIME,
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP

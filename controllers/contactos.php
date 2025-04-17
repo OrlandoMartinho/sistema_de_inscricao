@@ -201,41 +201,91 @@ class Contacto {
             return false;
         }
     }
-
-    // Método para responder a um contato
-    public function response($id_contacto) {
+    public function response($id_contacto, $resposta) {
+        // Validação do ID do contacto
         if (!is_numeric($id_contacto)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'ID de contato inválido.']);
             return false;
         }
-
-        $this->respondido = 1;
-        $this->data_de_resposta = date('Y-m-d H:i:s');
-
+    
+        // Validação da resposta
+        if (empty(trim($resposta))) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'O texto da resposta é obrigatório.']);
+            return false;
+        }
+    
         try {
-            $sql = "UPDATE contactos SET respondido = ?, data_de_resposta = ? WHERE id_contacto = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("isi", $this->respondido, $this->data_de_resposta, $id_contacto);
-
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    http_response_code(200);
-                    echo json_encode(['success' => true, 'message' => 'Contato marcado como respondido!']);
-                    return true;
-                } else {
-                    http_response_code(404);
-                    echo json_encode(['success' => false, 'message' => 'Contato não encontrado.']);
-                    return false;
-                }
-            } else {
-                throw new Exception("Erro ao executar a query: " . $stmt->error);
+            // Buscar os dados do contactante
+            $sqlSelect = "SELECT email, nome FROM contactos WHERE id_contacto = ?";
+            $stmtSelect = $this->conn->prepare($sqlSelect);
+            $stmtSelect->bind_param("i", $id_contacto);
+            $stmtSelect->execute();
+            $result = $stmtSelect->get_result();
+            
+            if ($result->num_rows === 0) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Contato não encontrado.']);
+                return false;
             }
+            
+            $contacto = $result->fetch_assoc();
+            $email_contactante = $contacto['email'];
+            $nome_contactante = $contacto['nome'];
+            
+            // Validar email do contactante
+            if (!filter_var($email_contactante, FILTER_VALIDATE_EMAIL)) {
+                throw new Exception("Email do contactante inválido.");
+            }
+    
+            // Atualizar o contato como respondido
+            $this->respondido = 1;
+            $this->data_de_resposta = date('Y-m-d H:i:s');
+            
+            $sqlUpdate = "UPDATE contactos SET respondido = ?, data_de_resposta = ? WHERE id_contacto = ?";
+            $stmtUpdate = $this->conn->prepare($sqlUpdate);
+            $stmtUpdate->bind_param("isi", $this->respondido, $this->data_de_resposta, $id_contacto);
+    
+            if (!$stmtUpdate->execute()) {
+                throw new Exception("Erro ao atualizar o contato: " . $stmtUpdate->error);
+            }
+            
+            if ($stmtUpdate->affected_rows === 0) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Contato não encontrado.']);
+                return false;
+            }
+            
+            // // Preparar e enviar o email de resposta
+            // $assunto = "Resposta ao seu contacto";
+            
+            // $mensagem = "Olá " . htmlspecialchars($nome_contactante) . ",\n\n";
+            // $mensagem .= "Agradecemos o seu contacto. Segue a nossa resposta:\n\n";
+            // $mensagem .= $resposta . "\n\n";
+            // $mensagem .= "Cumprimentos,\n";
+            // $mensagem .= "[Sua Equipe/Nome da Empresa]";
+            
+            // $headers = "From: seuemail@seudominio.com" . "\r\n" .
+            //            "Reply-To: seuemail@seudominio.com" . "\r\n" .
+            //            "X-Mailer: PHP/" . phpversion();
+            
+            // if (!mail($email_contactante, $assunto, $mensagem, $headers)) {
+            //     throw new Exception("Falha ao enviar o email de resposta.");
+            // }
+    
+            http_response_code(200);
+            echo json_encode([
+                'success' => true, 
+                'message' => 'Contato marcado como respondido e email enviado com sucesso!'
+            ]);
+            return true;
+            
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode([
                 'success' => false,
-                'message' => 'Erro ao atualizar o contato.',
+                'message' => 'Erro no processo de resposta.',
                 'error' => $e->getMessage()
             ]);
             error_log("Erro ao responder contato: " . $e->getMessage());
@@ -256,8 +306,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $contacto->visualizar_todos();
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['responder'])) {
-        $contacto->response($_POST['id_contacto']);
+    if (isset($_POST['action']) && $_POST['action'] == 'put') {
+        $contacto->response($_POST['id_contacto'], resposta:$_POST['resposta']);
     } elseif (isset($_POST['action']) && $_POST['action'] == 'delete') {
         if (isset($_POST['id_contacto'])) {
             $contacto->eliminar($_POST['id_contacto']);
