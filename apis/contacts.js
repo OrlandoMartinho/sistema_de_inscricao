@@ -19,7 +19,7 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
     
     // Envio via AJAX
     const formData = new FormData(this);
-    
+    console.log(formData)
     fetch(this.action, {
         method: 'POST',
         body: formData

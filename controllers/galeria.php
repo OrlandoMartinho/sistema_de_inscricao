@@ -60,12 +60,7 @@ class Galeria {
             if ($stmt->execute()) {
                 $this->id_galeria = $stmt->insert_id;
                 
-                // Adiciona notificação
-                $descricao = "Nova galeria criada: " . $this->titulo;
-                $sql2 = "INSERT INTO notificacoes (descricao) VALUES (?)";
-                $stmt2 = $this->conn->prepare($sql2);
-                $stmt2->bind_param("s", $descricao);
-                $stmt2->execute();
+             
         
                 http_response_code(201);
                 echo json_encode([
@@ -183,9 +178,16 @@ class Galeria {
                     if (!empty($foto)) {
                         $this->removerArquivo($foto);
                     }
-                    http_response_code(200);
-                    echo json_encode(['success' => true, 'message' => 'Galeria removida com sucesso!']);
-                    return true;
+                    http_response_code(201);
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Foto eliminado com sucesso!',
+                        'data' => [
+                            'message' => $this->id_galeria,
+                        ]
+                    ]);
+               
+                return true;
                 } else {
                     http_response_code(404);
                     echo json_encode(['success' => false, 'message' => 'Galeria não encontrada.']);

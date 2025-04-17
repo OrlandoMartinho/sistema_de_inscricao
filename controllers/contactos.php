@@ -258,21 +258,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['responder'])) {
         $contacto->response($_POST['id_contacto']);
+    } elseif (isset($_POST['action']) && $_POST['action'] == 'delete') {
+        if (isset($_POST['id_contacto'])) {
+            $contacto->eliminar($_POST['id_contacto']);
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'ID de contato não fornecido.']);
+        }
     } else {
         $contacto->cadastrar();
-    }
-} elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_contacto'])) {
-        $contacto->eliminar($_DELETE['id_contacto']);
-    } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de contato não fornecido.']);
     }
 } else {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Método não permitido.']);
 }
-
 $conn->close();
 ?>

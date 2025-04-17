@@ -655,6 +655,7 @@ function deletePhoto() {
     })
     .then(async response => {
         console.log('[GALERIA] Resposta recebida - Status:', response.status);
+        conso
         if(response.status === 200) {
             console.log('[GALERIA] Resposta vazia (204 No Content)');
             return { success: true, message: 'Foto deletada com sucesso!' };
@@ -673,13 +674,14 @@ function deletePhoto() {
             console.error('[GALERIA] Erro na resposta do servidor:', response.status, response.statusText);
             throw new Error(`Erro ${response.status}: ${response.statusText}`);
         }
-
+        throw new Error(`Erro ao cadastrar foto`);
         
     })
     .then(data => {
         console.log('[GALERIA] Resposta do servidor:', data);
         
         if (data.success) {
+            alert('Foto deletada com sucesso!');
             mostrarSucesso(data.message || 'Foto deletada com sucesso!');
             closeModal('confirm-modal');
             carregarGaleria();
