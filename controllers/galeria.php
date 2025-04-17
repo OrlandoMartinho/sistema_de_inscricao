@@ -394,62 +394,74 @@ class Galeria {
     }
 }
 
-// Configurações iniciais
 header('Content-Type: application/json');
 
-// Para permitir upload de arquivos via POST
-if ($_SERVER["REQUEST_METHOD"] == "POST" || $_SERVER["REQUEST_METHOD"] == "PUT") {
-    // Verifica se há arquivos para upload
-    if (!empty($_FILES) && $_POST['action'] !== 'delete') {
-        // Mantém os outros campos do POST
-        $_POST = array_merge($_POST, $_GET);
-    }
-
-    if(isset($_POST['action']) && $_POST['action'] == 'delete') {
-        if (isset($_POST['id_galeria'])) {
-            $galeria->eliminar($_POST['id_galeria']);
-            http_response_code(200);
-            echo json_encode(['success' => false, 'message' => 'ID galeria eliminado com sucesso.']);
-        } else {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
-        }
-    } 
-
+// Verifica se a conexão $conn está definida antes de criar a Galeria
+if (!isset($conn)) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Erro de conexão com o banco de dados']);
+    exit;
 }
 
 $galeria = new Galeria($conn);
 
-// Rotas
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
-        $galeria->visualizar_um($_GET['id']);
-    } else {
-        $galeria->visualizar_todos();
-    }
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $galeria->cadastrar();
-} elseif ($_SERVER["REQUEST_METHOD"] == "PUT") {
-    // Para PUT com upload de arquivos, precisamos processar manualmente
-    if (empty($_FILES) && !empty($_SERVER['CONTENT_TYPE']) && 
-        strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== false) {
-        parse_str(file_get_contents("php://input"), $_PUT);
-        $_FILES = $_PUT['files'] ?? [];
-        $_POST = array_merge($_PUT, $_GET);
-    }
-    
-    if (isset($_POST['id_galeria'])) {
-        $galeria->editar($_POST['id_galeria']);
-    } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
-    }
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['action'] == 'delete') {
+// Processamento das requisições
+try {
+    switch ($_SERVER["REQUEST_METHOD"]) {
+        case 'GET':
+            if (isset($_GET['id'])) {
+                $galeria->visualizar_um($_GET['id']);
+            } else {
+                $galeria->visualizar_todos();
+            }
+            break;
 
-    
-} else {
-    http_response_code(405);
-    echo json_encode(['success' => false, 'message' => 'Método não permitido.']);
+        case 'POST':
+            // Tratamento para ação de deletar
+            if (isset($_POST['action']) && $_POST['action'] == 'delete') {
+                if (isset($_POST['id_galeria'])) {
+                    $result = $galeria->eliminar($_POST['id_galeria']);
+                    if ($result) {
+                        echo json_encode(['success' => true, 'message' => 'Foto eliminada com sucesso.']);
+                    } else {
+                        http_response_code(500);
+                        echo json_encode(['success' => false, 'message' => 'Falha ao eliminar foto.']);
+                    }
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
+                }
+            } else {
+                // Cadastro normal
+                $galeria->cadastrar();
+            }
+            break;
+
+        case 'PUT':
+            // Processamento manual para PUT com arquivos
+            if (empty($_FILES) && !empty($_SERVER['CONTENT_TYPE']) && 
+                strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== false) {
+                parse_str(file_get_contents("php://input"), $_PUT);
+                $_FILES = $_PUT['files'] ?? [];
+                $_POST = array_merge($_PUT, $_GET);
+            }
+
+            if (isset($_POST['id_galeria'])) {
+                $galeria->editar($_POST['id_galeria']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'ID de galeria não fornecido.']);
+            }
+            break;
+
+        default:
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Método não permitido.']);
+            break;
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Erro interno: ' . $e->getMessage()]);
 }
 
 $conn->close();
