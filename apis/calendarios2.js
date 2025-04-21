@@ -152,7 +152,7 @@ function configurarFormularios() {
     formPublicar.addEventListener('submit', function(e) {
         e.preventDefault();
         console.log('Formulário de publicação submetido');
-        publicarEvento();
+        publicarEvento(this); // Passando o formulário como parâmetro
     });
     
     // Formulário de edição
@@ -160,38 +160,49 @@ function configurarFormularios() {
     formEditar.addEventListener('submit', function(e) {
         e.preventDefault();
         console.log('Formulário de edição submetido');
-        editarEvento();
+        editarEvento(this); // Passando o formulário como parâmetro
     });
     console.log('Listeners dos formulários configurados');
 }
-async function publicarEvento() {
+
+
+// Formulários
+document.getElementById('form-publicar-evento').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    console.log('Iniciando processo de publicação de evento...');
     try {
-        // Obter valores do formulário
-        const formData = {
-            titulo_do_anuncio: document.getElementById('titulo-anuncio').value,
-            data_de_termino: document.getElementById('data-termino').value,
-            descricao: document.getElementById('descricao').value,
-            id_curso: document.getElementById('evento-curso').value,
-            nome_do_curso: document.getElementById('nome-curso').value,
-            numero_de_vagas: document.getElementById('numero-vagas').value
-        };
-        console.log('Dados do formulário de edição:', formData);
+     
+        console.log('FormData criado:', formData);
+        
+        // Adicionar nome do curso ao FormData
+        const nomeCurso = document.getElementById('nome-curso').value;
+        formData.append('nome_do_curso', nomeCurso);
+        
         // Validar campos obrigatórios
-        if (!formData.titulo_do_anuncio || !formData.data_de_termino || !formData.numero_de_vagas) {
+        console.log('Validando campos obrigatórios...');
+        if (!formData.get('titulo-anuncio') || !formData.get('data-termino') || !formData.get('numero-vagas')) {
             throw new Error('Preencha todos os campos obrigatórios');
         }
+             
 
-        console.log('Dados a serem enviados:', formData);
+        formData.append('titulo_do_anuncio', formData.get('titulo-anuncio'));
+        formData.append('data_de_termino', formData.get('data-termino'));
+        formData.append('descricao', formData.get('descricao'));    
+        formData.append('id_curso', formData.get('evento-curso'));  
+        formData.append('numero_de_vagas', formData.get('numero-vagas'));  
+        formData.append('action','post') 
+        const formDataObj = {};
+        formData.forEach((value, key) => formDataObj[key] = value);
+        console.log('Dados a serem enviados:', formDataObj);
 
         const response = await fetch('../controllers/calendarios.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            body: formData // Enviando FormData diretamente
         });
         
         const data = await response.json();
+        console.log('Resposta da API:', data);
         
         if (data.success) {
             mostrarNotificacao('success', 'Evento publicado com sucesso!');
@@ -204,38 +215,52 @@ async function publicarEvento() {
         console.error('Erro ao publicar evento:', error);
         mostrarNotificacao('error', error.message || 'Erro ao publicar evento');
     }
+    closeModalPublicarEvento();
+});
+
+async function publicarEvento(formElement) {
+    
 }
 
-async function editarEvento() {
+async function editarEvento(formElement) {
+    console.log('Iniciando processo de edição de evento...');
     try {
-        // Obter valores do formulário de edição
-        const formData = {
-            id_calendario: document.getElementById('editar-id-calendario').value,
-            titulo_do_anuncio: document.getElementById('editar-titulo-anuncio').value,
-            data_de_termino: document.getElementById('editar-data-termino').value,
-            descricao: document.getElementById('editar-descricao').value,
-            id_curso: document.getElementById('editar-evento-curso').value,
-            nome_do_curso: document.getElementById('editar-nome-curso').value,
-            numero_de_vagas: document.getElementById('editar-numero-vagas').value
-        };
-
-      
+        // Criar FormData a partir do formulário
+        const formData = new FormData(formElement);
+        console.log('FormData criado:', formData);
+        
+        // Adicionar nome do curso ao FormData
+        const nomeCurso = document.getElementById('editar-nome-curso').value;
+        formData.append('nome_do_curso', nomeCurso);
+        
         // Validar campos obrigatórios
-        if (!formData.titulo_do_anuncio || !formData.data_de_termino || !formData.numero_de_vagas) {
+        console.log('Validando campos obrigatórios...');
+        if (!formData.get('editar-titulo-anuncio') || !formData.get('editar-data-termino') || !formData.get('editar-numero-vagas')) {
             throw new Error('Preencha todos os campos obrigatórios');
         }
+       
+        // Converter FormData para objeto para exibir no console
+        const formDataObj = {};
+        formData.forEach((value, key) => formDataObj[key] = value);
+        console.log('Dados a serem enviados:', formDataObj);
 
-        console.log('Dados a serem enviados (edição):', formData);
-
-        const response = await fetch(`../controllers/calendarios.php?id=${formData.id_calendario}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+        formData.append('titulo_do_anuncio', formData.get('editar-titulo-anuncio'));
+        formData.append('data_de_termino', formData.get('editar-data-termino'));
+        formData.append('descricao', formData.get('editar-descricao'));
+        formData.append('id_curso', formData.get('editar-evento-curso'));   
+        formData.append('numero_de_vagas', formData.get('editar-numero-vagas'));    
+        formData.append('id_calendario', formData.get('editar-id-calendario'));
+        formData.append('action','put')
+        // Adicionando ID do evento
+        console.log('Dados do FormData para edição:', formDataObj);
+        const idCalendario = formData.get('editar-id-calendario');
+        const response = await fetch(`../controllers/calendarios.php?id=${idCalendario}`, {
+            method: 'POST',
+            body: formData // Enviando FormData diretamente
         });
         
         const data = await response.json();
+        console.log('Resposta da API:', data);
         
         if (data.success) {
             mostrarNotificacao('success', 'Evento atualizado com sucesso!');
@@ -261,12 +286,15 @@ async function confirmarExclusaoEvento() {
     
     try {
         console.log('Enviando requisição para excluir evento...');
+        const formData = new FormData();
+        formData.append('id_calendario', eventoSelecionado.id_calendario);
+        formData.append('action','delete')
+        
+        console.log('Dados do FormData para exclusão:', {id_calendario: eventoSelecionado.id_calendario});
+
         const response = await fetch('../controllers/calendarios.php', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id_calendario: eventoSelecionado.id_calendario })
+            method: 'POST',
+            body: formData
         });
         
         const data = await response.json();
@@ -339,8 +367,6 @@ function preencherFormularioEdicao(evento) {
     console.log('Formulário de edição preenchido');
 }
 
-
-
 // Função para abrir modal de exclusão
 function abrirModalExcluirEvento(idCalendario) {
     console.log(`Abrindo modal de exclusão para evento ID: ${idCalendario}`);
@@ -360,7 +386,6 @@ function abrirModalExcluirEvento(idCalendario) {
     
     openModalExcluirEvento();
 }
-
 
 // Funções auxiliares para atualizar nome do curso
 function atualizarNomeCurso() {
@@ -448,124 +473,4 @@ function mostrarNotificacao(tipo, mensagem) {
         notification.classList.add('fade-out');
         setTimeout(() => notification.remove(), 500);
     }, 3000);
-}
-
-/**
- * Carrega os cursos disponíveis da API e preenche os selects
- */
-async function carregarCursos() {
-    console.log('Iniciando carregamento dinâmico de cursos...');
-    try {
-        // Mostrar estado de carregamento
-        const selectPublicar = document.getElementById('evento-curso');
-        const selectEditar = document.getElementById('editar-evento-curso');
-        
-        console.log('Atualizando selects para estado de carregamento...');
-        selectPublicar.innerHTML = '<option value="">Carregando cursos...</option>';
-        selectEditar.innerHTML = '<option value="">Carregando cursos...</option>';
-
-        // Fazer requisição à API
-        console.log('Fazendo requisição para ../controllers/cursos.php');
-        const response = await fetch('../controllers/cursos.php');
-        
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Resposta da API de cursos:', data);
-        
-        if (data.success && data.data && data.data.length > 0) {
-            console.log(`${data.data.length} cursos recebidos da API`);
-            // Preencher os selects com os cursos
-            preencherSelectCursos(data.data);
-        } else {
-            throw new Error(data.message || 'Nenhum curso disponível');
-        }
-    } catch (error) {
-        console.error('Erro ao carregar cursos:', error);
-        
-        // Atualizar mensagem de erro nos selects
-        const selectPublicar = document.getElementById('evento-curso');
-        const selectEditar = document.getElementById('editar-evento-curso');
-        
-        console.log('Atualizando selects para estado de erro...');
-        selectPublicar.innerHTML = '<option value="">Erro ao carregar cursos</option>';
-        selectEditar.innerHTML = '<option value="">Erro ao carregar cursos</option>';
-        
-        mostrarNotificacao('error', 'Erro ao carregar cursos. Tente recarregar a página.');
-    }
-}
-
-/**
- * Preenche os selects de cursos nos formulários
- * @param {Array} cursos - Lista de cursos
- */
-function preencherSelectCursos(cursos) {
-    console.log('Preenchendo selects de cursos com dados dinâmicos...');
-    const selectPublicar = document.getElementById('evento-curso');
-    const selectEditar = document.getElementById('editar-evento-curso');
-    
-    // Limpar e adicionar opção padrão
-    console.log('Limpando selects...');
-    selectPublicar.innerHTML = '<option value="">Selecione um curso</option>';
-    selectEditar.innerHTML = '<option value="">Selecione um curso</option>';
-    
-    // Adicionar cursos
-    console.log(`Adicionando ${cursos.length} cursos aos selects...`);
-    cursos.forEach(curso => {
-        const option = document.createElement('option');
-        option.value = curso.id_curso;
-        option.textContent = curso.nome;
-        
-        selectPublicar.appendChild(option.cloneNode(true));
-        selectEditar.appendChild(option.cloneNode(true));
-    });
-    
-    // Adicionar opção "Geral" se necessário
-    console.log('Adicionando opção "Geral"...');
-    const optionGeral = document.createElement('option');
-    optionGeral.value = '0';
-    optionGeral.textContent = 'Geral (sem curso específico)';
-    
-    selectPublicar.appendChild(optionGeral.cloneNode(true));
-    selectEditar.appendChild(optionGeral.cloneNode(true));
-    
-    console.log('Selects de cursos preenchidos com sucesso');
-}
-
-/**
- * Atualiza o campo hidden com o nome do curso selecionado (modal de publicação)
- */
-function atualizarNomeCurso() {
-    console.log('Atualizando nome do curso (modal de publicação)...');
-    const select = document.getElementById('evento-curso');
-    const nomeCursoInput = document.getElementById('nome-curso');
-    const cursoSelecionado = select.options[select.selectedIndex];
-    
-    if (select.value && select.value !== '0') {
-        nomeCursoInput.value = cursoSelecionado.text;
-        console.log(`Nome do curso atualizado para: ${nomeCursoInput.value}`);
-    } else {
-        nomeCursoInput.value = 'Geral';
-        console.log('Curso definido como "Geral"');
-    }
-}
-
-/**
- * Atualiza o campo hidden com o nome do curso selecionado (modal de edição)
- */
-function atualizarNomeCursoEdicao() {
-    console.log('Atualizando nome do curso (modal de edição)...');
-    const select = document.getElementById('editar-evento-curso');
-    const nomeCursoInput = document.getElementById('editar-nome-curso');
-    const cursoSelecionado = select.options[select.selectedIndex];
-    
-    if (select.value && select.value !== '0') {
-        nomeCursoInput.value = cursoSelecionado.text;
-        console.log(`Nome do curso atualizado para: ${nomeCursoInput.value}`);
-    } else {
-        nomeCursoInput.value = 'Geral';
-        console.log('Curso definido como "Geral"');
-    }
 }

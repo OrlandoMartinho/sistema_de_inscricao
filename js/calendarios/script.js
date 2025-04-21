@@ -53,12 +53,7 @@ document.querySelectorAll('dialog').forEach(dialog => {
     });
 });
 
-// Formulários
-document.getElementById('form-publicar-evento').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Evento publicado com sucesso!');
-    closeModalPublicarEvento();
-});
+
 
 document.getElementById('form-editar-evento').addEventListener('submit', function(e) {
     e.preventDefault();

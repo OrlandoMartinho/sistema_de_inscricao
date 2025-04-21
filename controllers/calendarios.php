@@ -79,12 +79,12 @@ class Calendario {
             if ($stmt->execute()) {
                 $id_calendario = $stmt->insert_id;
                 
-                // Adicionar notificação
-                $descricao_notificacao = "Novo evento no calendário: " . $titulo_do_anuncio;
-                $sql_notificacao = "INSERT INTO notificacoes (descricao) VALUES (?)";
-                $stmt_notificacao = $this->conn->prepare($sql_notificacao);
-                $stmt_notificacao->bind_param("s", $descricao_notificacao);
-                $stmt_notificacao->execute();
+                // // Adicionar notificação
+                // $descricao_notificacao = "Novo evento no calendário: " . $titulo_do_anuncio;
+                // $sql_notificacao = "INSERT INTO notificacoes (descricao) VALUES (?)";
+                // $stmt_notificacao = $this->conn->prepare($sql_notificacao);
+                // $stmt_notificacao->bind_param("s", $descricao_notificacao);
+                // $stmt_notificacao->execute();
                 
                 echo json_encode([
                     'success' => true,
@@ -309,23 +309,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } else {
         $calendario->visualizar_todos();
     }
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'post') {
     $calendario->cadastrar();
-} elseif ($_SERVER["REQUEST_METHOD"] == "PUT") {
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'put') {
     parse_str(file_get_contents("php://input"), $_PUT);
     $dados = [
-        'id_calendario' => $_PUT['id_calendario'] ?? null,
-        'titulo_do_anuncio' => $_PUT['titulo_do_anuncio'] ?? '',
-        'data_de_termino' => $_PUT['data_de_termino'] ?? '',
-        'descricao' => $_PUT['descricao'] ?? '',
-        'id_curso' => $_PUT['id_curso'] ?? null,
-        'numero_de_vagas' => $_PUT['numero_de_vagas'] ?? null
+        'id_calendario' => $_POST['id_calendario'] ?? null,
+        'titulo_do_anuncio' => $_POST['titulo_do_anuncio'] ?? '',
+        'data_de_termino' => $_POST['data_de_termino'] ?? '',
+        'descricao' => $_POST['descricao'] ?? '',
+        'id_curso' => $_POST['id_curso'] ?? null,
+        'numero_de_vagas' => $_POST['numero_de_vagas'] ?? null
     ];
     $calendario->editar($dados);
-} elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'delete') {
     parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_calendario'])) {
-        $calendario->eliminar($_DELETE['id_calendario']);
+    if (isset($_POST['id_calendario'])) {
+        $calendario->eliminar($_POST['id_calendario']);
     } else {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'ID de calendário não fornecido.']);
