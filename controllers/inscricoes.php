@@ -81,6 +81,13 @@ class Inscricao {
                 return false;
             }
             $evento = $result->fetch_assoc();
+
+            if($evento['numero_de_vagas'] == 0) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Número de vagas esgotado.']);
+                return false;
+
+            }
                
             if ($result->num_rows == 0) {
                 http_response_code(404);
@@ -200,6 +207,14 @@ class Inscricao {
                 $stmt2 = $this->conn->prepare($sql2);
                 $stmt2->bind_param("ss", $descricao, $titulo); // ← agora tudo são variáveis
                 $stmt2->execute();
+                $stmt2->close();
+                
+
+                $sql3 = "UPDATE Calendarios SET numero_de_vagas = numero_de_vagas - 1 WHERE id_calendario = ?";
+                $stmt3 = $this->conn->prepare($sql3);
+                $stmt3->bind_param("i", $this->id_calendario);
+                $stmt3->execute();
+                $stmt3->close();
 
     
                 http_response_code(201);
@@ -458,7 +473,53 @@ class Inscricao {
             return false;
         }
     }
+    public function getNumberProcess($id_calendario): bool {
 
+        if (!is_numeric($id_calendario)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'ID de calendário inválido.']);
+            return false;
+        }
+    
+        try {
+            $sql = "SELECT * FROM inscricoes WHERE id_calendario = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("i", $id_calendario);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $inscricoes = [];
+    
+                while ($row = $result->fetch_assoc()) {
+                    $inscricoes[] = $row;
+                }
+    
+                http_response_code(200);
+                echo json_encode([
+                    'success' => true,
+                    'data' => $inscricoes
+                ]);
+                return true;
+    
+            } else {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Nenhuma inscrição encontrada.']);
+                return false;
+            }
+    
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Erro ao buscar inscrições.',
+                'error' => $e->getMessage()
+            ]);
+            error_log("Erro ao buscar inscrições: " . $e->getMessage());
+            return false;
+        }
+    }
+    
     // Método para aprovar uma inscrição
     public function aprovar($id_inscricao) {
         if (!is_numeric($id_inscricao)) {
@@ -512,33 +573,84 @@ class Inscricao {
 header('Content-Type: application/json');
 $inscricao = new Inscricao($conn);
 
-// Rotas
+// Verificar o método da requisição
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $inscricao->visualizar($_GET['id']);
     } else {
         $inscricao->visualizar_todos();
     }
+
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['aprovacao'])) {
-        $inscricao->aprovar($_POST['id_inscricao']);
-    } elseif (isset($_POST['edicao'])) {
-        $inscricao->editar($_POST['id_inscricao']);
+
+    // Verificar a chave "action" para determinar o tipo de ação
+    if (isset($_POST['action'])) {
+        switch ($_POST['action']) {
+            case 'aprovall':
+                if (isset($_POST['id_inscricao'])) {
+                    $inscricao->aprovar($_POST['id_inscricao']);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID de inscrição não fornecido para aprovação.']);
+                }
+                break;
+
+            case 'put':
+                if (isset($_POST['id_inscricao'])) {
+                    $inscricao->editar($_POST['id_inscricao']);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID de inscrição não fornecido para edição.']);
+                }
+                break;
+
+            case 'query': // Para a ação de consulta
+                if (isset($_POST['id_calendario'])) {
+                    $inscricao->getNumberProcess($_POST['id_calendario']);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID do calendário não fornecido.']);
+                }
+                break;
+
+            case 'post':
+                $inscricao->registrar();
+                break;
+
+            case 'delete':
+                if (isset($_POST['id_inscricao'])) {
+                    $inscricao->eliminar($_POST['id_inscricao']);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'ID de inscrição não fornecido para eliminação.']);
+                }
+                break;
+
+            default:
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Ação não reconhecida.']);
+                break;
+        }
     } else {
-        $inscricao->registrar();
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Ação não especificada.']);
     }
+
 } elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     parse_str(file_get_contents("php://input"), $_DELETE);
     if (isset($_DELETE['id_inscricao'])) {
         $inscricao->eliminar($_DELETE['id_inscricao']);
     } else {
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID de inscrição não fornecido.']);
+        echo json_encode(['success' => false, 'message' => 'ID de inscrição não fornecido para eliminação.']);
     }
+
 } else {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Método não permitido.']);
 }
 
 $conn->close();
+
+
 ?>

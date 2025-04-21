@@ -1,17 +1,23 @@
 // Função para enviar o formulário
-function enviarFormulario(id_curso) {
+async function enviarFormulario(id_curso) {
     console.log('[DEBUG] Iniciando envio do formulário...');
     
     if (!validarPagina1() || !validarPagina2()) {
         console.log('[DEBUG] Validação falhou. Corrija os campos destacados.');
         return false;
     }
+
+
+    
     
     const formData = new FormData(document.getElementById('form-matricula'));
     formData.append('id_calendario', id_curso);
     // Simulação de envio (substituir por fetch real)
     console.log('Dados do formulário:', Object.fromEntries(formData));
-    
+    formData.append('action', 'post'); // Adiciona a ação ao FormData
+    await getNumberProcess(id_curso)
+    const numberProcess = localStorage.getItem('numero_processo');
+    formData.append('numero_do_processo', numberProcess);
     fetch(document.getElementById('form-matricula').action, {
         method: 'POST',
         body: formData

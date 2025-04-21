@@ -1,7 +1,6 @@
 // Expressões regulares para validação
 const validacoes = {
     nome: /^[a-zA-ZÀ-ÿ\s]{5,100}$/, // Min 5 caracteres, max 100, apenas letras e espaços
-    processo: /^\d{4,10}$/, // 4 a 10 dígitos
     telefone: /^[9][1-9]\d{7}$/, // Telefone angolano (9 seguido de 8 dígitos)
     bi: /^\d{9}[A-Za-z]{2}\d{3}$/i, // Formato de BI angolano (9 dígitos + 2 letras + 3 dígitos)
     data: /^\d{4}-\d{2}-\d{2}$/, // Formato de data YYYY-MM-DD
@@ -74,7 +73,7 @@ function validarCampo(campoId, regex) {
     if (!campo) return false;
     
     const valor = campo.value.trim();
-    
+
     // Verifica se é campo obrigatório
     if (campo.required && !valor) {
         mostrarErro(campoId, mensagensErro[campoId] || "Este campo é obrigatório");
@@ -109,7 +108,6 @@ function validarPagina1() {
     
     valido &= validarCampo('idade', validacoes.idade);
     valido &= validarCampo('genero');
-    valido &= validarCampo('numero_do_processo', validacoes.processo);
     valido &= validarCampo('nome_completo', validacoes.nome);
     valido &= validarCampo('filiacao');
     valido &= validarCampo('contacto_do_aluno', validacoes.telefone);
@@ -130,7 +128,6 @@ function validarPagina1() {
 function validarPagina2() {
     let valido = true;
     
-    valido &= validarCampo('curso');
     valido &= validarCampo('classe');
     valido &= validarCampo('turno');
     
@@ -138,8 +135,87 @@ function validarPagina2() {
 }
 
 let id_curso = null
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM completamente carregado e analisado');
+    
+    console.log('Token verificado com sucesso');
+    
+    // Carregar cursos assim que a página for carregada
+    carregarCursos().then(() => {
+        console.log('Cursos carregados com sucesso');
+        // Depois que os cursos forem carregados, carregar os eventos
+        
+    }).catch(error => {
+        console.error('Erro ao carregar cursos:', error);
+    });
+    
+    
+});
+
+// Variável global para armazenar eventos
+let eventos = [];
+let cursos = [];
+let eventoSelecionado = null;
+
+// Função para carregar os cursos disponíveis
+async function carregarCursos() {
+    console.log('Iniciando carregamento de cursos...');
+    try {
+        console.log('Fazendo requisição para ../controllers/cursos.php');
+        const response = await fetch('../controllers/cursos.php');
+        
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Resposta da API de cursos:', data);
+        
+        if (data.success) {
+            cursos = data.data;
+            console.log(`${cursos.length} cursos carregados`);
+            preencherSelectCursos();
+        } else {
+            throw new Error(data.message || 'Erro ao carregar cursos');
+        }
+    } catch (error) {
+        console.error('Erro ao carregar cursos:', error);
+        mostrarNotificacao('error', 'Erro ao carregar cursos');
+    }
+}
+
+// Preencher selects de cursos nos modais
+function preencherSelectCursos() {
+    console.log('Preenchendo selects de cursos...');
+    const selectPublicar = document.getElementById('curso');
+   
+    
+    // Limpar opções existentes (mantendo a primeira opção padrão)
+    console.log('Limpando selects existentes...');
+    while (selectPublicar.options.length > 1) selectPublicar.remove(1);
+ 
+    
+    // Adicionar cursos
+    console.log('Adicionando cursos aos selects...');
+    cursos.forEach(curso => {
+        const option = document.createElement('option');
+        option.value = curso.id_curso;
+        option.textContent = curso.nome;
+        
+        selectPublicar.appendChild(option.cloneNode(true));
+        selectEditar.appendChild(option.cloneNode(true));
+    });
+    
+    console.log('Selects de cursos preenchidos com sucesso');
+}
+
+
 // Função para abrir o modal de matrícula
-function openMatriculaModal(courseName) {
+async function openMatriculaModal(courseName) {
+    await getNumberProcess(courseName)
     const modal = document.getElementById('matriculaModal');
     if (!modal) {
         console.error('Modal element not found');
@@ -237,6 +313,37 @@ function closeModal() {
 
 // Event listeners quando o DOM estiver carregado
 
+async function getNumberProcess(id_calendario) {
+ console.log('Iniciando carregamento do número de processo...');
+ console.log('Fazendo requisição para ../controllers/inscricoes.php');
+    console.log('ID do calendário:', id_calendario);
+    try{
+    const formData = new FormData()
+    formData.append('action','query')
+    formData.append('id_calendario',id_calendario)
+     const response = await fetch('controllers/inscricoes.php', {
+          method: 'POST',
+          body: formData,
+        });
+      
+        if (!response.ok) {
+          throw new Error(`Erro HTTP! status: ${response.status}`);
+        }
+      
+        const data = await response.json();
+        console.log("✅ Resposta do servidor:",  data.data);
+        const campo = document.getElementById("numero_do_processo")
+        campo.value = data.data.length
+        campo.disabled = true
+       
+        localStorage.setItem('numero_processo', data.data.length);
+      } catch (error) {
+        console.error('Erro ao tentar fazer login:', error);
+        alert('Erro ao tentar fazer login. Tente novamente.');
+      }
+}
+
+
 async function  loaderAdmin(){
         
     try {
@@ -270,7 +377,6 @@ document.addEventListener('DOMContentLoaded',  function() {
     // Validação em tempo real para campos importantes
     const camposParaValidar = {
         'nome_completo': validacoes.nome,
-        'numero_do_processo': validacoes.processo,
         'contacto_do_aluno': validacoes.telefone,
         'contacto_do_encarregado': validacoes.telefone,
         'numero_de_identificacao': validacoes.bi,
@@ -278,6 +384,11 @@ document.addEventListener('DOMContentLoaded',  function() {
         'data_validade': validacoes.data,
         'idade': validacoes.idade
     };
+
+
+
+    
+
     
     for (const [campoId, regex] of Object.entries(camposParaValidar)) {
         const campo = document.getElementById(campoId);
