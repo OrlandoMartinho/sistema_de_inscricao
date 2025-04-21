@@ -23,19 +23,28 @@ async function enviarFormulario(id_curso) {
         body: formData
     })
     .then(response => {
+        showErrorMessage('Não foi possível enviar o contacto.', 'Erro na Rede', 3000);
         if (!response.ok) throw new Error('Erro na rede');
         return response.json();
     })
     .then(data => {
         if (data.success) {
-            alert('Matrícula confirmada com sucesso!');
+            
+            showSuccessMessage(
+                'Incrição confirmada com sucesso!',
+                'Inscrição enviado',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
+
             closeModal();
         } else {
-            alert('Erro: ' + (data.message || 'Erro desconhecido'));
+            showErrorMessage('Não foi possível enviar a sua inscrição.', 'Erro de Envio', 3000);
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        alert('Ocorreu um erro ao enviar. Por favor, tente novamente.');
+        showErrorMessage('Não foi possível enviar a sua inscrição.', 'Erro de Envio', 3000);
     });
 }

@@ -23,11 +23,11 @@ async function loadContactos() {
            
             renderContactosTable(contactos);
         } else {
-            showAlert('error', 'Erro', data.message || 'Erro ao carregar contactos');
+            showErrorMessage('Não foi possível carregar os contacto', 'Erro de Envio', 3000);
         }
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('error', 'Erro', 'Ocorreu um erro ao carregar os contactos');
+        showErrorMessage('Não foi possível carregar os contactos', 'Erro de Envio', 3000);  
     }
 }
 
@@ -84,7 +84,7 @@ async function openViewModal(id) {
     const contacto = contactos.find(c => c.id_contacto == id);
     
     if (!contacto) {
-        showAlert('error', 'Erro', 'Contacto não encontrado');
+        showErrorMessage('Não foi possivel filtrar os contactos', 'Erro de Envio', 3000);
         return;
     }
 
@@ -128,7 +128,7 @@ async function openReplyModal(id) {
     const contacto = contactos.find(c => c.id_contacto == id);
     
     if (!contacto) {
-        showAlert('error', 'Erro', 'Contacto não encontrado');
+        showErrorMessage('Não foi possível encontrar o calendario', 'Erro de Envio', 3000);
         return;
     }
 
@@ -147,7 +147,7 @@ async function sendReply() {
     const resposta = document.getElementById('reply-resposta').value.trim();
    console.log('respostas:',resposta)
     if (!resposta) {
-        showAlert('error', 'Erro', 'Por favor, escreva uma resposta');
+        showErrorMessage('Não foi possível responder o contacto', 'Erro de Envio', 3000);
         return false;
     }
     const formData = new FormData()
@@ -163,15 +163,22 @@ async function sendReply() {
         const data = await response.json();
         
         if (data.success) {
-            showAlert('success', 'Sucesso', 'Resposta enviada com sucesso!');
+            showSuccessMessage(
+                'Resposta enviada com sucesso!',    
+                'Resposta enviada', 
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
             closeModal('reply-contacto-modal');
             loadContactos(); // Recarregar a lista de contactos
         } else {
-            showAlert('error', 'Erro', data.message || 'Erro ao responder ao contacto');
+            showErrorMessage('Não foi possível responder o contacto', 'Erro de Envio', 3000);
+            console.log('Erro: ' + data.message);
         }
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('error', 'Erro', 'Ocorreu um erro ao responder ao contacto');
+        showErrorMessage('Não foi possível responder o contacto', 'Erro de Envio', 3000);   
     }
     return false; // Previne o recarregamento da página
 }
@@ -182,7 +189,7 @@ function openDeleteModal(id) {
     const contacto = contactos.find(c => c.id_contacto == id);
     
     if (!contacto) {
-        showAlert('error', 'Erro', 'Contacto não encontrado');
+        showErrorMessage('Não foi possível encontrar o contacto', 'Erro de Envio', 3000);
         return;
     }
 
@@ -203,14 +210,21 @@ async function deleteContacto() {
         });
 
        if(response.status== 200){
-        alert('Contacto eliminado com sucesso!');
+        showSuccessMessage(
+            'Contacto eliminado com sucesso!',
+            'Contacto eliminado',
+            'success',
+            'ENJOY YOUR STAY',
+            3000 // auto-close after 3 seconds
+        );
         location.reload();
        }else{
-        alert('Erro ao eliminar contacto!');
+        showErrorMessage('Não foi possível eliminar o contacto', 'Erro de Envio', 3000);
+        console.log('Erro: ' + data.message);
        }
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('error', 'Erro', 'Ocorreu um erro ao eliminar o contacto');
+        showErrorMessage('Não foi possível eliminar o contacto', 'Erro de Envio', 3000);    
     }
 }
 
@@ -219,11 +233,7 @@ function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-// Função para mostrar alertas
-function showAlert(type, title, message) {
-    // Implementação simples de alerta - pode ser substituída por uma biblioteca como SweetAlert
-    alert(`${title}: ${message}`);
-}
+
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {

@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Erro ao carregar curso para edição:', error);
-            alert('Erro ao carregar curso: ' + error.message);
+            showErrorMessage('Não foi possível carregar o curso para edição', 'Erro de Envio', 3000);   
         }
     };
 
@@ -101,7 +101,13 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Resposta do servidor:', data);
             
             if (data.success) {
-                alert('Curso excluído com sucesso!');
+                showSuccessMessage(
+                    'Curso excluído com sucesso!',
+                    'Curso excluído',   
+                    'success',
+                    'ENJOY YOUR STAY',
+                    3000 // auto-close after 3 seconds
+                );
                 closeModal('confirm-modal');
                 loadCursos();
             } else {
@@ -109,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Erro ao excluir curso:', error);
-            alert('Erro ao excluir curso: ' + error.message);
+            showErrorMessage('Não foi possível excluir curso', 'Erro de Envio', 3000);
         } finally {
             cursoIdToDelete = null;
         }
@@ -144,7 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Resposta do servidor:', data);
 
             if (data.success) {
-                alert('Curso atualizado com sucesso!');
+                showSuccessMessage(
+                    'Curso atualizado com sucesso!',
+                    'Atualização realizada',
+                    'success',
+                    'ENJOY YOUR STAY',
+                    3000 // auto-close after 3 seconds
+                );
                 closeModal('edit-curso-modal-container');
                 loadCursos();
             } else {
@@ -152,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Erro na edição:', error);
-            alert('Erro: ' + error.message);
+           showErrorMessage('Não foi possível atualizar o curso', 'Erro de Envio', 3000);
         }
     });
 
@@ -225,7 +237,13 @@ async function cadastrarCurso() {
         const data = await response.json();
 
         if (data.success) {
-            alert('Curso cadastrado com sucesso!');
+            showSuccessMessage(
+                'Curso cadastrado com sucesso!',
+                'Cadastro realizado',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
             closeModal('curso-modal-container');
             document.dispatchEvent(new Event('DOMContentLoaded'));
         } else {
@@ -233,6 +251,6 @@ async function cadastrarCurso() {
         }
     } catch (error) {
         console.error('Erro no cadastro:', error);
-        alert('Erro: ' + error.message);
+        showErrorMessage('Não foi possível cadastrar o curso', 'Erro de Envio', 3000);
     }
 }

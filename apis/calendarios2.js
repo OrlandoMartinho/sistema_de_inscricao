@@ -45,7 +45,7 @@ async function carregarCursos() {
         }
     } catch (error) {
         console.error('Erro ao carregar cursos:', error);
-        mostrarNotificacao('error', 'Erro ao carregar cursos');
+       showErrorMessage('Não foi possível carregar os cursos', 'Erro de Envio', 3000);
     }
 }
 
@@ -97,7 +97,7 @@ async function carregarEventos() {
         }
     } catch (error) {
         console.error('Erro ao carregar eventos:', error);
-        mostrarNotificacao('error', 'Erro ao carregar eventos');
+        showErrorMessage('Não foi possível carregar os eventos', 'Erro de Envio', 3000);
     }
 }
 
@@ -203,9 +203,22 @@ document.getElementById('form-publicar-evento').addEventListener('submit', async
         
         const data = await response.json();
         console.log('Resposta da API:', data);
-        alert('Evento publicado com sucesso!');
+        showSuccessMessage(
+            'Calendário publicado com sucesso!',
+            'Calendário publicado',
+            'success',
+            'ENJOY YOUR STAY',
+            3000 // auto-close after 3 seconds
+        );
+
         if (data.success) {
-            mostrarNotificacao('success', 'Evento publicado com sucesso!');
+            showSuccessMessage(
+                'Calendário publicado com sucesso!',
+                'Calendário publicado',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );  
             closeModalPublicarEvento();
             await carregarEventos();
         } else {
@@ -213,7 +226,7 @@ document.getElementById('form-publicar-evento').addEventListener('submit', async
         }
     } catch (error) {
         console.error('Erro ao publicar evento:', error);
-        mostrarNotificacao('error', error.message || 'Erro ao publicar evento');
+        showErrorMessage('Não foi possível publicar o evento', 'Erro de Envio', 3000);  
     }
     closeModalPublicarEvento();
 });
@@ -261,9 +274,16 @@ async function editarEvento(formElement) {
         
         const data = await response.json();
         console.log('Resposta da API:', data);
-        alert('Evento atualizado com sucesso!');    
+        showSuccessMessage(
+            'Calendário editado com sucesso!',  
+            'Calendário editado',
+            'success',
+            'ENJOY YOUR STAY',
+            3000 // auto-close after 3 seconds
+        );
+
         if (data.success) {
-            mostrarNotificacao('success', 'Evento atualizado com sucesso!');
+            showErrorMessage('Não foi possível enviar o calendario', 'Erro de Envio', 3000);
             closeModalEditarEvento();
             await carregarEventos();
         } else {
@@ -271,7 +291,7 @@ async function editarEvento(formElement) {
         }
     } catch (error) {
         console.error('Erro ao editar evento:', error);
-        mostrarNotificacao('error', error.message || 'Erro ao atualizar evento');
+        showErrorMessage('Não foi possível enviar o calendario', 'Erro de Envio', 3000);
     }
 }
 
@@ -299,11 +319,25 @@ async function confirmarExclusaoEvento() {
         
         const data = await response.json();
         console.log('Resposta da API:', data);
-        alert('Evento excluído com sucesso!');
+        
+        showSuccessMessage(
+            'Calendário excluído com sucesso!',
+            'Calendário excluído',
+            'success',
+            'ENJOY YOUR STAY',
+            3000 // auto-close after 3 seconds
+        );
+
         
         if (data.success) {
-            console.log('Evento excluído com sucesso');
-            mostrarNotificacao('success', 'Evento excluído com sucesso!');
+            showSuccessMessage(
+                'Calendário excluído com sucesso!',
+                'Calendário excluído',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
+           
             closeModalExcluirEvento();
             carregarEventos();
         } else {
@@ -311,7 +345,7 @@ async function confirmarExclusaoEvento() {
         }
     } catch (error) {
         console.error('Erro ao excluir evento:', error);
-        mostrarNotificacao('error', error.message || 'Erro ao excluir evento');
+        showErrorMessage('Não foi possível excluir o evento', 'Erro de Envio', 3000);
     }
 }
 
@@ -339,7 +373,7 @@ async function abrirModalEditarEvento(idCalendario) {
         }
     } catch (error) {
         console.error('Erro ao abrir modal de edição:', error);
-        mostrarNotificacao('error', error.message || 'Erro ao carregar evento');
+        showErrorMessage('Não foi possível carregar os detalhes do evento', 'Erro de Envio', 3000);
     }
 }
 
@@ -375,7 +409,7 @@ function abrirModalExcluirEvento(idCalendario) {
     
     if (!eventoSelecionado) {
         console.error('Evento não encontrado para exclusão');
-        mostrarNotificacao('error', 'Evento não encontrado');
+        showErrorMessage('Evento não encontrado', 'Erro de Envio', 3000);   
         return;
     }
     
@@ -458,20 +492,3 @@ function closeModalExcluirEvento() {
     eventoSelecionado = null;
 }
 
-// Função para mostrar notificações
-function mostrarNotificacao(tipo, mensagem) {
-    console.log(`Mostrando notificação [${tipo}]: ${mensagem}`);
-    const notification = document.createElement('div');
-    notification.className = `notification ${tipo}`;
-    notification.innerHTML = `
-        <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-        <span>${mensagem}</span>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.classList.add('fade-out');
-        setTimeout(() => notification.remove(), 500);
-    }, 3000);
-}

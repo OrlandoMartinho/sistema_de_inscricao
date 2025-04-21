@@ -325,13 +325,13 @@ document.getElementById('upload-form').addEventListener('submit', function(e) {
     const files = document.getElementById('file-input')?.files;
 
     if (!files || files.length === 0) {
-        alert("Por favor, selecione pelo menos uma foto!");
+        showErrorMessage('Por favor seleciona alguma foto', 'Erro de Envio', 3000);
         return;
     }
 
     // Validação básica
     if (!title || title.length < 3) {
-        alert("O título é obrigatório e deve ter pelo menos 3 caracteres.");
+        showErrorMessage('O titulo é obrigatorio e deve ter pelo menos 3 digitos', 'Erro de Envio', 3000);
         return;
     }
 
@@ -387,7 +387,14 @@ function enviarFotos(title, date, description, files ) {
     })
     .then(data => {
         if (data.success) {
-            mostrarSucesso(data.message || 'Fotos enviadas com sucesso!');
+            showSuccessMessage(
+                'Fotos enviadas com sucesso',
+                'Fotos enviadas enviado',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
+
             closeModal('upload-modal');
             carregarGaleria();
 
@@ -395,12 +402,12 @@ function enviarFotos(title, date, description, files ) {
             document.getElementById('upload-form').reset();
             document.getElementById('file-list').innerHTML = '';
         } else {
-            mostrarErro(data.message || 'Erro ao enviar fotos.');
+            showErrorMessage('Não foi possível enviar o Foto', 'Erro de Envio', 3000);
         }
     })
     .catch(error => {
         console.error('[GALERIA] Erro na requisição:', error);
-        mostrarErro(error.message || 'Erro ao conectar com o servidor.');
+        showErrorMessage('Não foi possível enviar o Foto', 'Erro ao conectar com o servidor', 3000);
     })
     .finally(() => {
         btnEnviar.innerHTML = originalText;
@@ -681,7 +688,14 @@ function deletePhoto() {
         console.log('[GALERIA] Resposta do servidor:', data);
         
         if (data.success) {
-            alert('Foto deletada com sucesso!');
+            showSuccessMessage(
+                'Foto eliminada com sucesso',
+                'Eliminação de foto',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
+
             mostrarSucesso(data.message || 'Foto deletada com sucesso!');
             closeModal('confirm-modal');
             carregarGaleria();
