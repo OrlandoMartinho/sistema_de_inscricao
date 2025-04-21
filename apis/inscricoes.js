@@ -40,11 +40,11 @@ async function enviarFormulario(id_curso) {
 
             closeModal();
         } else {
-            showErrorMessage('Não foi possível enviar a sua inscrição.', 'Erro de Envio', 3000);
+            showErrorMessage('Não foi possível enviar a sua inscrição.', 'Ocorreu um erro', 3000);
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        showErrorMessage('Não foi possível enviar a sua inscrição.', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível enviar a sua inscrição.', 'Ocorreu um erro', 3000);
     });
 }

@@ -23,11 +23,11 @@ async function loadContactos() {
            
             renderContactosTable(contactos);
         } else {
-            showErrorMessage('Não foi possível carregar os contacto', 'Erro de Envio', 3000);
+            showErrorMessage('Não foi possível carregar os contacto', 'Ocorreu um erro', 3000);
         }
     } catch (error) {
         console.error('Erro:', error);
-        showErrorMessage('Não foi possível carregar os contactos', 'Erro de Envio', 3000);  
+        showErrorMessage('Não foi possível carregar os contactos', 'Ocorreu um erro', 3000);  
     }
 }
 
@@ -84,7 +84,7 @@ async function openViewModal(id) {
     const contacto = contactos.find(c => c.id_contacto == id);
     
     if (!contacto) {
-        showErrorMessage('Não foi possivel filtrar os contactos', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possivel filtrar os contactos', 'Ocorreu um erro', 3000);
         return;
     }
 
@@ -128,7 +128,7 @@ async function openReplyModal(id) {
     const contacto = contactos.find(c => c.id_contacto == id);
     
     if (!contacto) {
-        showErrorMessage('Não foi possível encontrar o calendario', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível encontrar o calendario', 'Ocorreu um erro', 3000);
         return;
     }
 
@@ -147,7 +147,7 @@ async function sendReply() {
     const resposta = document.getElementById('reply-resposta').value.trim();
    console.log('respostas:',resposta)
     if (!resposta) {
-        showErrorMessage('Não foi possível responder o contacto', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível responder o contacto', 'Ocorreu um erro', 3000);
         return false;
     }
     const formData = new FormData()
@@ -173,12 +173,12 @@ async function sendReply() {
             closeModal('reply-contacto-modal');
             loadContactos(); // Recarregar a lista de contactos
         } else {
-            showErrorMessage('Não foi possível responder o contacto', 'Erro de Envio', 3000);
+            showErrorMessage('Não foi possível responder o contacto', 'Ocorreu um erro', 3000);
             console.log('Erro: ' + data.message);
         }
     } catch (error) {
         console.error('Erro:', error);
-        showErrorMessage('Não foi possível responder o contacto', 'Erro de Envio', 3000);   
+        showErrorMessage('Não foi possível responder o contacto', 'Ocorreu um erro', 3000);   
     }
     return false; // Previne o recarregamento da página
 }
@@ -189,7 +189,8 @@ function openDeleteModal(id) {
     const contacto = contactos.find(c => c.id_contacto == id);
     
     if (!contacto) {
-        showErrorMessage('Não foi possível encontrar o contacto', 'Erro de Envio', 3000);
+        
+        showErrorMessage('Não foi possível encontrar o contacto', 'Ocorreu um erro', 3000);
         return;
     }
 
@@ -210,6 +211,8 @@ async function deleteContacto() {
         });
 
        if(response.status== 200){
+
+        closeModal('confirm-modal');
         showSuccessMessage(
             'Contacto eliminado com sucesso!',
             'Contacto eliminado',
@@ -219,12 +222,14 @@ async function deleteContacto() {
         );
         location.reload();
        }else{
-        showErrorMessage('Não foi possível eliminar o contacto', 'Erro de Envio', 3000);
+        closeModal('confirm-modal');
+        showErrorMessage('Não foi possível eliminar o contacto', 'Ocorreu um erro', 3000);
         console.log('Erro: ' + data.message);
        }
     } catch (error) {
         console.error('Erro:', error);
-        showErrorMessage('Não foi possível eliminar o contacto', 'Erro de Envio', 3000);    
+        closeModal('confirm-modal');
+        showErrorMessage('Não foi possível eliminar o contacto', 'Ocorreu um erro', 3000);    
     }
 }
 

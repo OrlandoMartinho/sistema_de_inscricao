@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Erro ao carregar curso para edição:', error);
-            showErrorMessage('Não foi possível carregar o curso para edição', 'Erro de Envio', 3000);   
+            showErrorMessage('Não foi possível carregar o curso para edição', 'Ocorreu um erro', 3000);   
         }
     };
 
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Erro ao excluir curso:', error);
-            showErrorMessage('Não foi possível excluir curso', 'Erro de Envio', 3000);
+            showErrorMessage('Não foi possível excluir curso', 'Ocorreu um erro', 3000);
         } finally {
             cursoIdToDelete = null;
         }
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Erro na edição:', error);
-           showErrorMessage('Não foi possível atualizar o curso', 'Erro de Envio', 3000);
+           showErrorMessage('Não foi possível atualizar o curso', 'Ocorreu um erro', 3000);
         }
     });
 
@@ -251,6 +251,6 @@ async function cadastrarCurso() {
         }
     } catch (error) {
         console.error('Erro no cadastro:', error);
-        showErrorMessage('Não foi possível cadastrar o curso', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível cadastrar o curso', 'Ocorreu um erro', 3000);
     }
 }

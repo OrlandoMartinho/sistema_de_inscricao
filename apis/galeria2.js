@@ -1,20 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('[GALERIA] DOM completamente carregado - Inicializando sistema de galeria');  
-    // Carregar galeria
-    console.log('[GALERIA] Iniciando carregamento da galeria...');
+    
     carregarGaleria();
     
-    // Configurar drag and drop
-    console.log('[GALERIA] Configurando área de drag and drop...');
+   
     setupDragAndDrop();
     
-    // Configurar formulário de upload
-    console.log('[GALERIA] Configurando formulário de upload...');
+  
     const uploadForm = document.getElementById('upload-form');
     if (uploadForm) {
         uploadForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log('[GALERIA] Formulário de upload submetido');
+           
            
         });
     } else {
@@ -22,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Configurar pesquisa
-    console.log('[GALERIA] Configurando barra de pesquisa...');
+    
     const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
@@ -31,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    console.log('[GALERIA] Sistema de galeria inicializado com sucesso');
+
 });
 
 // Variáveis globais
@@ -43,10 +39,10 @@ let selectedFiles = []; // Array para armazenar os arquivos selecionados
  * Carrega a galeria de fotos do servidor
  */
 function carregarGaleria() {
-    console.log('[GALERIA] Iniciando requisição para carregar galeria...');
+
     
     const loadingTimer = setTimeout(() => {
-        console.log('[GALERIA] A requisição está demorando mais que o esperado...');
+    
     }, 3000);
 
     fetch('../controllers/galeria.php', {
@@ -58,7 +54,7 @@ function carregarGaleria() {
     })
     .then(response => {
         clearTimeout(loadingTimer);
-        console.log('[GALERIA] Resposta recebida do servidor. Status:', response.status);
+        
         
         if (!response.ok) {
             console.error('[GALERIA] Erro na resposta do servidor:', response.status, response.statusText);
@@ -67,11 +63,10 @@ function carregarGaleria() {
         return response.json();
     })
     .then(data => {
-        console.log('[GALERIA] Dados recebidos:', data);
+       
         
         if (data.success) {
-            console.log(`[GALERIA] Galeria carregada com sucesso. ${data.data.length} itens encontrados`);
-            galeriaAtual = data.data;
+         
             atualizarGaleriaUI(data.data);
         } else {
             console.error('[GALERIA] Erro no carregamento:', data.message);
@@ -325,13 +320,13 @@ document.getElementById('upload-form').addEventListener('submit', function(e) {
     const files = document.getElementById('file-input')?.files;
 
     if (!files || files.length === 0) {
-        showErrorMessage('Por favor seleciona alguma foto', 'Erro de Envio', 3000);
+        showErrorMessage('Por favor seleciona alguma foto', 'Ocorreu um erro', 3000);
         return;
     }
 
     // Validação básica
     if (!title || title.length < 3) {
-        showErrorMessage('O titulo é obrigatorio e deve ter pelo menos 3 digitos', 'Erro de Envio', 3000);
+        showErrorMessage('O titulo é obrigatorio e deve ter pelo menos 3 digitos', 'Ocorreu um erro', 3000);
         return;
     }
 
@@ -402,7 +397,7 @@ function enviarFotos(title, date, description, files ) {
             document.getElementById('upload-form').reset();
             document.getElementById('file-list').innerHTML = '';
         } else {
-            showErrorMessage('Não foi possível enviar o Foto', 'Erro de Envio', 3000);
+            showErrorMessage('Não foi possível enviar o Foto', 'Ocorreu um erro', 3000);
         }
     })
     .catch(error => {
@@ -662,8 +657,8 @@ function deletePhoto() {
     })
     .then(async response => {
         console.log('[GALERIA] Resposta recebida - Status:', response.status);
-        conso
-        if(response.status === 200) {
+        
+        if(response.status === 201) {
             console.log('[GALERIA] Resposta vazia (204 No Content)');
             return { success: true, message: 'Foto deletada com sucesso!' };
 
@@ -696,7 +691,7 @@ function deletePhoto() {
                 3000 // auto-close after 3 seconds
             );
 
-            mostrarSucesso(data.message || 'Foto deletada com sucesso!');
+          
             closeModal('confirm-modal');
             carregarGaleria();
         } else {
@@ -704,15 +699,12 @@ function deletePhoto() {
         }
     })
     .catch(error => {
-        console.error('[GALERIA] Erro na requisição:', {
-            message: error.message,
-            stack: error.stack
-        });
-        mostrarErro(error.message || 'Erro ao conectar com o servidor');
+       
+        
     })
     .finally(() => {
         btnDelete.innerHTML = originalText;
         btnDelete.disabled = false;
-        console.log('[GALERIA] Processo finalizado');
+       
     });
 }

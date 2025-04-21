@@ -45,7 +45,7 @@ async function carregarCursos() {
         }
     } catch (error) {
         console.error('Erro ao carregar cursos:', error);
-       showErrorMessage('Não foi possível carregar os cursos', 'Erro de Envio', 3000);
+       showErrorMessage('Não foi possível carregar os cursos', 'Ocorreu um erro', 3000);
     }
 }
 
@@ -97,7 +97,7 @@ async function carregarEventos() {
         }
     } catch (error) {
         console.error('Erro ao carregar eventos:', error);
-        showErrorMessage('Não foi possível carregar os eventos', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível carregar os eventos', 'Ocorreu um erro', 3000);
     }
 }
 
@@ -226,7 +226,7 @@ document.getElementById('form-publicar-evento').addEventListener('submit', async
         }
     } catch (error) {
         console.error('Erro ao publicar evento:', error);
-        showErrorMessage('Não foi possível publicar o evento', 'Erro de Envio', 3000);  
+        showErrorMessage('Não foi possível publicar o evento', 'Ocorreu um erro', 3000);  
     }
     closeModalPublicarEvento();
 });
@@ -283,7 +283,7 @@ async function editarEvento(formElement) {
         );
 
         if (data.success) {
-            showErrorMessage('Não foi possível enviar o calendario', 'Erro de Envio', 3000);
+            showErrorMessage('Não foi possível enviar o calendario', 'Ocorreu um erro', 3000);
             closeModalEditarEvento();
             await carregarEventos();
         } else {
@@ -291,7 +291,7 @@ async function editarEvento(formElement) {
         }
     } catch (error) {
         console.error('Erro ao editar evento:', error);
-        showErrorMessage('Não foi possível enviar o calendario', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível enviar o calendario', 'Ocorreu um erro', 3000);
     }
 }
 
@@ -330,6 +330,7 @@ async function confirmarExclusaoEvento() {
 
         
         if (data.success) {
+            closeModalExcluirEvento();
             showSuccessMessage(
                 'Calendário excluído com sucesso!',
                 'Calendário excluído',
@@ -338,14 +339,17 @@ async function confirmarExclusaoEvento() {
                 3000 // auto-close after 3 seconds
             );
            
-            closeModalExcluirEvento();
+        
             carregarEventos();
         } else {
+            closeModalExcluirEvento();
+            showErrorMessage('Não foi possível excluir o evento', 'Ocorreu um erro', 3000);
             throw new Error(data.message || 'Erro ao excluir evento');
         }
     } catch (error) {
         console.error('Erro ao excluir evento:', error);
-        showErrorMessage('Não foi possível excluir o evento', 'Erro de Envio', 3000);
+        closeModalExcluirEvento();
+        showErrorMessage('Não foi possível excluir o evento', 'Ocorreu um erro', 3000);
     }
 }
 
@@ -373,7 +377,7 @@ async function abrirModalEditarEvento(idCalendario) {
         }
     } catch (error) {
         console.error('Erro ao abrir modal de edição:', error);
-        showErrorMessage('Não foi possível carregar os detalhes do evento', 'Erro de Envio', 3000);
+        showErrorMessage('Não foi possível carregar os detalhes do evento', 'Ocorreu um erro', 3000);
     }
 }
 
@@ -409,7 +413,7 @@ function abrirModalExcluirEvento(idCalendario) {
     
     if (!eventoSelecionado) {
         console.error('Evento não encontrado para exclusão');
-        showErrorMessage('Evento não encontrado', 'Erro de Envio', 3000);   
+        showErrorMessage('Evento não encontrado', 'Ocorreu um erro', 3000);   
         return;
     }
     
