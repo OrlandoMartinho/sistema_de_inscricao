@@ -203,7 +203,7 @@ document.getElementById('form-publicar-evento').addEventListener('submit', async
         
         const data = await response.json();
         console.log('Resposta da API:', data);
-        
+        alert('Evento publicado com sucesso!');
         if (data.success) {
             mostrarNotificacao('success', 'Evento publicado com sucesso!');
             closeModalPublicarEvento();
@@ -261,7 +261,7 @@ async function editarEvento(formElement) {
         
         const data = await response.json();
         console.log('Resposta da API:', data);
-        
+        alert('Evento atualizado com sucesso!');    
         if (data.success) {
             mostrarNotificacao('success', 'Evento atualizado com sucesso!');
             closeModalEditarEvento();
@@ -299,6 +299,7 @@ async function confirmarExclusaoEvento() {
         
         const data = await response.json();
         console.log('Resposta da API:', data);
+        alert('Evento excluído com sucesso!');
         
         if (data.success) {
             console.log('Evento excluído com sucesso');

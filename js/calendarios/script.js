@@ -55,10 +55,6 @@ document.querySelectorAll('dialog').forEach(dialog => {
 
 
 
-document.getElementById('form-editar-evento').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Evento atualizado com sucesso!');
-    closeModalEditarEvento();
-});
+
 
 document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";
