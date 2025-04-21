@@ -1,6 +1,6 @@
 @import url('../side_bar.css');
 @import url('./modal-calendar.css');
-
+@import url('../message-modal.css');
 
 .datas-publicadas {
   width: 100%;

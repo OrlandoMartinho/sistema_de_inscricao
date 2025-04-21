@@ -1,5 +1,5 @@
 @import url('../side_bar.css');
-
+@import url('../message-modal.css');
 .content {
   flex: 1;
   padding: 20px;

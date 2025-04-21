@@ -1,6 +1,6 @@
 @import url('../side_bar.css');
 @import url('../notification-modal.css');
-
+@import url('../message-modal.css');
 /* Estilos Base */
 .gallery-container {
     display: grid;

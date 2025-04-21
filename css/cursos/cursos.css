@@ -1,6 +1,6 @@
 @import url('../side_bar.css');
 @import url('./modal-cursos.css');
-
+@import url('../message-modal.css');
 /* Estilos da Tabela - Versão Integrada */
 .table-container {
   max-width: 100%;

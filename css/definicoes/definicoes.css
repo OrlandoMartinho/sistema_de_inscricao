@@ -2,6 +2,7 @@
 @import url('../content.css');
 @import url('../side_bar.css');
 @import url('./definicoes-modal.css');
+@import url('../message-modal.css');
 
 .settings-section {
   display: flex;
