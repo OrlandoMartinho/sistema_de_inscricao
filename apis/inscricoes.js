@@ -8,7 +8,7 @@ function enviarFormulario(id_curso) {
     }
     
     const formData = new FormData(document.getElementById('form-matricula'));
-    formData.append('id_curso', id_curso);
+    formData.append('id_calendario', id_curso);
     // Simulação de envio (substituir por fetch real)
     console.log('Dados do formulário:', Object.fromEntries(formData));
     

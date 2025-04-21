@@ -137,7 +137,7 @@ function validarPagina2() {
     return valido;
 }
 
-const id_curso = null
+let id_curso = null
 // Função para abrir o modal de matrícula
 function openMatriculaModal(courseName) {
     const modal = document.getElementById('matriculaModal');

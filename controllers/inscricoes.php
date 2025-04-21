@@ -28,6 +28,10 @@ class Inscricao {
     private $aprovacao;
     private $comentario;
 
+    private $id_curso;
+
+    private $nome_do_curso; 
+
 
 
     public function __construct($conn) {
@@ -54,10 +58,35 @@ class Inscricao {
         $this->data_de_criacao = date('Y-m-d H:i:s');
         $this->aprovacao = 0;
         $this->comentario = '';
+        $this->id_curso = $_POST['id_curso'] ?? null;
+        $this->nome_do_curso = $_POST['nome_do_curso'] ?? null; 
     
         error_log("📥 Dados recebidos do POST:");
         error_log(print_r($_POST, true));
-    
+
+
+        $sql = "SELECT * FROM Calendarios WHERE id_calendario = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("i", $this->id_calendario);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            error_log("Verificando se o calendário existe...");
+            error_log("Calendário ID: " . $this->id_calendario);
+            error_log("Resultado: " . $result->num_rows . " registros encontrados.");   
+
+           if ($result->num_rows == 0) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Calendário não encontrado.']);
+                return false;
+            }
+            $evento = $result->fetch_assoc();
+               
+            if ($result->num_rows == 0) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Evento não encontrado.']);
+                return false;
+            }
         // Validação dos campos obrigatórios
         $camposObrigatorios = [
             'idade' => 'Idade',
@@ -75,7 +104,12 @@ class Inscricao {
             'turno' => 'Turno',
             'id_calendario' => 'ID do Calendário'
         ];
-    
+
+        
+
+        $this->id_curso = $evento['id_curso'] ?? null;
+        $this->nome_do_curso = $evento['nome_do_curso'] ?? null;
+      
         $erros = [];
         foreach ($camposObrigatorios as $campo => $nome) {
             if (empty($this->$campo)) {
@@ -122,8 +156,8 @@ class Inscricao {
                 data_de_nascimento, natural_de, provincia, 
                 tipo_de_identificacao, numero_de_identificacao, data_de_validade,
                 arquivo_de_identificacao, foto_tipo_passe, classe, turno, 
-                data_de_criacao, aprovacao, comentario
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                data_de_criacao, aprovacao, comentario, id_curso, nome_do_curso 
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
             $stmt = $this->conn->prepare($sql); // <--- ESSENCIAL
             if (!$stmt) {
@@ -131,7 +165,7 @@ class Inscricao {
             }
     
             $stmt->bind_param(
-                "isisssisssssssssssis",
+                "isisssisssssssssssisss",
                 $this->idade,
                 $this->genero,
                 $this->numero_do_processo,
@@ -151,7 +185,9 @@ class Inscricao {
                 $this->turno,
                 $this->data_de_criacao,
                 $this->aprovacao,
-                $this->comentario
+                $this->comentario,
+                $this->id_curso,
+                $this->nome_do_curso    
             );
     
             if ($stmt->execute()) {

@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="../css/home/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/notification-modal.css">
- 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Barra Lateral -->
         <aside class="sidebar">
-            <img src="../assets/logo-branco.png "alt="Logo do Instituto">
+            <img src="../assets/logo-branco.png" alt="Logo do Instituto">
             <h2 class="title-side-bar">30 de Setembro</h2>
             <nav>
                 <ul>
@@ -23,9 +22,9 @@
                     <li><i class="fas fa-book"></i> <a href="cursos.html">Cursos</a></li> 
                     <li><i class="fas fa-calendar-alt"></i> <a href="calendarios.html">Calendário</a></li>
                     <li><i class="fas fa-envelope"></i><a href="contactos.html">Contactos</a></li>
-                    <li ><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
+                    <li><i class="fas fa-image"></i><a href="galeria.html">Galeria</a></li>
                     <li><i class="fas fa-cog"></i><a href="definicoes.html">Configurações</a></li>
-                    <li class="logout" onclick = "fazerLogout()" > <i class="fas fa-sign-out-alt"></i><a> Sair do sistema</a> </li>
+                    <li class="logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i><a> Sair do sistema</a></li>
                 </ul>
             </nav>
         </aside>
@@ -41,8 +40,7 @@
                 </div>
                 <div class="user-info">
                     <div class="notification-bell-container" onclick="openNotificationModal()">
-                        <i class="fa-solid fa-bell notificacao"><p class="notify">3</p></i>
-                        
+                        <i class="fa-solid fa-bell notificacao"><p class="notify" id="notificationCount">0</p></i>
                     </div>
                     <i data-lucide="user"></i>
                     <span id="nomeUsuario">Asidaini Pinto</span><span>(Administrador)</span>
@@ -78,34 +76,44 @@
             
             <section>
                 <div class="dashboard-container">
+                    <!-- Gráfico 1: Inscrições por curso -->
                     <div class="chart-box">
-                        <canvas id="inscricoesChart"></canvas>
+                        <canvas id="inscricoesPorCursoChart"></canvas>
                     </div>
+                    
+                    <!-- Gráfico 2: Status das inscrições (aprovadas/pendentes) -->
                     <div class="chart-box">
-                        <canvas id="usuariosChart"></canvas>
+                        <canvas id="statusInscricoesChart"></canvas>
                     </div>
+                    
+                    <!-- Gráfico 3: Evolução de inscrições ao longo do tempo -->
                     <div class="chart-box">
-                        <canvas id="totalInscricoesChart"></canvas>
+                        <canvas id="evolucaoInscricoesChart"></canvas>
                     </div>
+                    
+                    <!-- Gráfico 4: Distribuição por gênero -->
                     <div class="chart-box">
-                        <canvas id="distribuicaoUsuariosChart1"></canvas>
+                        <canvas id="distribuicaoGeneroChart"></canvas>
                     </div>
+                    
+                    <!-- Gráfico 5: Distribuição por faixa etária -->
                     <div class="chart-box">
-                        <canvas id="distribuicaoUsuariosChart2"></canvas>
+                        <canvas id="distribuicaoIdadeChart"></canvas>
                     </div>
+                    
+                    <!-- Gráfico 6: Distribuição por província -->
                     <div class="chart-box">
-                        <canvas id="distribuicaoUsuariosChart3"></canvas>
+                        <canvas id="distribuicaoProvinciaChart"></canvas>
                     </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <script src="../js/graficos.js">
-    </script>
+
     <script src="../js/tokenVerifier.js"></script>
     <script src="../js/logout.js"></script>
     <script src="../js/notification-modal.js"></script>
-     
+    <script src="../apis/home.js"></script>
 </body>
 </html>

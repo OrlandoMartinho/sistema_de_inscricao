@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${formatDate(evento.data_de_termino)}</td>
                         <td class="event">${descricao}</td>
                         <td>
-                            <button class="apply-btn" onclick="openMatriculaModal('${id_curso}')">
+                            <button class="apply-btn" onclick="openMatriculaModal('${evento.id_calendario}')">
                                 Inscrever-se
                             </button>
                         </td>

@@ -41,7 +41,7 @@ class Calendario {
 
         try {
             // Obter nome do curso
-            $stmt_curso = $this->conn->prepare("SELECT nome FROM cursos WHERE id_curso = ?");
+            $stmt_curso = $this->conn->prepare("SELECT * FROM cursos WHERE id_curso = ?");
             $stmt_curso->bind_param("i", $id_curso);
             $stmt_curso->execute();
             $result_curso = $stmt_curso->get_result();

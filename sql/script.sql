@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS Inscricoes (
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     aprovacao INT,
     comentario VARCHAR(255),
+    id_curso INT NOT NULL , 
+    nome_do_curso VARCHAR(255) NOT NULL,
     FOREIGN KEY (id_calendario) REFERENCES Calendarios(id_calendario)
 );
 
