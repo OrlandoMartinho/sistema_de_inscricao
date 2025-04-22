@@ -354,7 +354,6 @@ function applyFilters() {
     });
 }
 
-
 async function exportToPDF(type) {
     try {
         let dataToExport;
@@ -387,12 +386,24 @@ async function exportToPDF(type) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // Título
+        // Adicionar logo (centralizado no topo)
+        const logoWidth = 50;
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const logoX = (pageWidth - logoWidth) / 2;
+        
+        // Substitua 'logoData' pelos dados da sua imagem (base64 ou URL)
+        // doc.addImage(logoData, 'JPEG', logoX, 10, logoWidth, 20);
+        
+        // Título (centralizado abaixo do logo)
         doc.setFontSize(18);
-        doc.text('Relatório de Inscrições', 14, 22);
+        doc.setFont("helvetica", "bold");
+        doc.text('Relatório de Inscrições', pageWidth / 2, 40, { align: 'center' });
+        
+        // Informações do relatório
         doc.setFontSize(12);
-        doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 14, 30);
-        doc.text(`Tipo: ${type === 'all' ? 'Todos' : 'Filtrados'}`, 14, 38);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, pageWidth / 2, 48, { align: 'center' });
+        doc.text(`Tipo: ${type === 'all' ? 'Todos os registos' : 'Dados filtrados'}`, pageWidth / 2, 56, { align: 'center' });
         
         // Configurar tabela
         const headers = ['ID', 'Nome', 'Curso', 'Data Inscrição', 'Estado', 'Processo', 'Contacto'];
@@ -406,14 +417,51 @@ async function exportToPDF(type) {
             insc.contacto_do_aluno
         ]);
         
-        // Adicionar tabela
+        // Adicionar tabela com estilo melhorado
         doc.autoTable({
             head: [headers],
             body: data,
-            startY: 50,
-            styles: { fontSize: 8, cellPadding: 2 },
-            headStyles: { fillColor: [22, 160, 133], textColor: 255 }
+            startY: 65,
+            margin: { horizontal: 10 },
+            styles: { 
+                fontSize: 9,
+                cellPadding: 3,
+                font: "helvetica",
+                textColor: [50, 50, 50],
+                lineColor: [200, 200, 200],
+                lineWidth: 0.2
+            },
+            headStyles: { 
+                fillColor: [22, 160, 133],
+                textColor: 255,
+                fontStyle: 'bold',
+                halign: 'center'
+            },
+            bodyStyles: {
+                halign: 'center'
+            },
+            alternateRowStyles: {
+                fillColor: [245, 245, 245]
+            },
+            columnStyles: {
+                0: { cellWidth: 15 }, // ID
+                1: { cellWidth: 40 }, // Nome
+                2: { cellWidth: 40 }, // Curso
+                3: { cellWidth: 25 }, // Data
+                4: { cellWidth: 20 }, // Estado
+                5: { cellWidth: 25 }, // Processo
+                6: { cellWidth: 25 }  // Contacto
+            }
         });
+        
+        // Rodapé
+        const pageCount = doc.internal.getNumberOfPages();
+        for(let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(10);
+            doc.setTextColor(150);
+            doc.text(`Página ${i} de ${pageCount}`, pageWidth - 20, doc.internal.pageSize.getHeight() - 10, { align: 'right' });
+        }
         
         // Salvar PDF
         doc.save(`inscricoes_${type}_${new Date().toISOString().slice(0,10)}.pdf`);
@@ -425,6 +473,7 @@ async function exportToPDF(type) {
         showAlert('error', 'Erro ao gerar PDF');
     }
 }
+
 // Função para exportar inscrição individual
 async function exportSingleToPDF(id) {
     try {
@@ -433,20 +482,27 @@ async function exportSingleToPDF(id) {
         
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        
+        // Adicionar logo (centralizado no topo)
+        const logoWidth = 50;
+        const logoX = (pageWidth - logoWidth) / 2;
+        
+        // Substitua 'logoData' pelos dados da sua imagem (base64 ou URL)
+        // doc.addImage(logoData, 'JPEG', logoX, 10, logoWidth, 20);
         
         // Configuração do documento
         doc.setFontSize(16);
-        doc.text('Ficha de Inscrição', 105, 20, { align: 'center' });
-        
-        // Adicionar logo (opcional)
-        // doc.addImage(logoData, 'JPEG', 10, 10, 30, 15);
+        doc.setFont("helvetica", "bold");
+        doc.text('Ficha de Inscrição', pageWidth / 2, 40, { align: 'center' });
         
         // Informações básicas
         doc.setFontSize(12);
-        doc.text(`Nº de Processo: ${inscricao.numero_do_processo}`, 14, 40);
-        doc.text(`Nome: ${inscricao.nome_completo}`, 14, 50);
-        doc.text(`Curso: ${inscricao.nome_do_curso || 'N/A'}`, 14, 60);
-        doc.text(`Estado: ${getStatusText(inscricao.aprovacao)}`, 14, 70);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Nº de Processo: ${inscricao.numero_do_processo}`, 20, 60);
+        doc.text(`Nome: ${inscricao.nome_completo}`, 20, 70);
+        doc.text(`Curso: ${inscricao.nome_do_curso || 'N/A'}`, 20, 80);
+        doc.text(`Estado: ${getStatusText(inscricao.aprovacao)}`, 20, 90);
         
         // Criar tabela com detalhes
         const details = [
@@ -463,18 +519,41 @@ async function exportSingleToPDF(id) {
         ];
         
         doc.autoTable({
-            startY: 80,
+            startY: 100,
+            margin: { horizontal: 20 },
             head: [['Campo', 'Valor']],
             body: details,
+            styles: {
+                fontSize: 10,
+                cellPadding: 4,
+                font: "helvetica",
+                textColor: [50, 50, 50],
+                lineColor: [200, 200, 200]
+            },
+            headStyles: {
+                fillColor: [22, 160, 133],
+                textColor: 255,
+                fontStyle: 'bold',
+                halign: 'center'
+            },
             columnStyles: {
-                0: { fontStyle: 'bold', cellWidth: 70 },
-                1: { cellWidth: 'auto' }
+                0: { fontStyle: 'bold', cellWidth: 70, halign: 'left' },
+                1: { cellWidth: 'auto', halign: 'left' }
+            },
+            alternateRowStyles: {
+                fillColor: [245, 245, 245]
             }
         });
         
-        // Adicionar assinaturas (opcional)
-        doc.text('Assinatura do Responsável:', 50, doc.lastAutoTable.finalY + 20);
-        doc.text('__________________________', 50, doc.lastAutoTable.finalY + 30);
+        // Adicionar assinaturas (centralizadas)
+        const signatureY = doc.lastAutoTable.finalY + 20;
+        doc.text('Assinatura do Responsável:', pageWidth / 2, signatureY, { align: 'center' });
+        doc.text('__________________________', pageWidth / 2, signatureY + 10, { align: 'center' });
+        
+        // Rodapé
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text(`Documento gerado em: ${new Date().toLocaleString()}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
         
         doc.save(`inscricao_${id}_${inscricao.nome_completo.replace(/\s+/g, '_')}.pdf`);
         
@@ -484,7 +563,6 @@ async function exportSingleToPDF(id) {
         showAlert('error', 'Erro ao gerar PDF da inscrição');
     }
 }
-
 // Funções auxiliares
 async function fetchInscricoes(type) {
     // Implementar lógica para buscar inscrições (todos ou filtrados)
