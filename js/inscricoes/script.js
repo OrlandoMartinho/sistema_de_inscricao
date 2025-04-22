@@ -49,30 +49,43 @@ async function editarInscricao(id, formData) {
         showAlert('error', 'Erro ao conectar com o servidor');
     }
 }
-
 async function aprovarInscricao(id, comentario) {
     try {
+        console.log("🟡 Função aprovarInscricao chamada");
+        console.log("🔸 ID recebido:", id);    
+        console.log("🔸 Comentário recebido:", comentario);    
+
         const formData = new FormData();
         formData.append('action', 'approval');
         formData.append('id_inscricao', id);
         formData.append('comentario', comentario);
 
+        console.log("🟢 Conteúdo do FormData:");
+        for (let pair of formData.entries()) {
+            console.log(`   📦 ${pair[0]}: ${pair[1]}`);
+        }
+
+        console.log("📤 Enviando requisição para:", API_BASE_URL);
         const response = await fetch(API_BASE_URL, {
             method: 'POST',
             body: formData
         });
 
+        console.log("📥 Resposta recebida, status:", response.status);
         const data = await response.json();
+        console.log("📦 Dados da resposta:", data);
         
         if (data.success) {
+            console.log("✅ Sucesso ao aprovar inscrição.");
             showAlert('success', 'Inscrição aprovada com sucesso!');
             closeModal('decision-modal');
             loadInscricoes(); // Recarregar a lista de inscrições
         } else {
+            console.warn("⚠️ Erro retornado pela API:", data.message);
             showAlert('error', data.message || 'Erro ao aprovar inscrição');
         }
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('❌ Erro durante a requisição:', error);
         showAlert('error', 'Erro ao conectar com o servidor');
     }
 }

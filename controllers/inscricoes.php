@@ -521,7 +521,7 @@ class Inscricao {
     }
     
     // Método para aprovar uma inscrição
-    public function aprovar($id_inscricao) {
+    public function aprovar($id_inscricao, $comentario) {   
         if (!is_numeric($id_inscricao)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'ID de inscrição inválido.']);
@@ -529,7 +529,7 @@ class Inscricao {
         }
 
         $this->aprovacao = 1;
-        $this->comentario = $_POST['comentario'] ?? '';
+        $this->comentario = $comentario ?? '';
 
         try {
             $sql = "UPDATE inscricoes SET aprovacao = ?, comentario = ? WHERE id_inscricao = ?";
@@ -586,9 +586,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Verificar a chave "action" para determinar o tipo de ação
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
-            case 'aprovall':
-                if (isset($_POST['id_inscricao'])) {
-                    $inscricao->aprovar($_POST['id_inscricao']);
+            case 'approval':
+                if (isset($_POST['id_inscricao']) && isset($_POST['comentario'])) {
+                    $inscricao->aprovar($_POST['id_inscricao'], $_POST['comentario']);
                 } else {
                     http_response_code(400);
                     echo json_encode(['success' => false, 'message' => 'ID de inscrição não fornecido para aprovação.']);
