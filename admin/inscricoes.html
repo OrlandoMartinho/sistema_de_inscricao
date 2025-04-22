@@ -60,7 +60,7 @@
                 <input type="date" id="date-filter">
                 <button class="filter-btn" id="apply-filters"><i class="fa-solid fa-filter"></i> Filtrar</button>
                 <button class="export-btn" onclick="openExportModal()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
-                <button class="new-btn" onclick="openNewInscricaoModal()"><i class="fa-solid fa-plus"></i> Nova Inscrição</button>
+                <!-- <button class="new-btn" onclick="openNewInscricaoModal()"><i class="fa-solid fa-plus"></i> Nova Inscrição</button> -->
             </div>
             
             <hr>
@@ -72,6 +72,15 @@
                             <th>Nome Completo</th>
                             <th>Curso</th>
                             <th>Data de Inscrição</th>
+                            <th>Numero do processo</th>
+                            <th>Contacto do Aluno</th>
+                            <th>Contacto do Encarregado</th>
+                            <th>Data de Nascimento</th>
+                            <th>Idade</th>
+                            <th>Sexo</th>
+                            <th>Natural de</th>
+                            <th>Província</th>
+                            
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
@@ -85,9 +94,9 @@
     </div>
 
   
-    <form id="form-matricula" action="controllers/inscricoes.php" method="POST" enctype="multipart/form-data" novalidate>
+    <!-- <form id="form-matricula" action="controllers/inscricoes.php" method="POST" enctype="multipart/form-data" novalidate>
         <div class="modal-body">
-            <!-- Página 1 - Dados Pessoais -->
+ 
             <div class="page active" id="page1">
                 <div class="form-row">
                     <div class="form-group">
@@ -173,9 +182,9 @@
                     <input type="file" id="foto_tipo_passe" name="foto_tipo_passe" class="validate" accept=".jpg,.jpeg,.png" required>
                 </div>
             </div>
-            
+             -->
             <!-- Página 2 - Dados Acadêmicos -->
-            <div class="page" id="page2">
+            <!-- <div class="page" id="page2">
                 
                 
                 
@@ -209,13 +218,13 @@
             <button type="button" class="btn btn-primary" id="btn-avancar">Avançar</button>
             <button type="submit" class="btn btn-primary" id="btn-confirmar" style="display: none;">Confirmar Inscrição</button>
         </div>
-    </form>
+    </form> -->
 
-
+<!-- 
     
     <form id="edit-inscricao-form" action="controllers/inscricoes.php" method="POST" enctype="multipart/form-data" novalidate>
         <div class="modal-body">
-            <!-- Página 1 - Dados Pessoais -->
+          
             <div class="page active" id="page1">
                 <div class="form-row">
                     <div class="form-group">
@@ -301,8 +310,7 @@
                     <input type="file" id="foto_tipo_passe" name="foto_tipo_passe" class="validate" accept=".jpg,.jpeg,.png" required>
                 </div>
             </div>
-            
-            <!-- Página 2 - Dados Acadêmicos -->
+           
             <div class="page" id="page2">
                 
                 
@@ -338,7 +346,7 @@
             <button type="submit" class="btn btn-primary" id="btn-confirmar" style="display: none;">Confirmar Inscrição</button>
         </div>
     </form>
-
+ -->
 
     <!-- Modal de Visualização de Inscrição -->
     <div id="view-inscricao-modal" class="modal-overlay">

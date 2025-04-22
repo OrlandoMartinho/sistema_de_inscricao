@@ -142,6 +142,15 @@ function renderInscricoesTable(inscricoes) {
             <td>${inscricao.nome_completo}</td>
             <td>${inscricao.nome_do_curso || 'N/A'}</td>
             <td>${formatDate(inscricao.data_de_criacao)}</td>
+            <td>${inscricao.numero_de_processo}</td>    
+            <td>${inscricao.contacto_do_aluno}</td> 
+            <td>${inscricao.contacto_do_encarregado}</td>   
+            <td>${inscricao.data_de_nascimento}</td>
+            <td>${inscricao.idade}</td>
+            <td>${inscricao.genero}</td>
+            <td>${inscricao.natural_de}</td>
+            <td>${inscricao.provincia}</td> 
+
             <td><span class="status ${statusClass}">${statusText}</span></td>
             <td class="actions">
                 <button class="btn-view" onclick="openViewModal(${inscricao.id_inscricao})">
@@ -324,39 +333,75 @@ function confirmDelete(id) {
     }
 }
 
-// Função principal para exportar para PDF
+
+// Função para aplicar filtros
+function applyFilters() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const statusFilter = document.getElementById('status-filter').value;
+    const dateFilter = document.getElementById('date-filter').value;
+    
+    document.querySelectorAll('#inscricoes-table tbody tr').forEach(row => {
+        const nome = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const curso = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+        const status = row.querySelector('.status').textContent;
+        const dataInscricao = row.querySelector('td:nth-child(5)').textContent;
+        
+        const matchesSearch = nome.includes(searchTerm) || curso.includes(searchTerm);
+        const matchesStatus = !statusFilter || status === statusFilter;
+        const matchesDate = !dateFilter || dataInscricao.includes(dateFilter);
+        
+        row.style.display = matchesSearch && matchesStatus && matchesDate ? '' : 'none';
+    });
+}
+
+
 async function exportToPDF(type) {
     try {
-        // Obter os dados (todos ou filtrados)
-        const inscricoes = await fetchInscricoes(type);
+        let dataToExport;
+        
+        // Se for 'filtered', pega os dados VISÍVEIS na tabela
+        if (type === 'filtered') {
+            const visibleRows = document.querySelectorAll('#inscricoes-table tbody tr:not([style*="display: none"])');
+            
+            if (visibleRows.length === 0) {
+                showAlert('warning', 'Nenhum dado filtrado para exportar!');
+                return;
+            }
+            
+            dataToExport = Array.from(visibleRows).map(row => ({
+                id_inscricao: row.querySelector('td:nth-child(1)').textContent,
+                nome_completo: row.querySelector('td:nth-child(2)').textContent,
+                nome_do_curso: row.querySelector('td:nth-child(3)').textContent,
+                data_de_criacao: row.querySelector('td:nth-child(5)').textContent,
+                aprovacao: row.querySelector('.status').textContent,
+                numero_do_processo: row.querySelector('td:nth-child(6)').textContent,
+                contacto_do_aluno: row.querySelector('td:nth-child(7)').textContent
+            }));
+        } 
+        // Se for 'all', busca do servidor
+        else {
+            dataToExport = await fetchInscricoes(type);
+        }
         
         // Criar PDF
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // Adicionar título
+        // Título
         doc.setFontSize(18);
         doc.text('Relatório de Inscrições', 14, 22);
         doc.setFontSize(12);
         doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 14, 30);
+        doc.text(`Tipo: ${type === 'all' ? 'Todos' : 'Filtrados'}`, 14, 38);
         
         // Configurar tabela
-        const headers = [
-            'ID', 
-            'Nome', 
-            'Curso', 
-            'Data Inscrição', 
-            'Estado', 
-            'Processo',
-            'Contacto'
-        ];
-        
-        const data = inscricoes.map(insc => [
+        const headers = ['ID', 'Nome', 'Curso', 'Data Inscrição', 'Estado', 'Processo', 'Contacto'];
+        const data = dataToExport.map(insc => [
             insc.id_inscricao,
             insc.nome_completo,
             insc.nome_do_curso || 'N/A',
-            formatDate(insc.data_de_criacao),
-            getStatusText(insc.aprovacao),
+            type === 'filtered' ? insc.data_de_criacao : formatDate(insc.data_de_criacao),
+            insc.aprovacao,
             insc.numero_do_processo,
             insc.contacto_do_aluno
         ]);
@@ -365,28 +410,21 @@ async function exportToPDF(type) {
         doc.autoTable({
             head: [headers],
             body: data,
-            startY: 40,
-            styles: {
-                fontSize: 8,
-                cellPadding: 2
-            },
-            headStyles: {
-                fillColor: [22, 160, 133],
-                textColor: 255
-            }
+            startY: 50,
+            styles: { fontSize: 8, cellPadding: 2 },
+            headStyles: { fillColor: [22, 160, 133], textColor: 255 }
         });
         
         // Salvar PDF
         doc.save(`inscricoes_${type}_${new Date().toISOString().slice(0,10)}.pdf`);
-        
         showAlert('success', 'PDF gerado com sucesso!');
-        closeModal('export-pdf-modal');
+        
+        if (type !== 'single') closeModal('export-pdf-modal');
     } catch (error) {
         console.error('Erro ao gerar PDF:', error);
         showAlert('error', 'Erro ao gerar PDF');
     }
 }
-
 // Função para exportar inscrição individual
 async function exportSingleToPDF(id) {
     try {
@@ -535,28 +573,9 @@ async function loadInscricoes() {
 document.addEventListener('DOMContentLoaded', function() {
     // Carregar inscrições ao iniciar
     loadInscricoes();
+ 
     
-    // Configurar formulário de nova inscrição
-    const inscricaoForm = document.getElementById('form-matricula');
-    inscricaoForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(inscricaoForm);
-        formData.append('action', 'post');
-        
-        registrarInscricao(formData);
-    });
-    
-    // Configurar formulário de edição
-    const editForm = document.getElementById('edit-inscricao-form');
-    editForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(editForm);
-        const id = document.getElementById('edit-id').value;
-        
-        editarInscricao(id, formData);
-    });
+   
     
     // Configurar botões de filtro
     document.getElementById('apply-filters').addEventListener('click', applyFilters);
@@ -568,26 +587,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-// Função para aplicar filtros
-function applyFilters() {
-    const searchTerm = document.getElementById('search-input').value.toLowerCase();
-    const statusFilter = document.getElementById('status-filter').value;
-    const dateFilter = document.getElementById('date-filter').value;
-    
-    document.querySelectorAll('#inscricoes-table tbody tr').forEach(row => {
-        const nome = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-        const curso = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-        const status = row.querySelector('.status').textContent;
-        const dataInscricao = row.querySelector('td:nth-child(5)').textContent;
-        
-        const matchesSearch = nome.includes(searchTerm) || curso.includes(searchTerm);
-        const matchesStatus = !statusFilter || status === statusFilter;
-        const matchesDate = !dateFilter || dataInscricao.includes(dateFilter);
-        
-        row.style.display = matchesSearch && matchesStatus && matchesDate ? '' : 'none';
-    });
-}
 
 // Função para resetar o formulário
 function resetForm() {
