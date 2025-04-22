@@ -123,28 +123,27 @@ async function getInscricaoDetails(id) {
     }
 }
 
-// Funções para renderização
 function renderInscricoesTable(inscricoes) {
     const tableBody = document.querySelector('#inscricoes-table tbody');
     tableBody.innerHTML = '';
-
+    
     inscricoes.forEach(inscricao => {
         const row = document.createElement('tr');
         row.dataset.id = inscricao.id_inscricao;
         
-        const statusClass = inscricao.aprovacao === 1 ? 'accepted' : 
-                          inscricao.aprovacao === 2 ? 'rejected' : 'pending';
-        const statusText = inscricao.aprovacao === 1 ? 'Aceite' : 
-                          inscricao.aprovacao === 2 ? 'Rejeitado' : 'Pendente';
+        const statusClass = inscricao.aprovacao == "1" ? 'accepted' : 
+                          inscricao.aprovacao == "2" ? 'rejected' : 'pending';
+
+        const statusText = inscricao.aprovacao == "1" ? 'Aceite' : 
+                          inscricao.aprovacao == "2" ? 'Rejeitado' : 'Pendente';
 
         row.innerHTML = `
             <td>${inscricao.id_inscricao}</td>
             <td>${inscricao.nome_completo}</td>
             <td>${inscricao.nome_do_curso || 'N/A'}</td>
-            <td>${inscricao.requisitos || 'N/A'}</td>
             <td>${formatDate(inscricao.data_de_criacao)}</td>
             <td><span class="status ${statusClass}">${statusText}</span></td>
-            <td>
+            <td class="actions">
                 <button class="btn-view" onclick="openViewModal(${inscricao.id_inscricao})">
                     <i class="fas fa-eye"></i>
                 </button>
@@ -154,26 +153,23 @@ function renderInscricoesTable(inscricoes) {
                 <button class="btn-delete" onclick="confirmDelete(${inscricao.id_inscricao})">
                     <i class="fas fa-trash"></i>
                 </button>
-            </td>
-            <td>
-                ${inscricao.aprovacao === 0 ? `
-                <button class="btn-approve" onclick="approveInscricao(${inscricao.id_inscricao})">
-                    <i class="fas fa-check"></i>
-                </button>
-                <button class="btn-reject" onclick="rejectInscricao(${inscricao.id_inscricao})">
-                    <i class="fas fa-times"></i>
-                </button>
-                ` : ''}
                 <button class="btn-pdf" onclick="exportSingleToPDF(${inscricao.id_inscricao})">
                     <i class="fas fa-file-pdf"></i>
                 </button>
+                ${inscricao.aprovacao == "0" ? `
+                    <button class="btn-approve" onclick="approveInscricao(${inscricao.id_inscricao})">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn-reject" onclick="rejectInscricao(${inscricao.id_inscricao})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                ` : ''}
             </td>
         `;
         
         tableBody.appendChild(row);
     });
 }
-
 // Funções para modais
 async function openViewModal(id) {
     currentInscricaoId = id;

@@ -215,3 +215,121 @@
 input.error, select.error {
     border-color: #dc3545 !important;
 }
+
+/* Estilos dos status */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.accepted {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Estilos dos botões */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.btn-view {
+  color: #17a2b8;
+}
+
+.btn-edit {
+  color: #ffc107;
+}
+
+.btn-delete {
+  color: #dc3545;
+}
+
+.btn-pdf {
+  color: #28a745;
+}
+
+.btn-approve {
+  color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1) !important;
+}
+
+.btn-reject {
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+.actions button:hover {
+  opacity: 0.8;
+}
+
+.document-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.document-item button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.document-item button:hover {
+  background-color: #0056b3;
+}
+
+.btn-download {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+} 
+
+.btn-download:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
