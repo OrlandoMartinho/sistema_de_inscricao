@@ -15,7 +15,7 @@ async function registrarInscricao(formData) {
         if (data.success) {
             showAlert('success', 'Inscrição registrada com sucesso!');
             closeModal('matriculaModal');
-           
+            loadInscricoes(); // Recarregar a lista de inscrições
         } else {
             showAlert('error', data.message || 'Erro ao registrar inscrição');
         }
@@ -40,7 +40,7 @@ async function editarInscricao(id, formData) {
         if (data.success) {
             showAlert('success', 'Inscrição atualizada com sucesso!');
             closeModal('edit-inscricao-modal');
-         
+            loadInscricoes(); // Recarregar a lista de inscrições
         } else {
             showAlert('error', data.message || 'Erro ao atualizar inscrição');
         }
@@ -53,7 +53,7 @@ async function editarInscricao(id, formData) {
 async function aprovarInscricao(id, comentario) {
     try {
         const formData = new FormData();
-        formData.append('action', 'aprovall');
+        formData.append('action', 'approval');
         formData.append('id_inscricao', id);
         formData.append('comentario', comentario);
 
@@ -67,7 +67,7 @@ async function aprovarInscricao(id, comentario) {
         if (data.success) {
             showAlert('success', 'Inscrição aprovada com sucesso!');
             closeModal('decision-modal');
-            
+            loadInscricoes(); // Recarregar a lista de inscrições
         } else {
             showAlert('error', data.message || 'Erro ao aprovar inscrição');
         }
@@ -92,7 +92,7 @@ async function eliminarInscricao(id) {
         
         if (data.success) {
             showAlert('success', 'Inscrição eliminada com sucesso!');
-       
+            loadInscricoes(); // Recarregar a lista de inscrições
         } else {
             showAlert('error', data.message || 'Erro ao eliminar inscrição');
         }
@@ -101,7 +101,6 @@ async function eliminarInscricao(id) {
         showAlert('error', 'Erro ao conectar com o servidor');
     }
 }
-
 
 async function getInscricaoDetails(id) {
     try {
@@ -124,32 +123,6 @@ async function getInscricaoDetails(id) {
     }
 }
 
-async function getNumberProcess(id_calendario) {
-    try {
-        const formData = new FormData();
-        formData.append('action', 'query');
-        formData.append('id_calendario', id_calendario);
-
-        const response = await fetch(API_BASE_URL, {
-            method: 'POST',
-            body: formData
-        });
-
-        const data = await response.json();
-        
-        if (data.success) {
-            return data.data;
-        } else {
-            showAlert('error', data.message || 'Erro ao consultar processos');
-            return [];
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        showAlert('error', 'Erro ao conectar com o servidor');
-        return [];
-    }
-}
-
 // Funções para renderização
 function renderInscricoesTable(inscricoes) {
     const tableBody = document.querySelector('#inscricoes-table tbody');
@@ -168,6 +141,7 @@ function renderInscricoesTable(inscricoes) {
             <td>${inscricao.id_inscricao}</td>
             <td>${inscricao.nome_completo}</td>
             <td>${inscricao.nome_do_curso || 'N/A'}</td>
+            <td>${inscricao.requisitos || 'N/A'}</td>
             <td>${formatDate(inscricao.data_de_criacao)}</td>
             <td><span class="status ${statusClass}">${statusText}</span></td>
             <td>
@@ -180,6 +154,8 @@ function renderInscricoesTable(inscricoes) {
                 <button class="btn-delete" onclick="confirmDelete(${inscricao.id_inscricao})">
                     <i class="fas fa-trash"></i>
                 </button>
+            </td>
+            <td>
                 ${inscricao.aprovacao === 0 ? `
                 <button class="btn-approve" onclick="approveInscricao(${inscricao.id_inscricao})">
                     <i class="fas fa-check"></i>
@@ -213,7 +189,7 @@ async function openViewModal(id) {
         document.getElementById('view-curso').textContent = inscricao.nome_do_curso || 'N/A';
         document.getElementById('view-data').textContent = formatDate(inscricao.data_de_criacao);
         document.getElementById('view-estado').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
-        document.getElementById('view-observacoes').value = inscricao.comentario || 'Nenhum comentário';
+        document.getElementById('view-parecer').textContent = inscricao.comentario || 'Nenhum parecer foi adicionado ainda.';
         
         // Documentos
         const documentosContainer = document.getElementById('view-documentos');
@@ -542,10 +518,27 @@ function showAlert(type, message) {
     }, 5000);
 }
 
+// Função para carregar as inscrições
+async function loadInscricoes() {
+    try {
+        const response = await fetch(`${API_BASE_URL}?action=get_all`);
+        const data = await response.json();
+        
+        if (data.success) {
+            renderInscricoesTable(data.data);
+        } else {
+            showAlert('error', data.message || 'Erro ao carregar inscrições');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        showAlert('error', 'Erro ao conectar com o servidor');
+    }
+}
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Carregar inscrições ao iniciar
-
+    loadInscricoes();
     
     // Configurar formulário de nova inscrição
     const inscricaoForm = document.getElementById('form-matricula');
@@ -590,7 +583,7 @@ function applyFilters() {
         const nome = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
         const curso = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
         const status = row.querySelector('.status').textContent;
-        const dataInscricao = row.querySelector('td:nth-child(4)').textContent;
+        const dataInscricao = row.querySelector('td:nth-child(5)').textContent;
         
         const matchesSearch = nome.includes(searchTerm) || curso.includes(searchTerm);
         const matchesStatus = !statusFilter || status === statusFilter;
@@ -598,6 +591,11 @@ function applyFilters() {
         
         row.style.display = matchesSearch && matchesStatus && matchesDate ? '' : 'none';
     });
+}
+
+// Função para resetar o formulário
+function resetForm() {
+    document.getElementById('form-matricula').reset();
 }
 
 // Mostrar nome do usuário
