@@ -333,7 +333,8 @@ async function getNumberProcess(id_calendario) {
         const data = await response.json();
         console.log("✅ Resposta do servidor:",  data.data);
         const campo = document.getElementById("numero_do_processo")
-        campo.value = data.data.length
+        campo.value = data.data.length + 1
+        campo.setAttribute('readonly', true)
         campo.disabled = true
        
         localStorage.setItem('numero_processo', data.data.length);
