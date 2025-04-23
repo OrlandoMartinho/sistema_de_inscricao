@@ -528,7 +528,7 @@ class Inscricao {
             return false;
         }
 
-        $this->aprovacao = 1;
+        $this->aprovacao = $_POST['aprovacao'] ?? 0; 
         $this->comentario = $comentario ?? '';
 
         try {

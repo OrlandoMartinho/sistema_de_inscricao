@@ -49,7 +49,7 @@ async function editarInscricao(id, formData) {
         showAlert('error', 'Erro ao conectar com o servidor');
     }
 }
-async function aprovarInscricao(id, comentario) {
+async function aprovarInscricao(id, comentario, tipo) {
     try {
         console.log("🟡 Função aprovarInscricao chamada");
         console.log("🔸 ID recebido:", id);    
@@ -59,6 +59,7 @@ async function aprovarInscricao(id, comentario) {
         formData.append('action', 'approval');
         formData.append('id_inscricao', id);
         formData.append('comentario', comentario);
+        formData.append('aprovacao', tipo); // 1 para aprovado, 2 para rejeitado
 
         console.log("🟢 Conteúdo do FormData:");
         for (let pair of formData.entries()) {
@@ -328,14 +329,9 @@ function confirmDecision() {
     const comment = document.getElementById('decision-comment').value;
     
     if (type === 'approve') {
-        aprovarInscricao(id, comment);
+        aprovarInscricao(id, comment, 1); // 1 para aprovado
     } else {
-        // Para rejeição, você pode implementar uma função similar
-        // ou usar a função editarInscricao para atualizar o status
-        const formData = new FormData();
-        formData.append('aprovacao', 2); // 2 para rejeitado
-        formData.append('comentario', comment);
-        editarInscricao(id, formData);
+       aprovarInscricao(id, comment, 2); // 2 para rejeitado
     }
 }
 
