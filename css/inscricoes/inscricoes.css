@@ -333,3 +333,27 @@ input.error, select.error {
 .btn-cancel:hover {
   background-color: #5a6268;
 }
+
+.btn-export-filtered {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-export-filtered:hover {
+  background-color: #218838;
+} 
+
+.btn-export-all {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-export-all:hover {
+  background-color: #0056b3;
+}
