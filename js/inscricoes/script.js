@@ -72,22 +72,39 @@ async function aprovarInscricao(id, comentario, tipo) {
             body: formData
         });
 
+        
+        let accao = "Aprovada";
+        if(tipo == 2){
+            accao = "Rejeitada";
+        }
+
+
+
+
         console.log("📥 Resposta recebida, status:", response.status);
         const data = await response.json();
         console.log("📦 Dados da resposta:", data);
         
         if (data.success) {
-            console.log("✅ Sucesso ao aprovar inscrição.");
-            showAlert('success', 'Inscrição aprovada com sucesso!');
+           
+            showSuccessMessage(
+                'Inscrição ' + accao + ' com sucesso!',
+                'Inscrição ' + accao ,
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
+
+
             closeModal('decision-modal');
             loadInscricoes(); // Recarregar a lista de inscrições
         } else {
             console.warn("⚠️ Erro retornado pela API:", data.message);
-            showAlert('error', data.message || 'Erro ao aprovar inscrição');
+            showErrorMessage('Não foi possivel aprovar ou rejeitar a inscrição', 'Ocorreu um erro', 3000);
         }
     } catch (error) {
         console.error('❌ Erro durante a requisição:', error);
-        showAlert('error', 'Erro ao conectar com o servidor');
+        showErrorMessage('Não foi possivel eliminar a inscrição', 'Ocorreu um erro', 3000);
     }
 }
 
@@ -103,16 +120,22 @@ async function eliminarInscricao(id) {
         });
 
         const data = await response.json();
-        
+        const accao = "eliminada";
         if (data.success) {
-            showAlert('success', 'Inscrição eliminada com sucesso!');
-            loadInscricoes(); // Recarregar a lista de inscrições
+            showSuccessMessage(
+                'Inscrição ' + accao + ' com sucesso!',
+                'Inscrição ' + accao ,
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
+            loadInscricoes(); 
         } else {
-            showAlert('error', data.message || 'Erro ao eliminar inscrição');
+            showErrorMessage('Não foi possivel eliminar a inscrição', 'Ocorreu um erro', 3000);
         }
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('error', 'Erro ao conectar com o servidor');
+        showErrorMessage('Não foi possivel eliminar a inscrição', 'Ocorreu um erro', 3000);
     }
 }
 
