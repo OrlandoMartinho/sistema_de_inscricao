@@ -210,7 +210,6 @@ document.getElementById('curso-form').addEventListener('submit', function (e) {
     cadastrarCurso();
 });
 
-
 async function loadCursos() {
     try {
         const response = await fetch('../controllers/cursos.php');
@@ -218,32 +217,61 @@ async function loadCursos() {
 
         const tbody = document.querySelector('table tbody');
         tbody.innerHTML = '';
-
+        
         if (data.success && data.data.length > 0) {
-            data.data.forEach(curso => {
+            data.data.forEach((curso, index) => {
                 const tr = document.createElement('tr');
-                const duracao = curso.duracao ? `${curso.duracao} meses` : 'Não definido';
+                const rowNumber = (index + 1).toString().padStart(2, '0'); // Formata para 2 dígitos
+                let duracaoText = 'Não definido';
+                
+                // Lógica para formatar a duração
+                if (curso.duracao) {
+                    if (curso.duracao > 12) {
+                        const anos = Math.floor(curso.duracao / 12);
+                        const meses = curso.duracao % 12;
+                        tr.classList.add('highlight-row');
+                        
+                        duracaoText = `${anos} ano${anos > 1 ? 's' : ''}`;
+                        if (meses > 0) {
+                            duracaoText += ` e ${meses} mês${meses > 1 ? 'es' : ''}`;
+                        }
+                    } else {
+                        tr.classList.remove('highlight-row');
+                        duracaoText = `${curso.duracao} mês${curso.duracao > 1 ? 'es' : ''}`;
+                    }
+                }
 
                 tr.innerHTML = `
-                    <td>${curso.id_curso}</td>
+                    <td>${rowNumber}</td>
                     <td>${curso.nome}</td>
-                    <td>${curso.descricao}</td>
-                    <td>${duracao}</td>
+                    <td>${curso.descricao || 'Sem descrição'}</td>
+                    <td>${duracaoText}</td>
                     <td>
-                        <button class="btn-edit" onclick="openModalEditCurso(${curso.id_curso})"><i class="fas fa-edit"></i></button>
-                        <button class="btn-delete" onclick="openDeleteModal(${curso.id_curso}, '${curso.nome}')"><i class="fas fa-trash"></i></button>
+                        <button class="btn-edit" onclick="openModalEditCurso(${curso.id_curso})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-delete" onclick="openDeleteModal(${curso.id_curso}, '${curso.nome.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
                 `;
+                
                 tbody.appendChild(tr);
             });
         } else {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Nenhum curso cadastrado ainda.</td></tr>`;
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center;">
+                        Nenhum curso cadastrado ainda.
+                    </td>
+                </tr>
+            `;
         }
     } catch (error) {
         console.error('Erro ao carregar cursos:', error);
         document.querySelector('table tbody').innerHTML = `
             <tr>
-                <td colspan="6" style="text-align: center; color: red;">
+                <td colspan="5" style="text-align: center; color: red;">
                     Erro ao carregar cursos. Tente novamente mais tarde.
                 </td>
             </tr>

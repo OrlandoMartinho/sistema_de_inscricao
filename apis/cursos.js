@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     carregarCursos();
 });
-
 async function carregarCursos() {
     try {
         const response = await fetch('controllers/cursos.php');
@@ -12,59 +11,76 @@ async function carregarCursos() {
         if (data.success) {
             gridContainer.innerHTML = ''; // Limpa o conteúdo estático
             
-            if (data.data.length > 0) {
+            if (data.data && data.data.length > 0) {
                 data.data.forEach(curso => {
                     const card = document.createElement('div');
                     card.className = 'card';
                     
-                    // Formata a duração (supondo que está em meses)
-                    const duracaoAnos = Math.floor(curso.duracao / 12);
-                    const duracaoMeses = curso.duracao % 12;
-                    let textoDuracao = '';
-                    
-                    if (duracaoAnos > 0) {
-                        textoDuracao += `${duracaoAnos} ano${duracaoAnos > 1 ? 's' : ''}`;
+                    // Formatação aprimorada da duração
+                    let textoDuracao = 'Não informada';
+                    if (curso.duracao) {
+                        const duracaoAnos = Math.floor(curso.duracao / 12);
+                        const duracaoMeses = curso.duracao % 12;
+                        
+                        if (duracaoAnos > 0) {
+                            textoDuracao = `${duracaoAnos} ano${duracaoAnos > 1 ? 's' : ''}`;
+                            if (duracaoMeses > 0) {
+                                textoDuracao += ` e ${duracaoMeses} mês${duracaoMeses > 1 ? 'es' : ''}`;
+                            }
+                        } else {
+                            textoDuracao = `${duracaoMeses} mês${duracaoMeses > 1 ? 'es' : ''}`;
+                        }
                     }
-                    if (duracaoMeses > 0) {
-                        textoDuracao += `${duracaoAnos > 0 ? ' e ' : ''}${duracaoMeses} mês${duracaoMeses > 1 ? 'es' : ''}`;
-                    }
-                    
+                    // <p><strong>Área:</strong> ${curso.area || 'Não especificada'}</p>
                     card.innerHTML = `
-                        <h3>${curso.nome || 'Não informada'}</h3>
-                        <p>${curso.descricao || 'Não informada'}</p>
-                        <p><strong>Área:</strong> ${curso.area || 'Não informada'}</p>
-                        <p><strong>Duração:</strong> ${curso.duracao + " Meses" || 'Não informada'}</p>
+                        <h3>${curso.nome || 'Nome não informado'}</h3>
+                        <p class="descricao">${curso.descricao || 'Descrição não disponível'}</p>
+          
+                        <p><strong>Duração:</strong> ${textoDuracao}</p>
                     `;
                     
                     gridContainer.appendChild(card);
                 });
-                
-                // Adiciona event listeners aos botões
+
+                // Adiciona event listeners aos botões - versão mais segura
                 document.querySelectorAll('.btn-saiba-mais').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const cursoId = this.getAttribute('data-id');
-                        window.location.href = `curso-detalhes.html?id=${cursoId}`;
+                        if (cursoId) {
+                            window.location.href = `curso-detalhes.html?id=${encodeURIComponent(cursoId)}`;
+                        }
                     });
                 });
             } else {
-                gridContainer.innerHTML = '<p class="no-courses">Nenhum curso disponível no momento.</p>';
+                gridContainer.innerHTML = `
+                    <div class="no-courses">
+                        <i class="fas fa-book-open"></i>
+                        <p>Nenhum curso disponível no momento.</p>
+                    </div>
+                `;
             }
         } else {
             gridContainer.innerHTML = `
-                <p class="error-message">
-                    Não foi possível carregar os cursos. 
-                    <button onclick="carregarCursos()">Tentar novamente</button>
-                </p>
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Não foi possível carregar os cursos.</p>
+                    <button class="btn-retry" onclick="carregarCursos()">
+                        <i class="fas fa-sync-alt"></i> Tentar novamente
+                    </button>
+                </div>
             `;
-            console.error('Erro ao carregar cursos:', data.message);
+            console.error('Erro ao carregar cursos:', data.message || 'Erro desconhecido');
         }
     } catch (error) {
-        document.querySelector('#cursos .grid').innerHTML = `
-            <p class="error-message">
-                Erro de conexão. 
-                <button onclick="carregarCursos()">Tentar novamente</button>
-            </p>
+        gridContainer.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-unlink"></i>
+                <p>Erro de conexão com o servidor.</p>
+                <button class="btn-retry" onclick="carregarCursos()">
+                    <i class="fas fa-sync-alt"></i> Tentar novamente
+                </button>
+            </div>
         `;
-        console.error('Erro:', error);
+        console.error('Erro na requisição:', error);
     }
 }
