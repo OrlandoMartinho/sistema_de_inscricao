@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success && data.data.length > 0) {
                 const tbody = document.getElementById('calendar-body');
                 tbody.innerHTML = ''; // Limpa o conteúdo atual
-                
+        
                 // Para cada evento, cria uma linha na tabela
                 data.data.forEach(evento => {
                     const row = document.createElement('tr');
