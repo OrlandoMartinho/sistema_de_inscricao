@@ -1,46 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let cursoIdToDelete = null;
 
-    async function loadCursos() {
-        try {
-            const response = await fetch('../controllers/cursos.php');
-            const data = await response.json();
-
-            const tbody = document.querySelector('table tbody');
-            tbody.innerHTML = '';
-
-            if (data.success && data.data.length > 0) {
-                data.data.forEach(curso => {
-                    const tr = document.createElement('tr');
-                    const duracao = curso.duracao ? `${curso.duracao} meses` : 'Não definido';
-
-                    tr.innerHTML = `
-                        <td>${curso.id_curso}</td>
-                        <td>${curso.nome}</td>
-                        <td>${curso.descricao}</td>
-                        <td>${curso.area}</td>
-                        <td>${duracao}</td>
-                        <td>
-                            <button class="btn-edit" onclick="openModalEditCurso(${curso.id_curso})"><i class="fas fa-edit"></i></button>
-                            <button class="btn-delete" onclick="openDeleteModal(${curso.id_curso}, '${curso.nome}')"><i class="fas fa-trash"></i></button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            } else {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Nenhum curso cadastrado ainda.</td></tr>`;
-            }
-        } catch (error) {
-            console.error('Erro ao carregar cursos:', error);
-            document.querySelector('table tbody').innerHTML = `
-                <tr>
-                    <td colspan="6" style="text-align: center; color: red;">
-                        Erro ao carregar cursos. Tente novamente mais tarde.
-                    </td>
-                </tr>
-            `;
-        }
-    }
 
     window.openModalCurso = function () {
         document.getElementById('curso-modal-container').style.display = 'block';
@@ -55,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const curso = data.data;
                 document.getElementById('edit-curso-id').value = curso.id_curso;
                 document.getElementById('edit-curso-nome').value = curso.nome;
-                document.getElementById('edit-curso-area').value = curso.area;
                 document.getElementById('edit-curso-duracao').value = curso.duracao;
                 document.getElementById('edit-curso-descricao').value = curso.descricao;
                 document.getElementById('edit-curso-modal-container').style.display = 'block';
@@ -133,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('id_curso', idCurso);
             formData.append('nome', dados.nome);
             formData.append('descricao', dados.descricao);
-            formData.append('area', dados.area);
+            formData.append('area', 'any');
             formData.append('duracao', dados.duracao);
 
            
@@ -184,9 +143,7 @@ function validarFormulario(dados) {
     if (!dados.nome || dados.nome.trim() === '') {
         throw new Error('O nome do curso é obrigatório');
     }
-    if (!dados.area || dados.area.trim() === '') {
-        throw new Error('A área do curso é obrigatória');
-    }
+   
     if (isNaN(dados.duracao) || dados.duracao < 0) {
         throw new Error('A duração deve ser um número positivo');
     }
@@ -196,7 +153,6 @@ function getCadastroData() {
     return {
         nome: document.getElementById('curso-nome').value.trim(),
         descricao: document.getElementById('curso-descricao').value.trim(),
-        area: document.getElementById('curso-area').value,
         duracao: parseInt(document.getElementById('curso-duracao').value) || 0
     };
 }
@@ -204,7 +160,6 @@ function getEdicaoData() {
     return {
         nome: document.getElementById('edit-curso-nome').value.trim(),
         descricao: document.getElementById('edit-curso-descricao').value.trim(),
-        area: document.getElementById('edit-curso-area').value,
         duracao: parseInt(document.getElementById('edit-curso-duracao').value) || 0
     };
 }
@@ -218,16 +173,9 @@ async function cadastrarCurso() {
         formData.append('action', 'create');
         formData.append('nome', dados.nome);
         formData.append('descricao', dados.descricao);
-        formData.append('area', dados.area);
+        formData.append('area', 'any');
         formData.append('duracao', dados.duracao);
 
-        console.log('Enviando para cadastro:', {
-            action: 'create',
-            nome: dados.nome,
-            descricao: dados.descricao,
-            area: dados.area,
-            duracao: dados.duracao
-        });
 
         const response = await fetch('../controllers/cursos.php', {
             method: 'POST',
@@ -235,7 +183,7 @@ async function cadastrarCurso() {
         });
 
         const data = await response.json();
-
+        console.log('Resposta do servidor:', data);
         if (data.success) {
             showSuccessMessage(
                 'Curso cadastrado com sucesso!',
@@ -245,12 +193,60 @@ async function cadastrarCurso() {
                 3000 // auto-close after 3 seconds
             );
             closeModal('curso-modal-container');
-            document.dispatchEvent(new Event('DOMContentLoaded'));
+            document.getElementById('curso-form').reset(); // Limpa o formulário após o cadastro
+            loadCursos();
         } else {
             throw new Error(data.message || 'Erro ao cadastrar curso');
         }
     } catch (error) {
         console.error('Erro no cadastro:', error);
         showErrorMessage('Não foi possível cadastrar o curso', 'Ocorreu um erro', 3000);
+    }
+}
+
+
+document.getElementById('curso-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    cadastrarCurso();
+});
+
+
+async function loadCursos() {
+    try {
+        const response = await fetch('../controllers/cursos.php');
+        const data = await response.json();
+
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = '';
+
+        if (data.success && data.data.length > 0) {
+            data.data.forEach(curso => {
+                const tr = document.createElement('tr');
+                const duracao = curso.duracao ? `${curso.duracao} meses` : 'Não definido';
+
+                tr.innerHTML = `
+                    <td>${curso.id_curso}</td>
+                    <td>${curso.nome}</td>
+                    <td>${curso.descricao}</td>
+                    <td>${duracao}</td>
+                    <td>
+                        <button class="btn-edit" onclick="openModalEditCurso(${curso.id_curso})"><i class="fas fa-edit"></i></button>
+                        <button class="btn-delete" onclick="openDeleteModal(${curso.id_curso}, '${curso.nome}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Nenhum curso cadastrado ainda.</td></tr>`;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar cursos:', error);
+        document.querySelector('table tbody').innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align: center; color: red;">
+                    Erro ao carregar cursos. Tente novamente mais tarde.
+                </td>
+            </tr>
+        `;
     }
 }

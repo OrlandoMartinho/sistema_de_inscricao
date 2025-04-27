@@ -77,7 +77,7 @@ function viewImage(element) {
         document.body.style.overflow = 'hidden'; // Impede scroll da página
     } catch (error) {
         console.error('Erro ao visualizar imagem:', error);
-        alert('Ocorreu um erro ao abrir a imagem');
+        
     }
 }
 

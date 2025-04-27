@@ -52,8 +52,8 @@
                     <i class="fa-solid fa-square-plus"></i> Adicionar Curso
                 </button>
                 <div class="search-bar">
-                    <input type="text" placeholder="Pesquisar curso...">
-                    <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filtrar</button>
+                    <input type="text" id="search-input" placeholder="Pesquisar curso..." oninput="pesquisarCursos()">
+                    
                 </div>
             </div>
             
@@ -67,7 +67,6 @@
                             <th>ID</th>
                             <th>Nome do Curso</th>
                             <th>Descrição</th>
-                            <th>Área</th>
                             <th>Duração</th>
                             <th>Ações</th>
                         </tr>
@@ -92,16 +91,7 @@
                     <label for="curso-nome">Nome do Curso</label>
                     <input type="text" id="curso-nome" name="curso-nome" required>
                 </div>
-                <div class="form-group">
-                    <label for="curso-area">Área</label>
-                    <select id="curso-area" required>
-                        <option value="">Selecione uma área</option>
-                        <option value="Engenharia">Engenharia</option>
-                        <option value="Tecnologia">Tecnologia</option>
-                        <option value="Mecânica">Mecânica</option>
-                        <option value="Administração">Administração</option>
-                    </select>
-                </div>
+               
                 <div class="form-group">
                     <label for="curso-duracao">Duração</label>
                     <input type="text" id="curso-duracao" placeholder="Ex: 6 meses" required>
@@ -113,8 +103,8 @@
                 </div>
                  
                 <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal('curso-modal-container')">Cancelar</button>
-                    <button type="submit" class="btn-confirm" onclick="cadastrarCurso()">Salvar Curso</button>
+                    <button  type="button"  class="btn-cancel" onclick="closeModal('curso-modal-container')">Cancelar</button>
+                    <button  type="submit" class="btn-confirm" onclick="cadastrarCurso()">Salvar Curso</button>
                 </div>
             </form>
         </div>
@@ -131,16 +121,7 @@
                     <label for="edit-curso-nome">Nome do Curso</label>
                     <input type="text" id="edit-curso-nome" required>
                 </div>
-                <div class="form-group">
-                    <label for="edit-curso-area">Área</label>
-                    <select id="edit-curso-area" required>
-                        <option value="">Selecione uma área</option>
-                        <option value="Engenharia">Engenharia</option>
-                        <option value="Tecnologia">Tecnologia</option>
-                        <option value="Mecânica">Mecânica</option>
-                        <option value="Administração">Administração</option>
-                    </select>
-                </div>
+           
                 <div class="form-group">
                     <label for="edit-curso-duracao">Duração</label>
                     <input type="text" id="edit-curso-duracao" placeholder="Ex: 6 meses" required>
