@@ -49,10 +49,3 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
     });
 });
 
-const userData = JSON.parse(localStorage.getItem('user_data'));
-userData.nome = nome;
-userData.email = email;
-localStorage.setItem('userData', JSON.stringify(userData));
-
-// Atualiza o nome exibido na barra superior
-document.getElementById('nomeUsuario').textContent = nome;

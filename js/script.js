@@ -318,11 +318,12 @@ async function getNumberProcess(id_calendario) {
     const formData = new FormData()
     formData.append('action','query')
     formData.append('id_calendario',id_calendario)
+    
      const response = await fetch('controllers/inscricoes.php', {
           method: 'POST',
           body: formData,
         });
-      
+    console.log('Requisição enviada, aguardando resposta...',response);  
         if (!response.ok) {
           throw new Error(`Erro HTTP! status: ${response.status}`);
         }
@@ -336,6 +337,10 @@ async function getNumberProcess(id_calendario) {
        
         localStorage.setItem('numero_processo', data.data.length);
       } catch (error) {
+        const campo = document.getElementById("numero_do_processo")
+        campo.value = 1
+    
+        campo.disabled = true
         console.log("❌ Erro ao tentar fazer login:", error);
         console.error('Erro ao tentar fazer login:', error);
         
