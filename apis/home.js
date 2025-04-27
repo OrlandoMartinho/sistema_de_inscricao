@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+     
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;
     // Objeto para armazenar todas as instâncias de gráficos
     const charts = {
         inscricoesPorCurso: null,
@@ -422,4 +430,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

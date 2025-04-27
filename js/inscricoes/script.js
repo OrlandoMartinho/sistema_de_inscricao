@@ -703,5 +703,11 @@ function resetForm() {
     document.getElementById('form-matricula').reset();
 }
 
-// Mostrar nome do usuário
-document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";
+ 
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;

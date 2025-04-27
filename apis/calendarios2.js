@@ -2,7 +2,16 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM completamente carregado e analisado');
     
     console.log('Token verificado com sucesso');
-    
+     
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;
+
+
     // Carregar cursos assim que a página for carregada
     carregarCursos().then(() => {
         console.log('Cursos carregados com sucesso');
@@ -495,4 +504,5 @@ function closeModalExcluirEvento() {
     modal.close();
     eventoSelecionado = null;
 }
+
 

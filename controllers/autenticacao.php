@@ -54,7 +54,7 @@ try {
             $_SESSION['token_expira'] = $expira_em;
             $_SESSION['usuario'] = $usuario['nome'];
             $_SESSION['email'] = $usuario['email'];
-            $_SESSION['user_id'] = $usuario['id']; // Adicionado para referência
+            $_SESSION['user_id'] = $usuario['id_usuario']; // Adicionado para referência
 
             error_log("[LOGIN] Login bem-sucedido para: " . $_SESSION['usuario'] . " - Token expira em: " . date('Y-m-d H:i:s', $expira_em));
 
@@ -62,8 +62,11 @@ try {
                 'status' => 'success',
                 'mensagem' => 'Login realizado com sucesso.',
                 'usuario' => $_SESSION['usuario'],
+                'email' => $_SESSION['email'],
+                'user_id' => $_SESSION['user_id'],
                 'token' => $token,
                 'expira_em' => $expira_em,
+                'userData' => $usuario,
                 'expira_em_formatado' => date('Y-m-d H:i:s', $expira_em)
             ]);
         } else {

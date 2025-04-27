@@ -19,7 +19,7 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
     
     // Envio via AJAX
     const formData = new FormData(this);
-    console.log(formData)
+    
     fetch(this.action, {
         method: 'POST',
         body: formData
@@ -38,7 +38,7 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
 
             this.reset();
         } else {
-           console.log('Erro: ' + data.message);
+          
            showErrorMessage('Não foi possível enviar o contacto.', 'Ocorreu um erro', 3000);
 
         }
@@ -48,3 +48,11 @@ document.getElementById('form-contato').addEventListener('submit', function(e) {
         showErrorMessage('Não foi possível enviar o contacto.', 'Ocorreu um erro', 3000);
     });
 });
+
+const userData = JSON.parse(localStorage.getItem('user_data'));
+userData.nome = nome;
+userData.email = email;
+localStorage.setItem('userData', JSON.stringify(userData));
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;

@@ -139,13 +139,12 @@ let id_curso = null
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM completamente carregado e analisado');
+
     
-    console.log('Token verificado com sucesso');
-    
+ 
     // Carregar cursos assim que a página for carregada
     carregarCursos().then(() => {
-        console.log('Cursos carregados com sucesso');
+       
         // Depois que os cursos forem carregados, carregar os eventos
         
     }).catch(error => {
@@ -162,9 +161,9 @@ let eventoSelecionado = null;
 
 // Função para carregar os cursos disponíveis
 async function carregarCursos() {
-    console.log('Iniciando carregamento de cursos...');
+   
     try {
-        console.log('Fazendo requisição para ../controllers/cursos.php');
+      
         const response = await fetch('../controllers/cursos.php');
         
         if (!response.ok) {
@@ -172,11 +171,11 @@ async function carregarCursos() {
         }
         
         const data = await response.json();
-        console.log('Resposta da API de cursos:', data);
+      
         
         if (data.success) {
             cursos = data.data;
-            console.log(`${cursos.length} cursos carregados`);
+           
             preencherSelectCursos();
         } else {
             throw new Error(data.message || 'Erro ao carregar cursos');
@@ -189,17 +188,15 @@ async function carregarCursos() {
 
 // Preencher selects de cursos nos modais
 function preencherSelectCursos() {
-    console.log('Preenchendo selects de cursos...');
+   
     const selectPublicar = document.getElementById('curso');
    
     
     // Limpar opções existentes (mantendo a primeira opção padrão)
-    console.log('Limpando selects existentes...');
+  
     while (selectPublicar.options.length > 1) selectPublicar.remove(1);
  
-    
-    // Adicionar cursos
-    console.log('Adicionando cursos aos selects...');
+
     cursos.forEach(curso => {
         const option = document.createElement('option');
         option.value = curso.id_curso;
@@ -209,7 +206,7 @@ function preencherSelectCursos() {
         selectEditar.appendChild(option.cloneNode(true));
     });
     
-    console.log('Selects de cursos preenchidos com sucesso');
+ 
 }
 
 
@@ -334,45 +331,69 @@ async function getNumberProcess(id_calendario) {
         console.log("✅ Resposta do servidor:",  data.data);
         const campo = document.getElementById("numero_do_processo")
         campo.value = data.data.length + 1
-        campo.setAttribute('readonly', true)
+    
         campo.disabled = true
        
         localStorage.setItem('numero_processo', data.data.length);
       } catch (error) {
+        console.log("❌ Erro ao tentar fazer login:", error);
         console.error('Erro ao tentar fazer login:', error);
-        alert('Erro ao tentar fazer login. Tente novamente.');
+        
       }
 }
 
-
-async function  loaderAdmin(){
-        
+async function setupAdmin() {
     try {
+        // Obtenha esses valores de um formulário ou configuração
+        const adminData = {
+            email: 'admin@example.com',    // Deveria vir de uma fonte confiável
+            name: 'Administrador',         // Deveria vir de uma fonte confiável
+            password: 'senhaSegura123'     // Deveria vir de uma fonte confiável
+        };
+
+        const formData = new FormData();
+        formData.append('action', 'setup');
+        formData.append('email', adminData.email);
+        formData.append('name', adminData.name);
+        formData.append('password', adminData.password);
+
         const response = await fetch('controllers/admin.php', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json'
-          }
+            method: 'POST',
+            body: formData
         });
-      
+
+     
+
         if (!response.ok) {
-          throw new Error(`Erro HTTP! status: ${response.status}`);
+            throw new Error(`Erro HTTP! status: ${response.status}`);
         }
-      
+
         const data = await response.json();
         
-        console.log("✅ Resposta do servidor:",  data.data.email);
-        localStorage.setItem('email', data.data.email);
-      
-      } catch (error) {
-        alert('Erro ao tentar fazer login. Tente novamente.');
-      }
+        if (!data.success) {
+            throw new Error(data.message || 'Erro desconhecido ao configurar admin');
+        }
+
+        console.log("✅ Admin configurado com sucesso:", data.message);
+        
+        // Só armazena se houver email na resposta
+        if (data.message) {
+            localStorage.setItem('email', data.message);
+        }
+
+        return data;
+        
+    } catch (error) {
+        console.error("❌ Erro ao configurar admin:", error);
+        alert(`Erro ao configurar admin: ${error.message}`);
+        throw error; // Rejeita a promise para tratamento adicional se necessário
+    }
 }
 document.addEventListener('DOMContentLoaded',  function() {
 
 
  
-   loaderAdmin()
+    setupAdmin()
     
 
     // Validação em tempo real para campos importantes

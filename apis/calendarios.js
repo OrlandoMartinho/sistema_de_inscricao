@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+     
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;
     // Função para formatar a data (de YYYY-MM-DD para DD/MM/YYYY)
     function formatDate(dateString) {
         if (!dateString) return 'Sem data definida';

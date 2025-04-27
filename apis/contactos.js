@@ -242,6 +242,14 @@ function closeModal(modalId) {
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
+     
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;
     // Carregar contactos quando a página é carregada
     loadContactos();
     
@@ -274,3 +282,4 @@ window.addEventListener('click', (event) => {
         }
     });
 });
+

@@ -1,11 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
+     
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;
     carregarCursos();
 });
 async function carregarCursos() {
     try {
         const response = await fetch('controllers/cursos.php');
         const data = await response.json();
-        console.log('[DEBUG] Dados dos cursos:', data);
+  
         const gridContainer = document.querySelector('#cursos .grid');
         
         if (data.success) {
@@ -84,3 +92,5 @@ async function carregarCursos() {
         console.error('Erro na requisição:', error);
     }
 }
+
+ 

@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+     
+const userData = JSON.parse(localStorage.getItem('user_data'));
+const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+
+
+// Atualiza o nome exibido na barra superior
+document.getElementById('nomeUsuario').textContent = nome;
     carregarGaleria();
 });
 
@@ -9,7 +17,7 @@ async function carregarGaleria() {
         if (data.success) {
             const galleryContainer = document.getElementById('gallery-container');
             galleryContainer.innerHTML = ''; // Limpa o loading
-            console.log("dados da API",data.data);
+           
             if (data.data.length > 0) {
                 data.data.forEach(galeria => {
                     const galleryItem = document.createElement('div');
@@ -46,3 +54,4 @@ async function carregarGaleria() {
             '<p class="gallery-error">Erro ao conectar com o servidor.</p>';
     }
 }
+

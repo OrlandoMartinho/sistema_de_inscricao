@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     let cursoIdToDelete = null;
 
-
+ 
+    const userData = JSON.parse(localStorage.getItem('user_data'));
+    const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
+    const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
+    
+    
+    // Atualiza o nome exibido na barra superior
+    document.getElementById('nomeUsuario').textContent = nome;
     window.openModalCurso = function () {
         document.getElementById('curso-modal-container').style.display = 'block';
     };
@@ -278,3 +285,5 @@ async function loadCursos() {
         `;
     }
 }
+
+ 

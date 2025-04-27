@@ -111,6 +111,8 @@ form.addEventListener('submit', async function(e) {
     const data = await response.json();
 
     console.log("📡 Resposta do servidor:", data);
+
+    localStorage.setItem('user_data', JSON.stringify(data.userData)); // Armazena os dados do usuário no localStorage  
    
     if (data.status === 'success') {
       
