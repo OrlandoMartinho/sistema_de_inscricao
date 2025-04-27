@@ -7,7 +7,30 @@ const userData = JSON.parse(localStorage.getItem('user_data'));
 const nome = userData.nome || 'Nome não disponível'; // Substitua pelo valor real
 const email = userData.email || 'Email não disponível'; // Substitua pelo valor real
 
+// Configuração para o modal de publicação
+document.getElementById('modal-publicar-evento').addEventListener('click', function() {
+    const dataTerminoInput = document.getElementById('data-termino');
+    const hoje = new Date();
+    const dataMinima = new Date(hoje.setDate(hoje.getDate() + 1)).toISOString().split('T')[0];
+    dataTerminoInput.setAttribute('min', dataMinima);
+});
 
+// Configuração para o modal de edição
+document.getElementById('modal-editar-evento').addEventListener('click', function() {
+    const editarDataTerminoInput = document.getElementById('editar-data-termino');
+    const hoje = new Date();
+    const dataMinima = new Date(hoje.setDate(hoje.getDate() + 1)).toISOString().split('T')[0];
+    editarDataTerminoInput.setAttribute('min', dataMinima);
+});
+
+// Validação no envio dos formulários
+document.getElementById('form-publicar-evento').addEventListener('submit', function(e) {
+    validarDataFutura(e, 'data-termino');
+});
+
+document.getElementById('form-editar-evento').addEventListener('submit', function(e) {
+    validarDataFutura(e, 'editar-data-termino');
+});
 // Atualiza o nome exibido na barra superior
 document.getElementById('nomeUsuario').textContent = nome;
 
@@ -292,7 +315,13 @@ async function editarEvento(formElement) {
         );
 
         if (data.success) {
-            showErrorMessage('Não foi possível enviar o calendario', 'Ocorreu um erro', 3000);
+            showSuccessMessage(
+                'Calendário editado com sucesso!',  
+                'Calendário editado',
+                'success',
+                'ENJOY YOUR STAY',
+                3000 // auto-close after 3 seconds
+            );
             closeModalEditarEvento();
             await carregarEventos();
         } else {
@@ -506,3 +535,16 @@ function closeModalExcluirEvento() {
 }
 
 
+function validarDataFutura(eventoForm, idCampoData) {
+    const inputData = document.getElementById(idCampoData);
+    const dataSelecionada = new Date(inputData.value);
+    const hoje = new Date();
+    
+    if (dataSelecionada <= hoje) {
+        eventoForm.preventDefault();
+        showErrorMessage('A data deve ser maior que a data de hoje.', 'Data inválida', 3000);   
+        inputData.focus();
+        return false;
+    }
+    return true;
+}
