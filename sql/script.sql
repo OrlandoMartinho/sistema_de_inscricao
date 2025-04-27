@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS Usuarios (
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT INTO `usuarios` (`id_usuario`, `nome`, `senha`, `token_de_acesso`, `email`) VALUES
+(1, 'Administrador', '$2y$10$fj7ZHR45aCy5p16H2M1nvuJ9p4/lBd/sG.uXmzQRJ76Wx1O6ljHQq', NULL, 'admin@admin.ao');
+
 CREATE TABLE IF NOT EXISTS Notificacoes (
     id_notificacao INT PRIMARY KEY AUTO_INCREMENT,
     data_da_notificacao VARCHAR(100),

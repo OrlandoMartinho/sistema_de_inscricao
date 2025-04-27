@@ -1,0 +1,1 @@
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

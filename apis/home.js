@@ -421,3 +421,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

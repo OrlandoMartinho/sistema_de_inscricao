@@ -270,11 +270,7 @@ function setupFileUpload() {
 document.addEventListener('DOMContentLoaded', function() {
     try {
         // Configurar o nome do usuário
-        const userElement = document.getElementById('nomeUsuario');
-        if (userElement) {
-            const userEmail = localStorage.getItem('email');
-            userElement.textContent = userEmail || 'Usuário';
-        }
+        
 
         // Inicializar componentes
         initGalleryViewer();
@@ -304,3 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Erro na inicialização:', error);
     }
 });
+
+
+
+document.getElementById("nomeUsuario").innerText = localStorage.getItem("email") || "Admin User";

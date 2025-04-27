@@ -65,17 +65,7 @@
                     <h3>Perfil do Usuário</h3>
                     <p>Editar informações pessoais e foto de perfil</p>
                 </div>
-                
-                <div class="item-section" onclick="openModalNotificacoes()">
-                    <h3>Preferências de Notificação</h3>
-                    <p>Configurar alertas e notificações do sistema</p>
-                </div>
-                
-                <div class="item-section" onclick="openModalSistema()">
-                    <h3>Configurações do Sistema</h3>
-                    <p>Personalizar aparência e comportamento do sistema</p>
-                </div>
-                
+            
                
             </section>
         </main>
@@ -105,11 +95,6 @@
                         <input type="password" id="confirmar-senha" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="autenticacao">
-                            <input type="checkbox" id="autenticacao"> Autenticação em Dois Fatores
-                        </label>
-                    </div>
                     
                     <div class="modal-actions">
                         <button type="button" class="btn-cancel" onclick="closeModalSeguranca()">Cancelar</button>
@@ -139,15 +124,7 @@
                         <input type="email" id="email" value="asidaini@instituto.com" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" value="+244 923 456 789">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="foto-perfil">Foto de Perfil</label>
-                        <input type="file" id="foto-perfil" accept="image/*">
-                    </div>
+                   
                     
                     <div class="modal-actions">
                         <button type="button" class="btn-cancel" onclick="closeModalPerfil()">Cancelar</button>
@@ -158,106 +135,8 @@
         </div>
     </div>
 
-    <!-- Modal de Notificações -->
-    <div id="modal-notificacoes" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Preferências de Notificação</h2>
-                <span class="close" onclick="closeModalNotificacoes()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="form-notificacoes">
-                    <div class="form-group">
-                        <h3>Tipos de Notificação</h3>
-                        <label>
-                            <input type="checkbox" checked> Novas Inscrições
-                        </label>
-                        <label>
-                            <input type="checkbox" checked> Aprovações/Rejeições
-                        </label>
-                        <label>
-                            <input type="checkbox" checked> Atualizações do Sistema
-                        </label>
-                        <label>
-                            <input type="checkbox"> Promoções e Ofertas
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <h3>Métodos de Recebimento</h3>
-                        <label>
-                            <input type="checkbox" checked> Notificações no Sistema
-                        </label>
-                        <label>
-                            <input type="checkbox"> E-mail
-                        </label>
-                        <label>
-                            <input type="checkbox"> SMS
-                        </label>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn-cancel" onclick="closeModalNotificacoes()">Cancelar</button>
-                        <button type="submit" class="btn-confirm">Salvar Preferências</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Configurações do Sistema -->
-    <div id="modal-sistema" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Configurações do Sistema</h2>
-                <span class="close" onclick="closeModalSistema()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="form-sistema">
-                    <div class="form-group">
-                        <label for="tema">Tema do Sistema</label>
-                        <select id="tema">
-                            <option value="claro">Claro</option>
-                            <option value="escuro">Escuro</option>
-                            <option value="auto">Automático (segue sistema)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="idioma">Idioma</label>
-                        <select id="idioma">
-                            <option value="pt">Português</option>
-                            <option value="en">Inglês</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="pagina-inicial">Página Inicial</label>
-                        <select id="pagina-inicial">
-                            <option value="dashboard">Painel de Controle</option>
-                            <option value="inscricoes">Inscrições</option>
-                            <option value="cursos">Cursos</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" checked> Mostrar tutorial ao iniciar
-                        </label>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn-cancel" onclick="closeModalSistema()">Cancelar</button>
-                        <button type="submit" class="btn-confirm">Aplicar Configurações</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
  
-
-  
 
 </body>
 <script src="../js/tokenVerifier.js"></script>

@@ -33,18 +33,7 @@ function setupAdmin($conn, $adminConfig) {
     $result = $check->get_result();
 
     if ($result->num_rows > 0) {
-        // Atualiza o admin
-        $stmt = $conn->prepare("UPDATE usuarios SET nome = ?, senha = ? WHERE email = ?");
-        if (!$stmt) throw new Exception("Erro ao preparar atualização: " . $conn->error);
-
-        $stmt->bind_param("sss", $name, $hashedPassword, $email);
-        $success = $stmt->execute();
-        return [
-            'action' => 'update',
-            'success' => $success,
-            'message' => $success ? 'Admin atualizado com sucesso!' : 'Erro ao atualizar admin: ' . $stmt->error,
-            'email' => $email,
-        ];
+      
     } else {
         // Cria o admin
         $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha, data_de_criacao) VALUES (?, ?, ?, NOW())");
