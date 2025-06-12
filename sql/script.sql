@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS Notificacoes (
     id_usuario INT,
     lido INT NOT NULL DEFAULT 0, 
     titulo VARCHAR(255) DEFAULT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Cursos (
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Calendarios (
     nome_do_curso VARCHAR(255),
     numero_de_vagas INT ,
     data_de_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso)
+    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Inscricoes (
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Inscricoes (
     comentario VARCHAR(255),
     id_curso INT NOT NULL , 
     nome_do_curso VARCHAR(255) NOT NULL,
-    FOREIGN KEY (id_calendario) REFERENCES Calendarios(id_calendario)
+    FOREIGN KEY (id_calendario) REFERENCES Calendarios(id_calendario) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Contactos (

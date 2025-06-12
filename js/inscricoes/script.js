@@ -445,7 +445,7 @@ async function exportToPDF(type) {
             insc.nome_do_curso || 'N/A',
             type === 'filtered' ? insc.data_de_criacao : formatDate(insc.data_de_criacao),
             insc.aprovacao,
-            insc.numero_do_processo,
+            insc.numero_de_processo,
             insc.contacto_do_aluno
         ]);
         
@@ -531,7 +531,7 @@ async function exportSingleToPDF(id) {
         // Informações básicas
         doc.setFontSize(12);
         doc.setFont("helvetica", "normal");
-        doc.text(`Nº de Processo: ${inscricao.numero_do_processo}`, 20, 60);
+        doc.text(`Nº de Processo: ${inscricao.numero_de_processo +1}`, 20, 60);
         doc.text(`Nome: ${inscricao.nome_completo}`, 20, 70);
         doc.text(`Curso: ${inscricao.nome_do_curso || 'N/A'}`, 20, 80);
         doc.text(`Estado: ${getStatusText(inscricao.aprovacao)}`, 20, 90);
@@ -544,7 +544,6 @@ async function exportSingleToPDF(id) {
             ['Contacto Aluno', inscricao.contacto_do_aluno],
             ['Contacto Encarregado', inscricao.contacto_do_encarregado],
             ['Documento Identificação', `${inscricao.tipo_de_identificacao}: ${inscricao.numero_de_identificacao}`],
-            ['Data Validade', inscricao.data_de_validade || 'N/A'],
             ['Classe', inscricao.classe],
             ['Turno', inscricao.turno],
             ['Observações', inscricao.comentario || 'Nenhuma']
@@ -553,7 +552,7 @@ async function exportSingleToPDF(id) {
         doc.autoTable({
             startY: 100,
             margin: { horizontal: 20 },
-            head: [['Campo', 'Valor']],
+            head: [['Dados', 'Descrição']],
             body: details,
             styles: {
                 fontSize: 10,
