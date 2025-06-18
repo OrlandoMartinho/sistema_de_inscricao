@@ -20,8 +20,8 @@
                     <li><i class="fas fa-chart-line"></i> <a href="home.html">Análise</a></li>
                     <li><i class="fa-solid fa-file-lines"></i> <a href="inscricoes.html">Inscrições</a> </li> 
                     <li><i class="fa-solid fa-book"></i> <a href="cursos.html">Cursos</a> </li> 
-                    <li class="active"> <i class="fa-solid fa-calendar-days"></i>  <a href="#">Calendário</a> </li>
-                    <li><i class="fa-solid fa-envelope"></i><a href="contactos.html">Contactos</a>  </li>
+                    <li class="active"> <i class="fa-solid fa-calendar-days"></i>  <a href="#">Data de inscricão</a> </li>
+                    <li ><i class="fa-solid fa-envelope"></i><a href="contactos.html">Contactos</a>  </li>
                     <li><i class="fa-solid fa-image"></i><a href="galeria.html">Galeria</a></li>
                     <li><i class="fa-solid fa-gear"></i><a href="definicoes.html">Configurações</a>  </li>
                     <li class="logout" onclick = "fazerLogout()" > <i class="fas fa-sign-out-alt"></i><a> Sair do sistema</a> </li>
@@ -33,7 +33,7 @@
         <main class="content">
             <header>
                 <div class="title-header">
-                    <h1>Calendarios</h1>
+                    <h1>Datas de Incrição</h1>
                 </div>
                 <div class="container-notification">
                     <div id="notificacao-modal-container"></div>
@@ -55,7 +55,7 @@
        <section class="datas-publicadas">
         <div class="header">
             <h2>Datas publicadas</h2>
-            <button class="btn-publicar" onclick="openModalPublicarEvento()">Publicar Evento</button>
+            <button class="btn-publicar" onclick="openModalPublicarEvento()">Publicar Data</button>
         </div>
         <div class="eventos-grid">
             
@@ -65,7 +65,7 @@
         
         </main>
     </div>
-
+<!--  -->
     <!-- Modal de Inscrição -->
     <div id="inscricao-modal-container"></div>
 
@@ -73,7 +73,7 @@
 <dialog id="modal-publicar-evento" class="modal">
     <div class="modal-content">
         <button class="close" onclick="closeModalPublicarEvento()">&times;</button>
-        <h2>Publicar Novo Calendário</h2>
+        <h2>Publicar Nova Data</h2>
         <form id="form-publicar-evento">
             <div class="form-group">
                 <label for="titulo-anuncio">Título do Anúncio</label>
@@ -108,7 +108,7 @@
             
             <div class="form-actions">
                 <button type="button" class="btn-cancelar" onclick="closeModalPublicarEvento()">Cancelar</button>
-                <button type="submit" class="btn-confirmar">Publicar Evento</button>
+                <button type="submit" class="btn-confirmar">Publicar Data</button>
             </div>
         </form>
     </div>
@@ -118,7 +118,7 @@
 <dialog id="modal-editar-evento" class="modal">
     <div class="modal-content">
         <button class="close" onclick="closeModalEditarEvento()">&times;</button>
-        <h2>Editar Evento do Calendário</h2>
+        <h2>Editar Data do Calendário</h2>
         <form id="form-editar-evento">
             <input type="hidden" id="editar-id-calendario" name="editar-id-calendario">
             
@@ -184,7 +184,7 @@
                         <i class="fa-solid fa-calendar-check"></i>
                     </div>
                     <div class="notificacao-conteudo">
-                        <p>Novo evento adicionado: "Teste de Admissão"</p>
+                        <p>Nova data adicionada: "Teste de Admissão"</p>
                         <span class="notificacao-data">15 min atrás</span>
                     </div>
                 </div>
