@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const row = document.createElement('tr');
                     
                     // Nome do curso ou "Geral" se não estiver associado a um curso
-                    const curso = evento.nome_curso || 'Geral';
+                    const curso = evento.nome_do_curso || 'Geral';
                     
                     // Formata a descrição para limitar o tamanho (opcional)
                     const descricao = evento.descricao.length > 50 
